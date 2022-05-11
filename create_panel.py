@@ -45,13 +45,13 @@ content = """
 <html>
 <head>
 	<!-- Own -->
-	<link rel="stylesheet" href="_static/style.css">
+	<link rel="stylesheet" href="static/style.css">
 	
 	<!-- Boostrap -->
-	<link rel="stylesheet" href="_static/dist/css/bootstrap.min.css" >
+	<link rel="stylesheet" href="static/dist/css/bootstrap.min.css" >
 	
 	<!-- Custom styles for this template -->
-    <link rel="stylesheet" href="_static/album.css">
+    <link rel="stylesheet" href="static/album.css">
 </head>
 <body> 
 
@@ -65,7 +65,7 @@ content = """
 		</div>
   	</main>
   	
-	<script src="_static/dist/js/bootstrap.min.js"></script>
+	<script src="static/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
 """

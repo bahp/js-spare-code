@@ -16,7 +16,7 @@ content = """
 <html>
 <head>
 	<!-- Own -->
-	<link rel="stylesheet" href="./_static/style.css">
+	<link rel="stylesheet" href="static/style.css">
 </head>
 <body> {links} </body>
 </html>
