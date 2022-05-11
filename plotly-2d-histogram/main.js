@@ -67,9 +67,9 @@ var data = [trace1, trace2, trace3, trace4];
 var layout = {
   showlegend: false,
   autosize: false,
-  width: 600,
-  height: 550,
-  margin: {t: 50},
+  width: 300,
+  height: 300,
+  //margin: {t: 50},
   hovermode: 'closest',
   bargap: 0,
   xaxis: {
@@ -93,4 +93,11 @@ var layout = {
     zeroline: false
   }
 };
-Plotly.newPlot('myDiv', data, layout);
+
+// Define configuration
+var config = {
+    responsive: true
+}
+
+// Plot
+Plotly.newPlot('myDiv', data, layout, config);

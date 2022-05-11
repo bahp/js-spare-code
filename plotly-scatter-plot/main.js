@@ -25,9 +25,16 @@ var layout = {
     range: [ 0.75, 5.25 ]
   },
   yaxis: {
-    range: [0, 8]
+    range: [0, 8],
   },
-  title:'Data Labels Hover'
+  title:'Data Labels Hover',
+  height:500
 };
 
-Plotly.newPlot('myDiv', data, layout);
+// Define configuration
+var config = {
+    responsive: true
+}
+
+// Display
+Plotly.newPlot('myDiv', data, layout, config);

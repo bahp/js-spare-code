@@ -145,5 +145,10 @@ var layout = {
   shapes: [diagonal]
 };
 
+// Define configuration
+var config = {
+    responsive: true
+}
+
 // Display
-Plotly.newPlot('myDiv', traces, layout);
+Plotly.newPlot('myDiv', traces, layout, config);
