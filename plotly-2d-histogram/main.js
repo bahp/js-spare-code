@@ -91,6 +91,9 @@ var layout = {
     domain: [0.85, 1],
     showgrid: false,
     zeroline: false
+  },
+  margin: {
+    top:0
   }
 };
 

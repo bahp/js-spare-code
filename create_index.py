@@ -9,13 +9,14 @@ def a_tag(href, inner):
 	return '<a href="{href}"> {inner} </a>'.format(href=href, inner=inner) 
 
 # Create file
-f = open('index.html', 'w')
+f = open('index-sidebar.html', 'w')
 
 # Content
 content = """
 <html>
 <head>
-	<link rel="stylesheet" href="./style.css">
+	<!-- Own -->
+	<link rel="stylesheet" href="./_static/style.css">
 </head>
 <body> {links} </body>
 </html>
@@ -26,6 +27,8 @@ links = '<ul>'
 for e in path.glob("**/main.html"):
 	links += a_tag(e, '<li>{e}</li>'.format(e=e.parent))
 links+= '</ul>'
+
+print(content.format(links=links))
 
 # Write file
 f.write(content.format(links=links))

@@ -85,20 +85,19 @@ Object.entries(data).forEach(([key, value]) => {
 
 // Define layout
 var layout = {
-  title: {
-    text: 'ROC',
-     font: {
-      //family: 'Courier New, monospace',
-      size: 24
-    },
-    xref: 'paper',
-    //x: 0.05,
-  },
+  //title: {
+  //  text: 'ROC',
+  //  font: {
+  //    //family: 'Courier New, monospace',
+  //    size: 24
+  //  },
+  // xref: 'paper',
+  //  //x: 0.05,
+  //},
   showlegend: true,
   autosize: false,
-  width: 550,
-  height: 550,
-  margin: {t: 50},
+  //width: 550,
+  //height: 550,
   hovermode: 'closest',
   bargap: 0,
   xaxis: {
