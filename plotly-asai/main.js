@@ -137,8 +137,8 @@ var layout = {
     },
     //barmode: 'group', // stack, group, relative
     barmode: 'relative',
-    bargap: 0.15,
-    bargroupgap: 0.1,
+    bargap: 0.05,
+    bargroupgap: 0.05,
     //margin: {
     //    t: 80,
     //    b: 30,
@@ -146,7 +146,10 @@ var layout = {
     //    r: 30
     //},
     margin: {
-      l:100,
+        t:0,
+        b:0,
+        l:100,
+        r:0
     },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',

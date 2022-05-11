@@ -66,9 +66,9 @@ var trace4 = {
 var data = [trace1, trace2, trace3, trace4];
 var layout = {
   showlegend: false,
-  autosize: false,
-  width: 300,
-  height: 300,
+  autosize: true,
+  //width: 300,
+  //height: 300,
   //margin: {t: 50},
   hovermode: 'closest',
   bargap: 0,
@@ -80,7 +80,8 @@ var layout = {
   yaxis: {
     domain: [0, 0.85],
     showgrid: false,
-    zeroline: false
+    zeroline: false,
+    scaleanchor: 'x'
   },
   xaxis2: {
     domain: [0.85, 1],
@@ -93,7 +94,10 @@ var layout = {
     zeroline: false
   },
   margin: {
-    top:0
+    t:0,
+    b:0,
+    l:15,
+    r:0
   }
 };
 

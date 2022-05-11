@@ -28,7 +28,13 @@ var layout = {
     range: [0, 8],
   },
   title:'Data Labels Hover',
-  height:500
+  //height:500
+  margin: {
+    t: 0,
+    n: 0,
+    l: 10,
+    r: 0
+  }
 };
 
 // Define configuration

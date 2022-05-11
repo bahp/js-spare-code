@@ -95,7 +95,7 @@ var layout = {
   //  //x: 0.05,
   //},
   showlegend: true,
-  autosize: false,
+  autosize: true,
   //width: 550,
   //height: 550,
   hovermode: 'closest',
@@ -132,11 +132,10 @@ var layout = {
     xanchor: 'right'
   },
   margin: {
-    //l: 20,
-    //r: 0,
-    //b: 50,
-    //t: 0,
-    //pad: 4
+    l: 0,
+    r: 0,
+    b: 0,
+    t: 0,
   },
   colorway: viridis_r,
   paper_bgcolor: 'rgba(0,0,0,0)',

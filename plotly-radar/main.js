@@ -188,6 +188,7 @@ layout = {
     //},
     //orientation: -90,
     showlegend: true,
+    autosize: true,
     legend: {
         //orientation: 'h',
         //xanchor: 'right',
