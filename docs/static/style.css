@@ -14,15 +14,17 @@ a:active {
   text-decoration: none;
 }
 
+
 ul {
 	list-style: none;
-	margin:0;
-	padding:0;
+	width: 100%;
+	/*margin:0;
+	padding:0;*/
 }
 
+/*
 li {
 	font-size: 20px;
-	/*background: #e7e7e7;*/ 
 	color: black;
 	margin-top:5px; 
 	padding: 12px 12px;
@@ -30,12 +32,17 @@ li {
 	border: 1px solid #ccc!important;
 	border-radius: 8px;
 }
+*/
 
 li:hover {
-  background-color: #e7e7e7; 
+  background-color: #e7e7e7;
  /*color: white;*/
 }
 
+
+/*
+ * IFRAME
+ */
 .iframe-container {
   overflow: hidden;
   padding-top: 56.25%; /* 16:9*/
@@ -51,7 +58,9 @@ li:hover {
    width: 100%;
 }
 
-
+/*
+ * CARD
+ */
 .card {
     position: relative;
     display: -webkit-box;
@@ -67,10 +76,26 @@ li:hover {
     background-clip: border-box;
     border: 1px solid rgba(0,0,0,.125);
     border-radius: 0.25rem;
+
+	/*
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	*/
+}
+
+.card > img {
+	object-fit: cover;
+	background: yellow;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+  	width: 100%;
 }
 
 /**
-  Buttons
+  BUTTONS
  */
 .btn-github {
 	box-shadow:inset 0px 1px 0px 0px #ffffff;
@@ -94,5 +119,71 @@ li:hover {
 }
 .btn-github:active {
 	position:relative;
+	border:1px solid #dcdcdc;
 	/*top:1px;*/
 }
+
+
+/*
+ * HELPER
+ */
+.center {
+  	margin-left: auto;
+	margin-right: auto;
+	display: block;
+  	/*width: 70%;
+  	padding: 10px;
+	border: 3px solid green;*/
+}
+
+
+/*
+ * PORTFOLIO
+ */
+.filter-list a {
+	font-size: 12px;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	text-decoration:none;
+}
+
+.filter-list a:hover {
+	text-decoration: none;
+	border:1px solid #123455;
+}
+
+.filter-list a:active {
+	/*background-color: yellow;*/
+}
+
+.filter-list a.selected {
+	color: #333;
+	cursor: default;
+	/*font-weight: bold;*/
+	/*background: darkgray;*/
+	border-radius:6px;
+	border:0.5px solid #dcdcdc;
+}
+
+.folio div {
+	height: auto;
+	opacity: 1;
+	transform: scale(1);
+	transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+}
+
+.folio div.hidden {
+	opacity: 0;
+	order: 1;
+	overflow: hidden;
+	transform: scale(0);
+	transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+}
+
+.folio div[aria-hidden="true"] a {
+	visibility: hidden;
+}
+

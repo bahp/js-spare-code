@@ -26,7 +26,7 @@ if args.thumbnail:
 # Create items information
 path = Path('./')
 items = [
-    {'w': 200, 'title': e, 'h': 200, 'id': i, 'path': e}
+    {'w': 200, 'title': e, 'h': 200, 'id': i, 'path': e, 'tags': e.parts[1]}
         for i, e in enumerate(path.glob("**/main.html"))
 ]
 
@@ -36,7 +36,9 @@ tmp_environment = Environment(loader=tmp_loader)
 tmp_index = tmp_environment.get_template('base.html')
 
 # Render template
-html = tmp_index.render(items=items, thumbnail=args.thumbnail)
+html = tmp_index.render(items=items,
+    thumbnail=args.thumbnail,
+    tags=set([t['tags'] for t in items]))
 
 # Save index file
 with open("./docs/index.html", "w") as fh:

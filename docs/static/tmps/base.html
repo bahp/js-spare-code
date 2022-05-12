@@ -15,31 +15,53 @@
 
 		<div class="album py-5 bg-light">
 
-		<center>
-
-		  <a href="https://github.com/bahp/js-spare-code" target="_blank">
-			 <button class="btn-github"> View on GitHub
+			<!-- ------------------------------------------------------------------- -->
+			<!--                            GitHub button                            -->
+			<!-- ------------------------------------------------------------------- -->
+			<a href="https://github.com/bahp/js-spare-code" target="_blank">
+			 <button class="btn-github center"> View on GitHub
 				<img class="btn-icon" src="static/imgs/icon-github.svg" width=18/>
 			 </button>
-		  </a>
+			</a>
 
-	   </center>
+			<br><br>
 
-   		<br><br>
+			<!-- ------------------------------------------------------------------- -->
+			<!--                             Filter Tags                             -->
+			<!-- ------------------------------------------------------------------- -->
+			<center>
+				<div class="folio-filter">
+					<div class="filter-list">
+						<a href="#" data-role="all" class="btn selected">All</a>
+						{% for t in tags %}
+							<a href="#" data-role="{{ t }}" class="btn selected"> {{ t }}</a>
+						{% endfor %}
+					</div>
+				</div>
+			</center>
+
+   			<br>
+
+			<!-- ------------------------------------------------------------------- -->
+			<!--                            Portfolio Cards                          -->
+			<!-- ------------------------------------------------------------------- -->
 
 			<div class="container">
-				<div class="row">
+				<div class="row folio">
 
 					 {% for item in items %}
 
-						<div class="col-md-4">
+						<div class="col-md-4" data-roles="{{ item.path.parts.1 }}">
+
 							<div class="card mb-4 box-shadow">
 								{% if thumbnail %}
 									{% include 'img.html' %}
 								{% else %}
 									{% include 'iframe.html' %}
 								{% endif %}
-								<a href="../{{ item.path }}" class="btn btn-light"> {{ item.path.parent }} </a>
+								<a href="../{{ item.path }}" class="btn btn-light">
+									{{ item.path.parent.stem }}
+								</a>
 							</div>
 						</div>
 
@@ -52,5 +74,71 @@
 
     <!-- Load Javascript -->
 	<script src="static/dist/js/bootstrap.min.js"></script>
+
+	<script>
+
+		var folioFilter = document.querySelector('.folio-filter');
+		var filterToggle = document.querySelector('.folio-filter h6 a');
+		var filterChoice = document.querySelector('.folio-filter h6 span')
+		var filters = document.querySelectorAll('.filter-list a');
+		var folio = document.querySelectorAll('.folio > div');
+
+		if(folioFilter) {
+
+			/*
+			filterToggle.addEventListener('click', function(e) {
+				folioFilter.classList.toggle('opened');
+				e.preventDefault();
+			});*/
+
+			filters.forEach(function(elem) {
+
+				elem.addEventListener('click', function(e) {
+
+					// Get filter role
+					var filterRole = this.getAttribute('data-role');
+
+					var i = 150;
+
+					if(filterRole == "all") {
+						var selectedFolio = folio;
+					} else {
+						var selectedFolio = document.querySelectorAll("[data-roles*='"+ filterRole +"']");
+					}
+					console.log("Selected", filterRole)
+					console.log(selectedFolio)
+					//folioFilter.classList.remove('opened');
+					//filterChoice.innerHTML = this.text;
+
+					// Hide all
+					//filters.forEach(function(elem) {
+					//	elem.classList.remove('selected');
+					//});
+
+					// Hide all
+					folio.forEach(function(elem) {
+						elem.classList.add('hidden');
+						elem.setAttribute('aria-hidden', true);
+					});
+
+					// Show selected
+					selectedFolio.forEach(function(elem) {
+						setTimeout(function() {
+							elem.classList.remove('hidden');
+							elem.setAttribute('aria-hidden',false);
+						}, i);
+						i = i + 125;
+					});
+					this.classList.add('selected');
+					e.preventDefault();
+				});
+			});
+		}
+
+	</script>
+
+
+
+	</script>
 
 </body>
