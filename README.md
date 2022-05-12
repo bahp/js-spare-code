@@ -1,6 +1,6 @@
 ## About The Project
 
-This repositoriy contains a compendium of various JavaScript projects.
+This repositoriy contains a compendium of JavaScript projects.
 
 ## Getting Started
 
