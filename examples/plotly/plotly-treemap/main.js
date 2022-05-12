@@ -17,7 +17,7 @@ var data = [{
   //textinfo: "label+value+percent",
   //textinfo: '<a href="pages/page1.html" style="cursor: pointer" target="_blank" rel="noopener noreferrer"> L </a>',
   //hovertemplate: '<b>%{label}</b><br>Sales: %{value}<br>',
-  texttemplate: " %{label} <br> V=%{value} | <br> P=%{percent} | <br> T=%{text} <a href='http://google.com' style='cursor: pointer' target='_blank' rel='noopener noreferrer'> LINK </a>"
+  texttemplate: " %{label} <br> V=%{value} | <br> T=%{text} <a href='http://google.com' style='cursor: pointer' target='_blank' rel='noopener noreferrer'> LINK </a>"
   //opacity:0.5,
 }]
 

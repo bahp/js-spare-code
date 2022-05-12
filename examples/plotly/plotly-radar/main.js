@@ -245,7 +245,6 @@ for(let i = 0; i < m.length; i++) {
         //x: grid[i][0],
         //y: grid[i][1]
     }
-    console.log(copy.domain)
     layout['polar'+ (i+1)] = copy
 }
 
