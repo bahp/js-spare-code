@@ -34,10 +34,12 @@
 
 						<div class="col-md-4">
 							<div class="card mb-4 box-shadow">
-								<img src="{{ item.path.parent }}/thumbnail.pdf"
-									width=250 height=200/>
+								<center>
+									<img src="{{ item.path.parent }}/thumbnail.png"
+										width="{{ item.w }}" height="{{ item.h }}">
+								</center>
 								{# include 'iframe.html' #}
-								<a href="{{ item.path }}" class="btn btn-light"> {{ item.path.parent }}</a>
+								<a href="{{ item.path }}" class="btn btn-light"> {{ item.path.parent }} </a>
 							</div>
 						</div>
 

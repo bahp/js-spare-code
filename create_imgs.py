@@ -42,7 +42,7 @@ async def generate_png(sourcepath, outfile):
 
     """
     browser = await launch({
-        'args': ['--window-size=250,200']
+        #'args': ['--window-size=500,500']
     })
     page = await browser.newPage()
     await page.goto(sourcepath)
