@@ -31,7 +31,7 @@ items = [
 ]
 
 # Set template environment
-tmp_loader = FileSystemLoader(searchpath='static/tmps')
+tmp_loader = FileSystemLoader(searchpath='docs/static/tmps')
 tmp_environment = Environment(loader=tmp_loader)
 tmp_index = tmp_environment.get_template('base.html')
 
@@ -39,5 +39,5 @@ tmp_index = tmp_environment.get_template('base.html')
 html = tmp_index.render(items=items, thumbnail=args.thumbnail)
 
 # Save index file
-with open("index.html", "w") as fh:
+with open("./docs/index.html", "w") as fh:
     fh.write(html)
