@@ -17,17 +17,22 @@ Create a new folder and include a `main.html` file.
 In `/static/tmps/base.html` uncomment the following line
 
 ```sh
-{# include 'iframe.html' #}
+{% include 'iframe.html' %}
+{# include 'img.html' #}
 ```
 
 #### including <img>
+
+Create the thumbnail images to use
+
+```sh
+$ python create_imgs.py
+```
 
 In `/static/tmps/base.html` uncomment the following line
 
 ```sh
 {# include 'iframe.html' #}
+{% include 'img.html' %}
+```
 
-Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
