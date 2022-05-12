@@ -1,0 +1,54 @@
+<html>
+<head>
+
+	<!-- Own -->
+	<link rel="stylesheet" href="static/style.css">
+	<!-- Boostrap -->
+	<link rel="stylesheet" href="static/dist/css/bootstrap.min.css" >
+	<!-- Custom styles for this template -->
+    <link rel="stylesheet" href="static/album.css">
+
+</head>
+<body>
+
+	<main role="main">
+
+		<div class="album py-5 bg-light">
+
+		<center>
+
+		  <a href="https://github.com/bahp/js-spare-code" target="_blank">
+			 <button class="btn-github"> View on GitHub
+				<img class="btn-icon" src="static/imgs/icon-github.svg" width=18/>
+			 </button>
+		  </a>
+
+	   </center>
+
+   		<br><br>
+
+			<div class="container">
+				<div class="row">
+
+					 {% for item in items %}
+
+						<div class="col-md-4">
+							<div class="card mb-4 box-shadow">
+								<img src="{{ item.path.parent }}/thumbnail.pdf"
+									width=250 height=200/>
+								{# include 'iframe.html' #}
+								<a href="{{ item.path }}" class="btn btn-light"> {{ item.path.parent }}</a>
+							</div>
+						</div>
+
+                    {% endfor %}
+
+				</div>
+			</div>
+		</div>
+  	</main>
+
+    <!-- Load Javascript -->
+	<script src="static/dist/js/bootstrap.min.js"></script>
+
+</body>
