@@ -41,5 +41,5 @@ html = tmp_index.render(items=items,
     tags=set([t['tags'] for t in items]))
 
 # Save index file
-with open("./docs/index.html", "w") as fh:
+with open("./index.html", "w") as fh:
     fh.write(html)

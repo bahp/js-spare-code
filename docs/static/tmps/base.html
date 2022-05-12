@@ -2,11 +2,11 @@
 <head>
 
 	<!-- Own -->
-	<link rel="stylesheet" href="static/style.css">
+	<link rel="stylesheet" href="docs/static/style.css">
 	<!-- Boostrap -->
-	<link rel="stylesheet" href="static/dist/css/bootstrap.min.css" >
+	<link rel="stylesheet" href="docs/static/dist/css/bootstrap.min.css" >
 	<!-- Custom styles for this template -->
-    <link rel="stylesheet" href="static/album.css">
+    <link rel="stylesheet" href="docs/static/album.css">
 
 </head>
 <body>
@@ -59,7 +59,7 @@
 								{% else %}
 									{% include 'iframe.html' %}
 								{% endif %}
-								<a href="../{{ item.path }}" class="btn btn-light">
+								<a href="{{ item.path }}" class="btn btn-light">
 									{{ item.path.parent.stem }}
 								</a>
 							</div>
@@ -73,7 +73,7 @@
   	</main>
 
     <!-- Load Javascript -->
-	<script src="static/dist/js/bootstrap.min.js"></script>
+	<script src="docs/static/dist/js/bootstrap.min.js"></script>
 
 	<script>
 
@@ -134,10 +134,6 @@
 				});
 			});
 		}
-
-	</script>
-
-
 
 	</script>
 
