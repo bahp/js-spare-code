@@ -264,12 +264,12 @@
 	<script>
 
 		var folioFilter = document.querySelector('.folio-filter');
-		var filterToggle = document.querySelector('.folio-filter h6 a');
-		var filterChoice = document.querySelector('.folio-filter h6 span')
+		//var filterToggle = document.querySelector('.folio-filter h6 a');
+		//var filterChoice = document.querySelector('.folio-filter h6 span')
 		var filters = document.querySelectorAll('.filter-list a');
 		var folio = document.querySelectorAll('.folio > div');
 
-		if(folioFilter) {
+		if (folioFilter) {
 
 			/*
 			filterToggle.addEventListener('click', function(e) {
@@ -291,12 +291,11 @@
 					} else {
 						var selectedFolio = document.querySelectorAll("[data-roles*='"+ filterRole +"']");
 					}
-					console.log("Selected", filterRole)
-					console.log(selectedFolio)
+
 					//folioFilter.classList.remove('opened');
 					//filterChoice.innerHTML = this.text;
 
-					// Hide all
+					// Hide all (not needed - CSS)
 					//filters.forEach(function(elem) {
 					//	elem.classList.remove('selected');
 					//});
@@ -315,7 +314,11 @@
 						}, i);
 						i = i + 125;
 					});
-					this.classList.add('selected');
+
+					// Set selected (not needed - CSS)
+					//this.classList.add('selected');
+
+					// Prevent default
 					e.preventDefault();
 				});
 			});
