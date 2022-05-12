@@ -1,12 +1,6 @@
 ## About The Project
 
-Compendium of JavaScript based projects.About
-
-### Built With
-
-* [plotly.js](https://nextjs.org/)
-* [bootstrap.js](https://reactjs.org/)
-* [pypeeter](https://vuejs.org/)
+This a compendium of various JavaScript projects.
 
 ## Getting Started
 
@@ -14,10 +8,24 @@ Compendium of JavaScript based projects.About
 
 ### Adding a new project
 
-It needs to have a main.html and all contained within the folder
+Create a new folder and include a `main.html` file.
 
-### Installation
+### Creating docs
 
+#### including <iframe>
+
+In `/static/tmps/base.html` uncomment the following line
+
+```sh
+{# include 'iframe.html' #}
+```
+
+#### including <img>
+
+In `/static/tmps/base.html` uncomment the following line
+
+```sh
+{# include 'iframe.html' #}
 
 Clone the repo
    ```sh
