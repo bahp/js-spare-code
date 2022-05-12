@@ -6,6 +6,10 @@ This a compendium of various JavaScript projects.
 
 ### Prerequisites
 
+* `jinja`: to create the docs.
+* `pyppeteer`: to create the thumbnails.
+* `asyncio`: to create the thumbnails.
+
 ### Adding a new project
 
 Create a new folder and include a `main.html` file.
