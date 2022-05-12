@@ -34,8 +34,11 @@
 
 						<div class="col-md-4">
 							<div class="card mb-4 box-shadow">
-								{% include 'img.html' %}
-								{% include 'iframe.html' %}
+								{% if thumbnail %}
+									{% include 'img.html' %}
+								{% else %}
+									{% include 'iframe.html' %}
+								{% endif %}
 								<a href="{{ item.path }}" class="btn btn-light"> {{ item.path.parent }} </a>
 							</div>
 						</div>

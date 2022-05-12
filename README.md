@@ -12,27 +12,9 @@ Create a new folder and include a `main.html` file.
 
 ### Creating docs
 
-#### including <iframe>
-
-In `/static/tmps/base.html` uncomment the following line
+Run the following command
 
 ```sh
-{% include 'iframe.html' %}
-{# include 'img.html' #}
+$ python create_jinja.py                # Includes iframes
+$ python create_jinja.py --thumbnail    # Include thumbnails
 ```
-
-#### including <img>
-
-Create the thumbnail images to use
-
-```sh
-$ python create_imgs.py
-```
-
-In `/static/tmps/base.html` uncomment the following line
-
-```sh
-{# include 'iframe.html' #}
-{% include 'img.html' %}
-```
-
