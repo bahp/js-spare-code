@@ -1,0 +1,67 @@
+html { 
+  background: url("../images/background-large.jpg");
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat:no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  margin: auto;
+}
+
+h1 {
+  top:500px;
+  color: black;
+}
+
+.center {
+  text-align:center;
+  margin:auto;
+}
+
+.flex-center {
+  background-color: gray;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  border-radius: 10px;
+  border: 2px #000000;
+  background: rgba(128, 128, 128, 0.5);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 400px;
+  resize: vertical;
+  overflow: auto;
+  text-align: center;
+  font-size: 30px;
+  font-weight:bold;
+  padding:10px 10px 10px 10px;
+}
+
+button, #topic {
+  height: 30px;
+  padding-right:25px;
+  padding-left:25px;
+  border-radius: 3px;
+  margin-top: 5px;
+  margin-bottom:5px;
+  box-sizing: border-box;
+  color:#FFFFFF;
+  background-color: rgba(128, 128, 128, 0.9);
+}
+
+
+input {
+  height: 25px;
+  width:45px;
+  border-radius: 3px;
+  color:#FFFFFF;
+  text-align: center;
+  background-color: rgba(128, 128, 128, 0.9);
+}
+
+#unit {
+  margin-left:-20px;
+  color:#FFFFFF;
+}

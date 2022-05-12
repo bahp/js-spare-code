@@ -1,0 +1,79 @@
+.bg-image {
+  background: url("../images/background-large.jpg");
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat:no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  margin: auto;
+}
+
+.bg-blur {
+  background-color: rgba(128, 128, 128, 0.5);
+  color: white;
+}
+
+/*
+.album {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}*/
+
+#question {
+  vertical-align: middle;
+  text-align: center;
+  font-size: 30px;
+  font-weight:bold;
+  padding:10px 10px 10px 10px;
+  /*background-color: gray;*/
+  /*box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);*/
+  /*border-radius: 10px;
+  border: 2px #000000;*/
+  /*background: rgba(128, 128, 128, 0.5);*/
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 400px;
+  resize: vertical;
+  overflow: auto;
+  border: 1px solid #ced4da;
+}
+
+
+#play {
+  /*width:100px;*/
+  border: 1px solid #ced4da;
+}
+#stop {
+  /*width:100px;*/
+  border: 1px solid #ced4da;
+}
+#next {
+  /*width:100px;*/
+  border: 1px solid #ced4da;
+}
+
+button {
+  /*width:100px;*/
+  border: 1px solid #ced4da;
+}
+
+button:focus {
+  background-color: #ffbb99!important;
+}
+
+/*
+#duration {
+  width:75px;
+}*/
+
+.btn-toolbar {
+  margin-left:auto;
+  margin-right:auto;
+  width:100%;
+}
