@@ -1,0 +1,59 @@
+
+/*
+ * PORTFOLIO CSS
+ */
+.filter-list a {
+	font-size: 12px;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	/*cursor:pointer;*/
+	color:#666666;
+	text-decoration:none;
+	margin-right: 4px;
+
+}
+
+.filter-list a:hover {
+	text-decoration: none;
+	border: 1px solid black!important;
+	/*background-color: lightgrey;*/
+}
+
+.filter-list a:active {
+	/*background-color: yellow;
+	outline: none !important;
+	box-shadow: none;
+	-webkit-box-shadow: none
+	*/
+}
+
+.filter-list a.selected {
+	color: black;
+	cursor: default;
+	/*font-weight: bold;*/
+	/*background: darkgray;*/
+	/*border-radius:6px;*/
+	/*border:0.5px solid #dcdcdc;*/
+	border: 1px solid black!important;
+
+}
+
+.folio div {
+	height: auto;
+	opacity: 1;
+	transform: scale(1);
+	transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+}
+
+.folio div.hidden {
+	opacity: 0;
+	order: 1;
+	overflow: hidden;
+	transform: scale(0);
+	transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+}
+
+.folio div[aria-hidden="true"] a {
+	visibility: hidden;
+}
