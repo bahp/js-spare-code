@@ -115,7 +115,8 @@ li:hover {
 }
 .btn-github:hover {
 	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
-	background-color:#f6f6f6
+	background-color:#f6f6f6;
+	text-decoration:none;
 }
 .btn-github:active {
 	position:relative;
@@ -152,7 +153,8 @@ li:hover {
 
 .filter-list a:hover {
 	text-decoration: none;
-	border:1px solid #123455;
+	border: 1px solid black!important;
+	/*background-color: lightgrey;*/
 }
 
 .filter-list a:active {

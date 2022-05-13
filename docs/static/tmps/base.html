@@ -7,12 +7,12 @@
     <meta name="author" content="">
     <link rel="icon" href="./favicon.ico">
 
-	<!-- Own -->
-	<link rel="stylesheet" href="docs/static/style.css">
 	<!-- Boostrap -->
 	<link rel="stylesheet" href="docs/static/dist/css/bootstrap.min.css" >
 	<!-- Custom styles for this template -->
     <link rel="stylesheet" href="docs/static/album.css">
+	<!-- Own -->
+	<link rel="stylesheet" href="docs/static/style.css">
 
 </head>
 <body>
@@ -38,9 +38,9 @@
 			<center>
 				<div class="folio-filter">
 					<div class="filter-list">
-						<a href="#" data-role="all" class="btn selected">All</a>
+						<a href="#" role="button" data-role="all" class="btn selected">All</a>
 						{% for t in tags %}
-							<a href="#" data-role="{{ t }}" class="btn selected"> {{ t }}</a>
+							<a href="#" role="button" data-role="{{ t }}" class="btn"> {{ t }}</a>
 						{% endfor %}
 					</div>
 				</div>
