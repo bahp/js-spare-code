@@ -40,13 +40,13 @@
 					<div class="filter-list">
 						<a href="#" role="button" data-role="all" class="btn selected">All</a>
 						
-							<a href="#" role="button" data-role="plotly" class="btn selected"> plotly</a>
+							<a href="#" role="button" data-role="plotly" class="btn"> plotly</a>
 						
-							<a href="#" role="button" data-role="apps" class="btn selected"> apps</a>
+							<a href="#" role="button" data-role="jquery" class="btn"> jquery</a>
 						
-							<a href="#" role="button" data-role="jquery" class="btn selected"> jquery</a>
+							<a href="#" role="button" data-role="chartjs" class="btn"> chartjs</a>
 						
-							<a href="#" role="button" data-role="chartjs" class="btn selected"> chartjs</a>
+							<a href="#" role="button" data-role="apps" class="btn"> apps</a>
 						
 					</div>
 				</div>
@@ -327,9 +327,9 @@
 					//filterChoice.innerHTML = this.text;
 
 					// Hide all
-					//filters.forEach(function(elem) {
-					//	elem.classList.remove('selected');
-					//});
+					filters.forEach(function(elem) {
+						elem.classList.remove('selected');
+					});
 
 					// Hide all
 					folio.forEach(function(elem) {
