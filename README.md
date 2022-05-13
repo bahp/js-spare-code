@@ -15,8 +15,11 @@ This repositoriy contains a compendium of JavaScript projects.
 Create a new folder and include a `main.html` file.
 
 You can also include a `tags.txt` file with the tags associated
-to the project. Note that this tags should be separated by a
-space " ". Use hyphens to concatenate words.
+to the project. 
+
+```sh
+tag1 tag2 tag3-important
+```
 
 ### Creating docs
 
