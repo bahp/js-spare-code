@@ -9,6 +9,8 @@
 
 	<!-- Boostrap -->
 	<link rel="stylesheet" href="docs/static/dist/css/bootstrap.min.css" >
+	<!-- Portfolio filter -->
+    <link rel="stylesheet" href="docs/static/vendor/portfolio-filter/portfolio.filter.css">
 	<!-- Custom styles for this template -->
     <link rel="stylesheet" href="docs/static/album.css">
 	<!-- Own -->
@@ -36,19 +38,8 @@
 			<!--                             Filter Tags                             -->
 			<!-- ------------------------------------------------------------------- -->
 			<center>
-				<div class="folio-filter">
-					<div class="filter-list">
-						<a href="#" role="button" data-role="all" class="btn selected">All</a>
-						
-							<a href="#" role="button" data-role="plotly" class="btn"> plotly</a>
-						
-							<a href="#" role="button" data-role="apps" class="btn"> apps</a>
-						
-							<a href="#" role="button" data-role="jquery" class="btn"> jquery</a>
-						
-							<a href="#" role="button" data-role="chartjs" class="btn"> chartjs</a>
-						
-					</div>
+				<div id="projects" class="folio-filter">
+					<div class="filter-list"></div>
 				</div>
 			</center>
 
@@ -59,7 +50,7 @@
 			<!-- ------------------------------------------------------------------- -->
 
 			<div class="container">
-				<div class="row folio">
+				<div class="row folio projects">
 
 					 
 
@@ -68,7 +59,29 @@
 							<div class="card mb-4 box-shadow">
 								
 									<div class='iframe-container'>
-    <iframe id='0' title='examples\apps\rapid-fire-questions\main.html'
+    <iframe id='0' title='examples\apps\portfolio-filter\main.html'
+            width='200' height='200'
+            src='examples\apps\portfolio-filter\main.html' loading="lazy"
+            scrolling="no" frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px">
+    </iframe>
+</div>
+								
+								<a href="examples\apps\portfolio-filter\main.html" class="btn btn-light">
+									portfolio-filter
+								</a>
+							</div>
+						</div>
+
+                    
+
+						<div class="col-md-4" data-roles="apps package">
+
+							<div class="card mb-4 box-shadow">
+								
+									<div class='iframe-container'>
+    <iframe id='1' title='examples\apps\rapid-fire-questions\main.html'
             width='200' height='200'
             src='examples\apps\rapid-fire-questions\main.html' loading="lazy"
             scrolling="no" frameborder="0"
@@ -85,12 +98,12 @@
 
                     
 
-						<div class="col-md-4" data-roles="chartjs">
+						<div class="col-md-4" data-roles="chartjs radar">
 
 							<div class="card mb-4 box-shadow">
 								
 									<div class='iframe-container'>
-    <iframe id='1' title='examples\chartjs\chartjs-radar\main.html'
+    <iframe id='2' title='examples\chartjs\chartjs-radar\main.html'
             width='200' height='200'
             src='examples\chartjs\chartjs-radar\main.html' loading="lazy"
             scrolling="no" frameborder="0"
@@ -112,7 +125,7 @@
 							<div class="card mb-4 box-shadow">
 								
 									<div class='iframe-container'>
-    <iframe id='2' title='examples\jquery\jquery-sparklines\main.html'
+    <iframe id='3' title='examples\jquery\jquery-sparklines\main.html'
             width='200' height='200'
             src='examples\jquery\jquery-sparklines\main.html' loading="lazy"
             scrolling="no" frameborder="0"
@@ -134,7 +147,7 @@
 							<div class="card mb-4 box-shadow">
 								
 									<div class='iframe-container'>
-    <iframe id='3' title='examples\plotly\plotly-2d-histogram\main.html'
+    <iframe id='4' title='examples\plotly\plotly-2d-histogram\main.html'
             width='200' height='200'
             src='examples\plotly\plotly-2d-histogram\main.html' loading="lazy"
             scrolling="no" frameborder="0"
@@ -156,7 +169,7 @@
 							<div class="card mb-4 box-shadow">
 								
 									<div class='iframe-container'>
-    <iframe id='4' title='examples\plotly\plotly-asai\main.html'
+    <iframe id='5' title='examples\plotly\plotly-asai\main.html'
             width='200' height='200'
             src='examples\plotly\plotly-asai\main.html' loading="lazy"
             scrolling="no" frameborder="0"
@@ -173,12 +186,12 @@
 
                     
 
-						<div class="col-md-4" data-roles="plotly">
+						<div class="col-md-4" data-roles="plotly radar">
 
 							<div class="card mb-4 box-shadow">
 								
 									<div class='iframe-container'>
-    <iframe id='5' title='examples\plotly\plotly-radar\main.html'
+    <iframe id='6' title='examples\plotly\plotly-radar\main.html'
             width='200' height='200'
             src='examples\plotly\plotly-radar\main.html' loading="lazy"
             scrolling="no" frameborder="0"
@@ -200,7 +213,7 @@
 							<div class="card mb-4 box-shadow">
 								
 									<div class='iframe-container'>
-    <iframe id='6' title='examples\plotly\plotly-roc\main.html'
+    <iframe id='7' title='examples\plotly\plotly-roc\main.html'
             width='200' height='200'
             src='examples\plotly\plotly-roc\main.html' loading="lazy"
             scrolling="no" frameborder="0"
@@ -222,7 +235,7 @@
 							<div class="card mb-4 box-shadow">
 								
 									<div class='iframe-container'>
-    <iframe id='7' title='examples\plotly\plotly-scatterplot\main.html'
+    <iframe id='8' title='examples\plotly\plotly-scatterplot\main.html'
             width='200' height='200'
             src='examples\plotly\plotly-scatterplot\main.html' loading="lazy"
             scrolling="no" frameborder="0"
@@ -244,7 +257,7 @@
 							<div class="card mb-4 box-shadow">
 								
 									<div class='iframe-container'>
-    <iframe id='8' title='examples\plotly\plotly-sunburst\main.html'
+    <iframe id='9' title='examples\plotly\plotly-sunburst\main.html'
             width='200' height='200'
             src='examples\plotly\plotly-sunburst\main.html' loading="lazy"
             scrolling="no" frameborder="0"
@@ -266,7 +279,7 @@
 							<div class="card mb-4 box-shadow">
 								
 									<div class='iframe-container'>
-    <iframe id='9' title='examples\plotly\plotly-treemap\main.html'
+    <iframe id='10' title='examples\plotly\plotly-treemap\main.html'
             width='200' height='200'
             src='examples\plotly\plotly-treemap\main.html' loading="lazy"
             scrolling="no" frameborder="0"
@@ -290,9 +303,11 @@
 
     <!-- Load Javascript -->
 	<script src="docs/static/dist/js/bootstrap.min.js"></script>
+	<script src="docs/static/vendor/portfolio-filter/portfolio.filter.js"></script>
 
 	<script>
 
+		/*
 		var folioFilter = document.querySelector('.folio-filter');
 		var filterToggle = document.querySelector('.folio-filter h6 a');
 		var filterChoice = document.querySelector('.folio-filter h6 span')
@@ -301,11 +316,11 @@
 
 		if(folioFilter) {
 
-			/*
+
 			filterToggle.addEventListener('click', function(e) {
 				folioFilter.classList.toggle('opened');
 				e.preventDefault();
-			});*/
+			});
 
 			filters.forEach(function(elem) {
 
@@ -353,7 +368,7 @@
 					e.preventDefault();
 				});
 			});
-		}
+		}*/
 
 	</script>
 
