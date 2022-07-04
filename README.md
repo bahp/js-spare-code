@@ -27,5 +27,5 @@ Run the following command
 
 ```sh
 $ python create_jinja.py                # Includes iframes
-$ python create_jinja.py --thumbnail    # Include thumbnails
+$ python create_jinja.py --thumbnail    # Includes thumbnails
 ```
