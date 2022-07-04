@@ -1,0 +1,85 @@
+<head>
+</head>
+<body>
+
+Open developer tools!
+
+<script>
+
+  var source = [
+    {'specimen': 'bld', 'microorganism': 'ecol', 'antimicrobial': 'ami', 'freq': 1, 'sari': 95},
+    {'specimen': 'bld', 'microorganism': 'ecol', 'antimicrobial': 'mer', 'freq': 2, 'sari': 34},
+    {'specimen': 'bld', 'microorganism': 'ecol', 'antimicrobial': 'pen', 'freq': 3, 'sari': 58},
+    {'specimen': 'bld', 'microorganism': 'paur', 'antimicrobial': 'ami', 'freq': 4, 'sari': 33},
+    {'specimen': 'xin', 'microorganism': 'ecol', 'antimicrobial': 'ami', 'freq': 5, 'sari': 12},
+    {'specimen': 'xin', 'microorganism': 'paur', 'antimicrobial': 'ami', 'freq': 6, 'sari': 87},
+  ]
+
+  console.log(source)
+
+
+  // Define grouping keys
+  var keys = ['specimen', 'microorganism', 'antimicrobial']
+
+  // Manual group
+  const grouped = source.reduce((r, o) => {
+    keys.reduce((q, k, i, {length}) =>
+      q[o[k]] = q[o[k]] || (i + 1 === length ? o : {}), r)
+    //.push(o);
+    return r;
+  }, {});
+
+  console.log(grouped)
+
+  // Manual Tree
+  const grouped3 = source.reduce((r, o) => {
+    keys.reduce((q, k, i, {length}) =>
+      q[o[k]] = q[o[k]] || (i + 1 === length ? o : {}), r)
+    return r;
+  }, {});
+
+  console.log(grouped3)
+
+
+  //
+  const output = [];
+  for (const obj of source) {
+    console.log(obj)
+    let nestedArr = output;
+    for (const [key, value] of Object.entries(obj)) {
+      const existingInnerObj = nestedArr.find(({ label }) => label === value);
+      if (existingInnerObj) {
+        nestedArr = existingInnerObj.children;
+      } else {
+        const newObj = { label: obj, children: [] };
+        nestedArr.push(newObj);
+        nestedArr = newObj.children;
+      }
+    }
+  }
+
+  console.log(output)
+  // Defined group
+  //const grouped2 = source.groupBy(product => {
+  //  return product.specimen;
+  //});
+
+  //console.log(grouped2)
+
+  const
+    result = source
+      .reduce((r, o) => {
+        keys.reduce(function (q, k) {
+          const label = o[k];
+          if (!q[label]) q._.push({label, children: (q[label] = {_: []})._});
+          return q[label];
+        }, r);
+        return r;
+      }, {_: []})
+      ._;
+
+  console.log(result);
+
+</script>
+</body>
+</html>
