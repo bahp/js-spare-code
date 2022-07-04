@@ -1,0 +1,129 @@
+<head>
+	<!--
+		http://man.hubwiz.com/docset/ECharts.docset/Contents/Resources/Documents/en/tutorial.html
+	  https://echarts.apache.org/handbook/en/basics/release-note/5-3-0/?ref=banner
+	-->
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.3.3/echarts.min.js'></script>
+</head>
+
+<body>
+	<div id='myDiv' style="width: 600px; height: 400px;"></div>
+</body>
+
+<script>
+
+
+	// Helper format function
+	String.prototype.format = function () {
+		var i = 0, args = arguments;
+		return this.replace(/{}/g, function () {
+			return typeof args[i] != 'undefined' ? args[i++] : '';
+		});
+	};
+
+	// Source data
+	var source = [
+			{'microorganism': 'ecol', 'microorganism_name': 'Escherichia', 'antimicrobial': 'ami', 'freq': 20, 'sari': 95},
+			{'microorganism': 'ecol', 'microorganism_name': 'Escherichia', 'antimicrobial': 'mer', 'freq': 30, 'sari': 40},
+			{'microorganism': 'ecol', 'microorganism_name': 'Escherichia', 'antimicrobial': 'pen', 'freq': 10, 'sari': 50},
+			{'microorganism': 'paur', 'microorganism_name': 'Escherichia', 'antimicrobial': 'ami', 'freq': 40, 'sari': 30},
+			{'microorganism': 'paur', 'microorganism_name': 'Escherichia', 'antimicrobial': 'mer', 'freq': 50, 'sari': 10},
+		]
+
+	// Helper function
+	function unique(value, index, self) {
+		return self.indexOf(value) === index
+	}
+
+	// Axis
+	var x = source.map(d => d.microorganism).filter(unique).sort()
+	var y = source.map(d => d.antimicrobial).filter(unique).sort()
+
+	// Format data for echarts heatmap
+	var data = source.map(function (item) {
+		return [
+			item.microorganism,
+			item.antimicrobial,
+			item.sari,
+			item,
+			item.freq
+		] || '-'
+	})
+
+	console.log(data)
+
+	var chartDom = document.getElementById('myDiv');
+	var myChart = echarts.init(chartDom);
+	var option;
+
+	// Options
+	option = {
+		tooltip: {
+			trigger: 'item',
+			position: 'top',
+			//formatter: function (item) {
+		  //		var txt = ''
+		  //		for (let i=0; i < item.value.length; i++) {
+		  //			txt+= 'Value {}: {}<br>'.format(i, item.value[i])
+		  //		}
+		  //		return '{}<br>{}<br><hr>{}'.format(
+		  //			item.marker, item.value[3].microorganism_name, txt
+		  //		)
+		  //	}
+		},
+		grid: {
+			height: '50%',
+			top: '10%'
+		},
+		xAxis: {
+			type: 'category',
+			//data: x,
+			splitArea: {
+				show: true
+			}
+		},
+		yAxis: {
+			type: 'category',
+			//data: y,
+			splitArea: {
+				show: true
+			}
+		},
+		visualMap: {
+			min: 0,
+			max: 100,
+			calculable: true,
+			orient: 'horizontal',
+			left: 'center',
+			bottom: '15%'
+		},
+		series: [
+			{
+				name: 'Punch Card',
+				type: 'heatmap',
+				data: data,
+				label: {
+					show: true
+				},
+				emphasis: {
+					itemStyle: {
+						shadowBlur: 10,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				},
+				//symbolSize: function (val) {
+			//		return val[4] * 40;
+			//	},
+			}
+		]
+	};
+
+	// Event on click
+  myChart.on('click', 'series', function (params) {
+		console.log(params)
+  })
+
+	// Draw
+	option && myChart.setOption(option);
+
+</script>
