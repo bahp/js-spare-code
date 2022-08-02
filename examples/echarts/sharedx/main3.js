@@ -7,13 +7,19 @@ function generateData(date, count) {
   let hour = 60 * 60 * 1000;
   let lambda = Math.floor(Math.random() * 10) + 1;
   for (let i = 0; i < count; i++) {
-    data[i] = [
-      //echarts.format.formatTime('yyyy-MM-dd\nhh:mm:ss',
-      //  (date.getTime() + i*lambda * hour)),
-      new Date(date.getTime() + i*lambda * hour),
-      (Math.random() * 1000).toFixed(2),
-      Math.floor(Math.random() * 2)
-    ]
+
+    let x = new Date(date.getTime() + i*lambda * hour)
+    let y = (Math.random() * 1000).toFixed(2)
+    let c =  Math.floor(Math.random() * 2) == 1
+
+    data[i] = {
+      value: [x, y, c],
+      symbol: c == 1 ? 'circle' : 'emptyCircle',
+      symbolSize: 6,
+      itemStyle: {
+        //  color: 'red'
+      }
+    }
   }
   return data;
 }
@@ -55,20 +61,11 @@ for (let i = 0; i <= N - 1; i++) {
 console.log(data)
 
 // Create x, xmax and xmin.
-var x = data.flat().map(d => d[0])
+var x = data.flat().map(d => d.value[0])
 
 const xmax = Math.max.apply(null, x)
 const xmin = Math.min.apply(null, x)
 
-/*
-// Sort and keep unique
-x.sort(function(a,b) {
-  return a - b;
-});
-
-// Finding future therapy for each abx
-var diff = x.map(d => Math.abs(d - now))
-*/
 
 // Create options
 const grids = []
@@ -78,20 +75,26 @@ const series = []
 const visualMap = []
 
 for (let i = 0; i <= N - 1; i++) {
+
   grids.push({
     top: 50 + (i*45) + i*H + 'px',
     height: H + 'px'
   })
+
   xAxes.push({
     type: 'time',
     min: xmin,
     max: xmax,
     show: false,
     axisTick: {
-        alignWithLabel: true
+      alignWithLabel: true
+    },
+    splitArea: {
+      show: false
     },
     gridIndex: i,
   })
+
   yAxes.push({
     name: 'Antimicrobial ' + i + ' (mg/L)',
     scale: false,
@@ -100,39 +103,26 @@ for (let i = 0; i <= N - 1; i++) {
     },
     gridIndex: i
   })
+
   series.push({
-    name: 'Antimicrobial ' + i,
+    name: i,
     type: 'line',
-    color: COLORS[i],
-    data: data[i], // data[i].slice(0, 30)
+    //color: COLORS[i],
+    data: data[i],
     showSymbol: true,
-    //symbol: 'circle',
-    symbolSize: 5,
     smooth: true,
-    visualMap: false,
-    itemStyle: {
-      opacity: 1,
-      colorAlpha: 0,
-      colorSaturation: 0,
-      color: function(param) {
-        if (param.data[2] == 0) return 'red'
-        if (param.data[2] == 1) return param.color
-        return param.color
-      }
-    },
     markLine : {
       symbol: 'none',
       silent: true, // ignore mouse events
       label: {show: false},
       data : [
-        // Horizontal Axis (requires valueIndex = 0)
-        //{type: 'average', name: 'Line Marker', valueIndex: 0},
         {xAxis: now.getTime()},
       ]
     },
     xAxisIndex: i,
     yAxisIndex: i,
   })
+
   visualMap.push({
     show: false,
     dimension: 0,
@@ -144,11 +134,10 @@ for (let i = 0; i <= N - 1; i++) {
         color: COLORS[i],
       },
       {
-        gt: now.getTime()+10,
+        gt: now.getTime() + 10,
         color: 'lightgray',
       }
     ],
-    //color: ['lightgray', COLORS[i]]
   })
 }
 
@@ -188,7 +177,20 @@ option = {
     }
   },
   legend: {
-    show: true
+    show: true,
+    /*data: [
+      {
+        name: 0,
+      },
+      {
+        name: 1,
+        icon: 'circle',
+        text: 'feo'
+      },
+      {
+        name: 2,
+      },
+    ]*/
   },
   tooltip: {
     trigger: 'axis',
