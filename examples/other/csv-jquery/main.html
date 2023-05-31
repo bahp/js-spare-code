@@ -1,39 +1,99 @@
 <head>
 
-
+  <!-- Load jQuery -->
   <script
     src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
     crossorigin="anonymous"></script>
 
+  <!-- Load jQuery CSV -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js"></script>
+
+  <!-- Load bootstrap -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
+
+  <style>
+    pre {
+      overflow: scroll;
+      min-height: 100px;
+      max-height: 400px;
+      display:inline-block;
+    }
+  </style>
 
 </head>
 <body>
 
-  <!-- ------------------------- -->
-  <!-- Jquery-CSV                -->
-  <!-- ------------------------- -->
-  <form id="myForm">
-    <input type="file" id="csvFile" accept=".csv" />
-    <br/>
-    <input type="submit" id="submit" value="Submit" />
-  </form>
+  <div class="container mt-5">
+
+     <!-- Title -->
+     <div class="row mb-3">
+          <h3 class="events text-center">Load CSV using jQuery</h3>
+     </div>
+
+     <!-- ------------------------- -->
+     <!-- Jquery-CSV                -->
+     <!-- ------------------------- -->
+     <!-- File selector -->
+     <input type="file" id="csvFile" accept=".csv"
+           class="form-control form-control-sm"/>
+
+     <!-- Content area -->
+     <div class="form-group mt-1">
+        <pre class="form-control form-control-sm mb-0"
+             id="content" rows="7"></pre>
+        <small class="text-muted"> Number of records:
+          <span id="records"></span>
+        </small>
+      </div>
+
+     <!-- Info text -->
+     <div class="alert alert-info small mt-5 pt-1 pb-1" role="alert">
+        For more information open the developer tools!
+     </div>
+
+     <!--
+     <form id="myForm">
+        <input type="file" id="csvFile" accept=".csv"/><br/>
+        <input type="submit" id="submit" value="Submit"/>
+     </form>
+     -->
+
+  </div>
+
 
   <script>
-    const myForm = document.getElementById("myForm");
+
+    // Note that there are two options. The implemented one detects when
+    // the file has been selected (chane) an automatically parses the csv
+    // file. It is also possible to use a form and wait until it has been
+    // submitted (click button).
+
+    //const myForm = document.getElementById("myForm");
     const csvFile = document.getElementById("csvFile");
 
-    myForm.addEventListener("submit", function (e) {
+    //myForm.addEventListener('submit', function (e) {
+    csvFile.addEventListener("change", function (e) {
       e.preventDefault();
       const input = csvFile.files[0];
       const reader = new FileReader();
 
       reader.onload = function (e) {
+        // Convert to object.
         const text = e.target.result;
         const data = $.csv.toObjects(text);
+        const json = JSON.stringify(data, null, 4);
+
+        // Show information in UI.
+        document.querySelector('#records').innerText = data.length;
+        document.querySelector('#content').innerText = json
+
+        // Show in console.
         console.log(data)
-        //document.write(JSON.stringify(data));
+
       };
 
       reader.readAsText(input);

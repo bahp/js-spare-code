@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <script src='./papaparse.js'></script>
+
   <title>Title</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
         crossorigin="anonymous">
+
+   <script src='./papaparse.js'></script>
 
   <!--
   <script
@@ -20,116 +23,83 @@
 
 
   <style>
-
-    body {
-      margin-top: 40px;
-    }
-
-    input {
-      width: 650px;
-    }
-
-    .output {
+    pre {
       overflow: scroll;
-      /*margin: 1rem 0;*/
-      height: 200px;
-      width: 500px;
-      border-radius: 25px;
-      border: 1px solid gray;
-      padding: 20px;
+      min-height: 100px;
+      max-height: 400px;
+      display:inline-block;
     }
-
-
-  pre {
-    overflow: scroll;
-    min-height: 100px;
-    max-height: 400px;
-    display:inline-block;
-  }
-
   </style>
+
 </head>
 <body>
 
-  <div class="container">
+  <div class="container mt-5">
 
-    <p>Hello!</p>
-    <p>Please open the developer tools!</p>
-    <p>In chrome is located at "Settings > More Tools > Developer Tools".</p>
+     <!-- Title -->
+     <div class="row mb-3">
+          <h3 class="events text-center">Load CSV using PapaParser</h3>
+     </div>
 
     <!-- ---------------------------- -->
     <!-- Load data from selected file -->
     <!-- ---------------------------- -->
-    <br><br>
-    <h5> Load from file </h5>
-    <div id="local">
-      <!--
-        <input type="file" id="file-selector">
-        <button id="submit-local">Load</button>
-        <pre id="records-local">records </pre>
-        <pre id="content-local" class="output"></pre>
-      -->
+    <div class="row mb-5">
+      <div class="col">
+        <h6>Load from a 'csv' file</h6>
 
-      <div class="mb-1">
+        <!-- selector -->
         <input class="form-control form-control-sm" id="file-selector" type="file">
-      </div>
-      <div class="form-group">
-        <pre class="form-control form-control-sm mb-0"
-             id="content-local" rows="7"></pre>
-        <small class="text-muted"> Number of records:
-          <span id="records-local"></span>
-        </small>
-      </div>
 
+        <!-- content -->
+        <div class="form-group mt-1">
+          <pre class="form-control form-control-sm mb-0" id="content-local" rows="7"></pre>
+          <small class="text-muted"> Number of records:
+            <span id="records-local"></span>
+          </small>
+        </div>
+      </div>
     </div>
 
 
+
     <!-- ---------------------------- -->
-    <!-- Load data from web           -->
+    <!-- Load data from website-->
     <!-- ---------------------------- -->
-    <br><br>
-    <h5> Load from url </h5>
-    <div id="online">
-      <!--
-        <input id='input-online' type="url" placeholder="url...">
-        <button id="submit-online">Load</button>
-        <pre id="records-online">Records: None</pre>
-        <pre id="content-online"></pre>
-      -->
+    <div class="row mb-3 mt-4">
+      <div class="col">
+        <h6>Load from a web address</h6>
 
-
-      <div class="form-floating">
-        <select id='web-selector'
-              class="form-select form-select-sm custom-select">
-          <option selected>--</option>
-        </select>
-         <label for="web-selector">Choose URL</label>
-      </div>
-
-      <!--
-      <div class="input-group">
-        <input type="text" class="form-control form-control-sm">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary btn-group-sm" type="button">Button</button>
+        <!-- selector -->
+        <div class="form-floating">
+          <select id='web-selector' class="form-select form-select-sm custom-select">
+            <option selected>--</option>
+          </select>
+           <label for="web-selector">Choose one of the options</label>
         </div>
-      </div>
-      -->
 
-      <div class="input-group mb-1">
-        <input type="url" class="form-control form-control-sm" id="web-input">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary btn-group-sm" id="submit-online">Load</button>
+        <div class="input-group mb-1">
+          <input type="url" class="form-control form-control-sm" id="web-input">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary btn-group-sm" id="submit-online">Load</button>
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <pre class="form-control form-control-sm mb-0"
-             id="content-online" rows="7"></pre>
-        <small class="text-muted"> Number of records:
-          <span id="records-online"></span>
-        </small>
+        <!-- content -->
+        <div class="form-group">
+          <pre class="form-control form-control-sm mb-0" id="content-online" rows="7"></pre>
+          <small class="text-muted"> Number of records:
+            <span id="records-online"></span>
+          </small>
+        </div>
       </div>
     </div>
+
+
+     <!-- Info text -->
+     <div class="alert alert-info small mt-5 pt-1 pb-1" role="alert">
+        For more information open the developer tools!
+     </div>
   </div>
 </body>
 
@@ -195,7 +165,7 @@
 
 
   /**
-   * Method 3: Using papaparse.js (local)
+   * Method 2: Using papaparse.js (local)
    * ------------------------------------
    **/
 
@@ -205,14 +175,12 @@
   // Add event listener
   fileInput.addEventListener('change', (event) => {
     const fileList = event.target.files;
+    const input = fileList[0]
+    const reader = new FileReader();
 
-    // Read file and parse
-    var reader = new FileReader();
-    reader.readAsText(fileList[0]);
-    reader.onload = function(event) {
-
-      // Read file data and parse
-      var csv = event.target.result;
+    reader.onload = function(e) {
+      // Convert to object
+      var csv = e.target.result;
       var data = Papa.parse(csv, {
         download: false,
         header: true,
@@ -220,18 +188,20 @@
         comments: '#',
       })
 
-      // Show
-      console.log(data)
-
-      // Update interface
+      // Shw information in UI
       document.getElementById('records-local').innerText = data.data.length;
       document.getElementById('content-local').innerText = csv;
+
+      // Show in console
+      console.log(data)
     };
 
     // Display content (str-like)
     //reader.addEventListener('load', function() {
     //  document.getElementById('content-local').innerText = this.result;
     //});
+
+    reader.readAsText(input);
   });
 
 
@@ -260,23 +230,22 @@
 
   // Add event listener
   webInput.addEventListener('click', (event) => {
-
-     // Get url
-     var url = document.getElementById('web-input').value
-
-     console.log(url)
+     const url = document.getElementById('web-input').value
 
      // Download and parse
      Papa.parse(url, {
         download: true,
         header: true,
         complete: function(results) {
+
           // Get elements
           var text = document.querySelector('#content-online')
           var rows = document.querySelector('#records-online')
+
           // Set values
           rows.innerText = results.data.length;
           text.innerText = JSON.stringify(results.data, null, 4);
+
           // Show in console
           console.log(results);
         }
