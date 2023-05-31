@@ -14,6 +14,10 @@ function generateData(date, count) {
 
     data[i] = {
       value: [x, y, c],
+      object: {
+        date_scheduled: x,
+        date_delivered: x
+      },
       symbol: c == 1 ? 'circle' : 'emptyCircle',
       symbolSize: 6,
       itemStyle: {
@@ -196,6 +200,15 @@ option = {
     trigger: 'axis',
     axisPointer: {
       type: 'cross'
+    },
+    formatter: function (item) {
+      console.log(item)
+      obj = item[0]
+      html = ""
+      html+= obj.marker
+      html+= obj.data.object.date_delivered
+      html+= obj.value[1]
+      return html
     }
   },
   xAxis: xAxes,
