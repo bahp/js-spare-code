@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="./favicon.ico">
+    <link rel="icon" href="./docs/static/imgs/icon-js.png">
 
 	<!-- Boostrap -->
 	<link rel="stylesheet" href="docs/static/dist/css/bootstrap.min.css" >
 	<!-- Portfolio filter -->
-    <link rel="stylesheet" href="docs/static/vendor/portfolio-filter/portfolio.filter.css">
+	<link rel="stylesheet" href="docs/static/vendor/portfolio-filter/portfolio.filter.css">
 	<!-- Custom styles for this template -->
-    <link rel="stylesheet" href="docs/static/album.css">
+	<link rel="stylesheet" href="docs/static/album.css">
 	<!-- Own -->
 	<link rel="stylesheet" href="docs/static/style.css">
 
@@ -52,11 +52,11 @@
 			<div class="container">
 				<div class="row folio projects">
 
-					 {% for item in items %}
+					{% for item in items %}
 
 						<div class="col-md-4" data-roles="{{ item.tags }}">
 
-							<div class="card mb-4 box-shadow">
+							<div class="card mb-4 box-shadow zoom">
 								{% if thumbnail %}
 									{% include 'img.html' %}
 								{% else %}
@@ -68,7 +68,7 @@
 							</div>
 						</div>
 
-                    {% endfor %}
+					{% endfor %}
 
 				</div>
 			</div>

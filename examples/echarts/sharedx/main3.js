@@ -2,15 +2,24 @@
 // Helper methods
 // ---------------------------------
 function generateData(date, count) {
-  /* Generate data. */
+  /**
+   * Generate timeseries data.
+   *
+   * Parameters
+   * ----------
+   * date: date
+   *    The date the timeseries starts.
+   * count:
+   *    The number of samples.
+   */
   let data = [];
   let hour = 60 * 60 * 1000;
   let lambda = Math.floor(Math.random() * 10) + 1;
   for (let i = 0; i < count; i++) {
 
-    let x = new Date(date.getTime() + i*lambda * hour)
-    let y = (Math.random() * 1000).toFixed(2)
-    let c =  Math.floor(Math.random() * 2) == 1
+    let x = new Date(date.getTime() + i*lambda * hour) // datetime
+    let y = (Math.random() * 1000).toFixed(2)    // dose
+    let c =  Math.floor(Math.random() * 2) == 1           // symbol
 
     data[i] = {
       value: [x, y, c],
@@ -35,7 +44,9 @@ function dateComparison(a, b) {
   return date1 - date2;
 }
 
+// ----------------
 // Constants
+// ----------------
 const N = 4;   // number of abxs
 const W = 500; // not used
 const H = 75;  // height
@@ -55,11 +66,12 @@ const now = new Date(2011, 0, 2)
 // -------------
 var data = []
 for (let i = 0; i <= N - 1; i++) {
-  let day = Math.floor(Math.random() * 2);
-  let count = Math.floor(Math.random() * 50)
-  let date = new Date(2011, 0, day)
-  data[i] = generateData(date, count)
+  let day = Math.floor(Math.random() * 2);   // start day
+  let count = Math.floor(Math.random() * 50) // number of doses
+  let date = new Date(2011, 0, day) // start date
+  data[i] = generateData(date, count)           // time series
 }
+
 
 // Show
 console.log(data)
@@ -78,6 +90,7 @@ const yAxes = []
 const series = []
 const visualMap = []
 
+// For each antimicrobial
 for (let i = 0; i <= N - 1; i++) {
 
   grids.push({
@@ -111,7 +124,7 @@ for (let i = 0; i <= N - 1; i++) {
   series.push({
     name: i,
     type: 'line',
-    //color: COLORS[i],
+    color: COLORS[i],
     data: data[i],
     showSymbol: true,
     smooth: true,
@@ -120,7 +133,9 @@ for (let i = 0; i <= N - 1; i++) {
       silent: true, // ignore mouse events
       label: {show: false},
       data : [
-        {xAxis: now.getTime()},
+        {
+          xAxis: now.getTime()
+        },
       ]
     },
     xAxisIndex: i,
@@ -134,11 +149,11 @@ for (let i = 0; i <= N - 1; i++) {
     seriesIndex: i,
     pieces: [
       {
-        lte: now.getTime(),
+        lte: now.getTime(),     // past in color
         color: COLORS[i],
       },
       {
-        gt: now.getTime() + 10,
+        gt: now.getTime() + 10, // future in gray
         color: 'lightgray',
       }
     ],
@@ -202,7 +217,7 @@ option = {
       type: 'cross'
     },
     formatter: function (item) {
-      console.log(item)
+      //console.log(item)
       obj = item[0]
       html = ""
       html+= obj.marker

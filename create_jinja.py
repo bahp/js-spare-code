@@ -47,8 +47,8 @@ parser.add_argument("-t", "--thumbnail",
 args = parser.parse_args()
 
 # Compute the thumbnails
-if args.thumbnail:
-    exec(open("create_imgs.py").read())
+#if args.thumbnail:
+#    exec(open("create_imgs.py").read())
 
 # Create items information
 items = [

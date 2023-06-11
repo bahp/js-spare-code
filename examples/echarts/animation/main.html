@@ -1,0 +1,75 @@
+<html>
+<head>
+	<!-- Load plotly.js into the DOM -->
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.3.3/echarts.min.js'></script>
+  <link rel="stylesheet" href="./main.css">
+</head>
+<body>
+  <div id="chart-container"></div>
+</body>
+
+<script>
+
+
+// Passing a named function instead of an anonymous function.
+
+  function readyFn( jQuery ) {
+      // Code to run when the document is ready.
+  }
+
+  //$( document ).ready( readyFn );
+  // or:
+  //$( window ).on( "load", readyFn );
+
+
+$(document).ready(function() {
+
+
+    /*
+    $.ajax({
+        type: "GET",
+        url: "tags.csv",
+        dataType: "text",
+        success: function(data) {
+            const parsedCSV = parseCSV(data)
+            $( function() {
+                var availableTags = parsedCSV;
+                $( "#tags" ).autocomplete({
+                 source: availableTags
+               });
+             } );
+      }
+     })*/
+
+})
+
+
+  // A $( document ).ready() block.
+  $( document ).ready(function() {
+
+      /*
+      $.ajax({
+          type: 'GET',
+          url: 'https://github.com/apache/echarts/blob/master/test/data/life-expectancy.json',
+          success: function (response) {
+              console.log(response)
+          }
+      }).fail(function () {
+          alert("failed!");
+      });
+      ;
+
+
+      console.log("ready!");
+      var ROOT_PATH = 'https://echarts.apache.org/examples';
+      $.get(ROOT_PATH + '/data/asset/data/life-expectancy.json', function (data) {
+          console.log(data)
+      });*/
+
+  });
+
+</script>
+
+<script src='main.js'></script>
+</html>

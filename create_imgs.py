@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import asyncio
+import time
 from pyppeteer import launch
 
 async def generate_pdf(sourcepath, outfile):
@@ -55,6 +56,13 @@ async def generate_png(sourcepath, outfile):
 
 if __name__ == '__main__':
 
+
+    # .. note:: For some reason pyppeteer is not able to load local
+    #           files. Thus, one trick can be to include the location
+    #           of the examples within our own repository
+    #
+    #           sourcepath = 'https://bahp.github.io/js-spare-code/' + str(e)
+
     # Pathlib
     from pathlib import Path
 
@@ -63,7 +71,7 @@ if __name__ == '__main__':
     for e in path.glob("**/main.html"):
         print("Creating thumbnail... %s" % e)
         sourcepath = str(e.resolve())
-        outputpath = str(e.parent / 'thumbnail.png')
+        outputpath = str(e.parent / 'thumbnail-auto.png')
         asyncio \
             .get_event_loop() \
             .run_until_complete( \
