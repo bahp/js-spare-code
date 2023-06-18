@@ -115,8 +115,8 @@
 			 **/
 			// Variables
 			var months = [
-				'Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul',
-					'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+				'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+				'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 			]
 
 			// Cast to numbers
@@ -127,9 +127,9 @@
 			});
 
 			// Generate
-			var N = months.length - 1
+			var N = months.length
 			var data = []
-			var t = 0
+			console.log(climate[0])
 			climate.forEach((element, index) => {
 				months.forEach((month, idx) => {
 					var angle = (360 / N) * idx
@@ -137,8 +137,7 @@
 					var x = radius * Math.cos(Math.PI * angle / 180);
 					var y = radius * Math.sin(Math.PI * angle / 180);
 					var z = element['Year']
-					data.push([x, y, t, angle, radius, z]);
-					t = t + 1 / 12
+					data.push([x, y, z+(1/12)*idx, angle, radius, z, month, element[month]]);
 				})
 			});
 			return data
@@ -233,6 +232,7 @@
 					axisLabel: {
 						formatter: val => `${val.toFixed(2)}`
 					},
+					...getMinMax(data, 2), // years start in 0...s
 				},
 				grid3D: {
 					show: true,
