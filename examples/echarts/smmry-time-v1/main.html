@@ -1,0 +1,664 @@
+<html>
+<head>
+  <!-- CSS only -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.3.3/echarts.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/echarts-gl/2.0.8/echarts-gl.js'></script>
+  <link rel="stylesheet" href="./main.css">
+</head>
+<body>
+
+
+<div class="container">
+
+  <!-- ---------------------------- -->
+  <!-- Chart                        -->
+  <!-- ---------------------------- -->
+  <div id='chart-container'></div>
+
+</div>
+
+</body>
+<script>
+
+    function getDatesInRange(startDate, endDate) {
+        /**
+         * Create all dates between two dates.
+         *
+         * .. note: It repeats the 26th of March twice!
+         *
+         * @type {Date}
+         */
+        const date = new Date(startDate.getTime());
+        const dates = [];
+        while (date <= endDate) {
+            dates.push(new Date(date));
+            date.setDate(date.getDate() + 1);
+        }
+        return dates;
+    }
+
+    function getDatesBetween(startDate, endDate){
+        let dates = [];
+        let currentDate = new Date(startDate);
+        while (currentDate <= endDate) {
+            dates.push(new Date(currentDate));
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        return dates;
+    };
+
+    function getDaysBetweenDates(startDate, endDate) {
+        /**
+         * Create all dates between two dates.
+         *
+         * .. note: Requires moment.js
+         */
+        startDate = moment(startDate)
+        endDate = moment(endDate)
+        var now = startDate.clone(), dates = [];
+
+        while (now.isSameOrBefore(endDate)) {
+            dates.push(now.format('YYYY-MM-DD'));
+            now.add(1, 'days');
+        }
+        return dates;
+    };
+
+
+    function getVirtualData(year) {
+        const date = +echarts.time.parse(year + '-01-01');
+        const end = +echarts.time.parse(+year + 1 + '-01-01');
+        const dayTime = 3600 * 24 * 1000;
+        const data = [];
+        for (let time = date; time < end; time += dayTime) {
+            data.push([
+                new Date(echarts.time.format(time, '{yyyy}-{MM}-{dd}', false)),
+                'CRP',
+                Math.floor(Math.random() * 10000)
+            ]);
+        }
+        return data;
+    }
+
+    function getVirtualDataManual() {
+        /**
+         * Generates manual data.
+         */
+        return [
+            // Encounters
+            ['2023-03-01', 'CAR', 0], // Primary Care
+            ['2023-03-07', 'CAR', 1], // Emergency
+            ['2023-03-21', 'CAR', 2], // Admission
+            ['2023-04-15', 'CAR', 3], // Follow up
+
+            // Vital Signs
+
+            // Medications
+            ['2023-03-01', 'AAMI', 85],
+            ['2023-03-02', 'AAMI', 85],
+            ['2023-03-03', 'AAMI', 85],
+            ['2023-03-04', 'AAMI', 85],
+            ['2023-03-05', 'AAMI', 85],
+
+            ['2023-03-10', 'AMER', 85],
+            ['2023-03-11', 'AMER', 85],
+            ['2023-03-12', 'AMER', 85],
+            ['2023-03-13', 'AMER', 85],
+            ['2023-03-14', 'AMER', 85],
+            ['2023-03-21', 'AMER', 85],
+            ['2023-03-22', 'AMER', 85],
+            ['2023-03-23', 'AMER', 85],
+            ['2023-03-24', 'AMER', 85],
+
+            ['2023-03-21', 'ACPX', 85],
+            ['2023-03-22', 'ACPX', 85],
+            ['2023-03-23', 'ACPX', 85],
+            ['2023-03-24', 'ACPX', 85],
+            ['2023-03-25', 'ACPX', 85],
+            ['2023-03-26', 'ACPX', 85],
+            ['2023-03-27', 'ACPX', 85],
+            ['2023-03-28', 'ACPX', 85],
+            ['2023-03-29', 'ACPX', 85],
+
+            // Procedures
+            ['2023-03-01', 'PROC', 85, 'X-Ray'],
+            ['2023-03-10', 'PROC', 85, 'Computerised Tomography'],
+            ['2023-04-01', 'PROC', 85, 'Bone Biopsy'],
+
+            // Notes
+
+
+            // Vital Signs
+            ['2023-03-01', 'BTMP', 85],
+            ['2023-03-01', 'BTMP', 12],
+            ['2023-03-02', 'BTMP', 14],
+            ['2023-03-07', 'BTMP', 12],
+            ['2023-03-08', 'BTMP', 12],
+            ['2023-03-09', 'BTMP', 12],
+            ['2023-03-10', 'BTMP', 12],
+            ['2023-03-11', 'BTMP', 14],
+            ['2023-03-12', 'BTMP', 12],
+            ['2023-03-13', 'BTMP', 14],
+            ['2023-03-14', 'BTMP', 12],
+            ['2023-03-15', 'BTMP', 12],
+            ['2023-03-21', 'BTMP', 14],
+            ['2023-03-22', 'BTMP', 18],
+            ['2023-03-23', 'BTMP', 12],
+            ['2023-03-24', 'BTMP', 14],
+            ['2023-03-25', 'BTMP', 12],
+            ['2023-03-26', 'BTMP', 14],
+            ['2023-03-27', 'BTMP', 18],
+            ['2023-03-28', 'BTMP', 12],
+            ['2023-03-29', 'BTMP', 14],
+            ['2023-03-30', 'BTMP', 18],
+            ['2023-03-31', 'BTMP', 12],
+            ['2023-04-01', 'BTMP', 14],
+            ['2023-04-02', 'BTMP', 18],
+            ['2023-04-15', 'BTMP', 18],
+
+            ['2023-03-01', 'HR', 85],
+            ['2023-03-01', 'HR', 12],
+            ['2023-03-02', 'HR', 14],
+            ['2023-03-07', 'HR', 12],
+            ['2023-03-08', 'HR', 12],
+            ['2023-03-09', 'HR', 12],
+            ['2023-03-10', 'HR', 12],
+            ['2023-03-11', 'HR', 14],
+            ['2023-03-12', 'HR', 12],
+            ['2023-03-13', 'HR', 14],
+            ['2023-03-14', 'HR', 12],
+            ['2023-03-15', 'HR', 12],
+            ['2023-03-21', 'HR', 14],
+            ['2023-03-22', 'HR', 18],
+            ['2023-03-23', 'HR', 12],
+            ['2023-03-24', 'HR', 14],
+            ['2023-03-25', 'HR', 12],
+            ['2023-03-26', 'HR', 14],
+            ['2023-03-27', 'HR', 18],
+            ['2023-03-28', 'HR', 12],
+            ['2023-03-29', 'HR', 14],
+            ['2023-03-30', 'HR', 18],
+            ['2023-03-31', 'HR', 12],
+            ['2023-04-01', 'HR', 14],
+            ['2023-04-02', 'HR', 18],
+            ['2023-04-15', 'HR', 18],
+
+            ['2023-03-01', 'BP', 85],
+            ['2023-03-01', 'BP', 12],
+            ['2023-03-02', 'BP', 14],
+            ['2023-03-07', 'BP', 12],
+            ['2023-03-08', 'BP', 12],
+            ['2023-03-09', 'BP', 12],
+            ['2023-03-10', 'BP', 12],
+            ['2023-03-11', 'BP', 14],
+            ['2023-03-12', 'BP', 12],
+            ['2023-03-13', 'BP', 14],
+            ['2023-03-14', 'BP', 12],
+            ['2023-03-15', 'BP', 12],
+            ['2023-03-21', 'BP', 14],
+            ['2023-03-22', 'BP', 18],
+            ['2023-03-23', 'BP', 12],
+            ['2023-03-24', 'BP', 14],
+            ['2023-03-25', 'BP', 12],
+            ['2023-03-26', 'BP', 14],
+            ['2023-03-27', 'BP', 18],
+            ['2023-03-28', 'BP', 12],
+            ['2023-03-29', 'BP', 14],
+            ['2023-03-30', 'BP', 18],
+            ['2023-03-31', 'BP', 12],
+            ['2023-04-01', 'BP', 14],
+            ['2023-04-02', 'BP', 18],
+            ['2023-04-15', 'BP', 18],
+
+            ['2023-03-01', 'O2SAT', 85],
+            ['2023-03-01', 'O2SAT', 12],
+            ['2023-03-02', 'O2SAT', 14],
+            ['2023-03-07', 'O2SAT', 12],
+            ['2023-03-08', 'O2SAT', 12],
+            ['2023-03-09', 'O2SAT', 12],
+            ['2023-03-10', 'O2SAT', 12],
+            ['2023-03-11', 'O2SAT', 14],
+            ['2023-03-12', 'O2SAT', 12],
+            ['2023-03-13', 'O2SAT', 14],
+            ['2023-03-14', 'O2SAT', 12],
+            ['2023-03-15', 'O2SAT', 12],
+            ['2023-03-21', 'O2SAT', 14],
+            ['2023-03-22', 'O2SAT', 18],
+            ['2023-03-23', 'O2SAT', 12],
+            ['2023-03-24', 'O2SAT', 14],
+            ['2023-03-25', 'O2SAT', 12],
+            ['2023-03-26', 'O2SAT', 14],
+            ['2023-03-27', 'O2SAT', 18],
+            ['2023-03-28', 'O2SAT', 12],
+            ['2023-03-29', 'O2SAT', 14],
+            ['2023-03-30', 'O2SAT', 18],
+            ['2023-03-31', 'O2SAT', 12],
+            ['2023-04-01', 'O2SAT', 14],
+            ['2023-04-02', 'O2SAT', 18],
+            ['2023-04-15', 'O2SAT', 18],
+
+            // Laboratory Results
+            ['2023-03-01', 'HAE', 1],
+
+            ['2023-03-01', 'GLU', 0],
+
+            ['2023-03-10', 'CRP', 12],
+            ['2023-03-11', 'CRP', 14],
+            ['2023-03-12', 'CRP', 12],
+            ['2023-03-13', 'CRP', 14],
+            ['2023-03-14', 'CRP', 12],
+            ['2023-03-15', 'CRP', 12],
+            ['2023-03-24', 'CRP', 5],
+            ['2023-03-25', 'CRP', 1],
+            ['2023-03-26', 'CRP', 0],
+            ['2023-03-27', 'CRP', 0],
+            ['2023-03-28', 'CRP', 0],
+
+            ['2023-03-10', 'CRP', 12],
+            ['2023-03-11', 'CRP', 14],
+            ['2023-03-12', 'CRP', 12],
+            ['2023-03-13', 'CRP', 14],
+            ['2023-03-14', 'CRP', 12],
+            ['2023-03-15', 'CRP', 12],
+            ['2023-03-24', 'CRP', 5],
+            ['2023-03-25', 'CRP', 1],
+            ['2023-03-26', 'CRP', 0],
+            ['2023-03-27', 'CRP', 0],
+            ['2023-03-28', 'CRP', 0],
+
+            ['2023-03-10', 'WBC', 12],
+            ['2023-03-11', 'WBC', 14],
+            ['2023-03-12', 'WBC', 12],
+            ['2023-03-13', 'WBC', 14],
+            ['2023-03-14', 'WBC', 12],
+            ['2023-03-15', 'WBC', 12],
+            ['2023-03-24', 'WBC', 5],
+            ['2023-03-25', 'WBC', 1],
+            ['2023-03-26', 'WBC', 0],
+            ['2023-03-27', 'WBC', 0],
+            ['2023-03-28', 'WBC', 0],
+
+            ['2023-03-10', 'PLT', 12],
+            ['2023-03-11', 'PLT', 14],
+            ['2023-03-12', 'PLT', 12],
+            ['2023-03-13', 'PLT', 14],
+            ['2023-03-14', 'PLT', 12],
+            ['2023-03-15', 'PLT', 12],
+            ['2023-03-24', 'PLT', 5],
+            ['2023-03-27', 'PLT', 1],
+            ['2023-03-28', 'PLT', 0],
+
+            ['2023-03-10', 'CRE', 12],
+            ['2023-03-11', 'CRE', 14],
+            ['2023-03-12', 'CRE', 12],
+            ['2023-03-13', 'CRE', 14],
+            ['2023-03-14', 'CRE', 12],
+            ['2023-03-15', 'CRE', 12],
+            ['2023-03-24', 'CRE', 5],
+            ['2023-03-25', 'CRE', 1],
+            ['2023-03-26', 'CRE', 0],
+            ['2023-03-27', 'CRE', 0],
+            ['2023-03-28', 'CRE', 0],
+
+            ['2023-03-01', 'ALT', 12],
+            ['2023-03-02', 'ALT', 14],
+            ['2023-03-09', 'ALT', 12],
+            ['2023-03-10', 'ALT', 12],
+            ['2023-03-11', 'ALT', 14],
+            ['2023-03-12', 'ALT', 12],
+            ['2023-03-13', 'ALT', 14],
+            ['2023-03-14', 'ALT', 12],
+            ['2023-03-15', 'ALT', 12],
+            ['2023-03-20', 'ALT', 14],
+            ['2023-03-27', 'ALT', 18],
+            ['2023-03-25', 'ALT', 12],
+            ['2023-03-26', 'ALT', 14],
+            ['2023-03-27', 'ALT', 18],
+            ['2023-04-15', 'ALT', 18],
+
+            ['2023-03-01', 'ALP', 12],
+            ['2023-03-02', 'ALP', 14],
+            ['2023-03-10', 'ALP', 12],
+            ['2023-03-11', 'ALP', 14],
+            ['2023-03-12', 'ALP', 12],
+            ['2023-03-13', 'ALP', 14],
+            ['2023-03-14', 'ALP', 12],
+            ['2023-03-20', 'ALP', 14],
+            ['2023-03-27', 'ALP', 18],
+            ['2023-03-25', 'ALP', 12],
+            ['2023-03-26', 'ALP', 14],
+            ['2023-03-27', 'ALP', 18],
+            ['2023-04-15', 'ALP', 18],
+
+        ].map(x => [new Date(x[0]), x[1], x[2], x[3] || undefined])
+    }
+
+    // https://venngage.com/blog/pastel-color-palettes/
+    // #edf2fb // #d7e3fc // #ccdbfd // #c1d3fe // #abc4ff
+    // #d1d1d1 // #e1dbd6 // #e2e2e2 // #f9f6f2 // #ffffff
+    // #ff7477 // #e69597 // #ceb5b7 // #b5d6d6 // #9cf6f6
+    // #cdb4db // #ffc8dd // #ffafcc // #bde0fe // #a2d2ff
+
+    const codes1 = {
+        CRP: {
+            unit: 'mg',
+            color: '#FEC8D8',
+            name: 'CRP'
+        },
+        WBC: {
+            color: '#FFDFD3',
+            name: 'WBC'
+        },
+        PLT: {
+            color: '#D291BC',
+            name: 'Platelets'
+        },
+        ALT: {
+            color: '#957DAD',
+            name: 'ALT'
+        },
+        ALP: {
+            color: '#E0BBE4',
+            name: 'ALP'
+        },
+        CRE: {
+            name: 'Creatinine',
+            unit: 'mg/dL',
+            color: '#abc4ff'
+        },
+        BIL: {
+            name: 'Bilirubin'
+        },
+        GLU: {
+            name: 'Glucose',
+            unit: 'mg/dL',
+            color: '#c1d3fe'
+        },
+        HAE: {
+            name: 'Haemoglobin',
+            unit: '%',
+            color: '#ccdbfd'
+        },
+        CAR: {
+            name: 'Encounters',
+            color: '#d7e3fc'
+        },
+
+        BTMP: {
+            name: 'Body Temp',
+            unit: 'C',
+            color: '#abc4ff'
+        },
+        HR: {
+            name: 'Heart Rate',
+            unit: 'bpm',
+            color: '#AE6378'
+        },
+        BP: {
+            name: 'Blood Pressure',
+            unit: 'mmHg'
+        },
+        O2SAT: {
+            name: 'Oxygen Sat'
+        },
+        PROC: {
+            name: 'Procedure'
+        },
+        AAMI: {
+            name: 'Amikacin'
+        },
+        AMER: {
+            name: 'Meropenem'
+        },
+        ACPX: {
+            name: 'Ciprofloxacin'
+        }
+    }
+
+    var codes = Object.keys(codes1)
+
+    // ------------------------------
+    // Generate data
+    // ------------------------------
+    // Generate the data
+    //var data = generateData()
+    //var data = getVirtualData(2023)
+    var data = getVirtualDataManual()
+
+    // See data
+    console.log(data)
+
+    // Create all days within range.
+    var dates = data.map(x => x[0]);
+    var minimumDate = Math.min.apply(null, dates);
+    var maximumDate = Math.max.apply(null, dates);
+    dates = getDaysBetweenDates(minimumDate, maximumDate)
+
+    console.log(minimumDate)
+    console.log(maximumDate)
+    console.log(dates)
+
+    // Could this transform be done just once in the xAxis or series.
+    //data = data.map(x => [x[0].toISOString().split('T')[0], x[1], x[2]]);
+    //dates = dates.map(x => x.toISOString().split('T')[0]);
+    data = data.map(x => [x[0].toISOString().split('T')[0], x[1], x[2]]);
+    //dates = dates.map(x => x[0].format().split('T')[0]);
+
+    console.log(dates)
+    console.log(data)
+
+
+    var GITHUB_STYLE = true
+
+    // Init series with empty squares
+    var series = []
+
+    if (GITHUB_STYLE)
+
+        // Generate a place holder for empty values
+        var empty = []
+        for (let i = 0; i < dates.length; i++) {
+            for (let j = 0; j < codes.length; j++) {
+                empty.push([dates[i], codes[j], -1])
+            }
+        }
+
+
+        series.push({
+            type: 'heatmap',
+            data: empty,
+            itemStyle: {
+                normal: {
+                    color: '#F0F0F0',
+                    borderWidth: 3,
+                    borderColor: 'white',
+                    borderRadius: 4,
+                },
+            },
+        })
+
+
+    for (const [key, value] of Object.entries(codes1)) {
+        series.push({
+            name: key,
+            type: 'heatmap',
+            data: data.filter(x => x[1] == key),
+            itemStyle: {
+                borderWidth: 3,
+                borderRadius: 4,
+                borderColor: 'white', // hack for cellPadding
+                color: value.color || undefined
+            },
+        })
+    }
+
+    console.log(series)
+
+    // Create chart
+    var chartDom = document.getElementById('chart-container');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+
+    option = {
+        tooltip: {
+            position: 'top',
+            trigger: 'item',
+            //formatter: '{a} <br/>{b} : {c} ({d}%), <br/>{name1} : {value1} '
+        },
+        grid: {
+            width: 13 * dates.length,
+            height: 13 * codes.length,
+        },
+        xAxis: {
+            data: dates,
+            type: 'category',
+            showGrid: true,
+            //splitArea: {
+            //    show: true
+            //}
+            axisLine: {
+                onZero: false,
+                show: false
+            },
+            axisTick: {
+                show: true,
+                alignWithLabel: true
+            },
+            axisLabel: {
+                interval: 0,
+                rotate: 90
+            }
+        },
+        yAxis: {
+            type: 'category',
+            data: Object.keys(codes1),
+            textStyle: {
+              fontSize: 3
+            },
+            axisLine: {
+              show: false
+            },
+            axisTick: {
+                show: false,
+                alignWithLabel: true
+            },
+            axisLabel: {
+                interval: 0,
+                formatter: function (value, index, tick) {
+                  return codes1[value].name
+              }
+            },
+            //splitArea: {
+            //    show: true
+            //}
+        },
+
+        visualMap: [
+            /**{
+                show: false,
+                type: 'continuous',
+                seriesIndex: 1,
+                dimension: 2,
+                min: 0,
+                max: 5,
+            },
+            {
+                show: false,
+                type: 'continuous',
+                seriesIndex: 2,
+                dimension: 2,
+                min: 0,
+                max: 5,
+            }**/
+        ],
+
+        /*
+        visualMap: {
+          min: 0,
+          max: 10,
+          calculable: true,
+          orient: 'horizontal',
+          left: 'center',
+          bottom: '15%'
+        },*/
+        series: series
+    };
+
+    // Display
+    option && myChart.setOption(option);
+
+
+
+
+
+            /**
+        series: [
+            {
+                type: 'heatmap',
+                data: empty,
+                itemStyle: {
+                    normal: {
+                        color: '#F0F0F0',
+                        borderWidth: borderWidth,
+                        borderColor: 'white',
+                        borderRadius: 4,
+                    },
+                },
+            },
+            {
+                name: 'PLT',
+                type: 'heatmap',
+                data: data.filter(x => x[1] == 'PLT'),
+                itemStyle: {
+                    borderWidth: borderWidth,
+                    borderRadius: 4,
+                    borderColor: 'white', // hack for cellPadding
+                    color: '#FEC8D8'
+                },
+            },
+            {
+                name: 'CRP',
+                type: 'heatmap',
+                data: data.filter(x => x[1] == 'CRP'),
+                itemStyle: {
+                    borderWidth: borderWidth,
+                    borderRadius: 4,
+                    borderColor: 'white', // hack for cellPadding
+                    color: '#FFDFD3'
+                },
+            },
+             {
+                name: 'WBC',
+                type: 'heatmap',
+                data: data.filter(x => x[1] == 'WBC'),
+                itemStyle: {
+                    borderWidth: borderWidth,
+                    borderRadius: 4,
+                    borderColor: 'white', // hack for cellPadding
+                    color: '#D291BC'
+                },
+            },
+            {
+                name: 'CRE',
+                type: 'heatmap',
+                data: data.filter(x => x[1] == 'CRE'),
+                itemStyle: {
+                    borderWidth: borderWidth,
+                    borderRadius: 4,
+                    borderColor: 'white', // hack for cellPadding
+                    color: '#957DAD' //#E0BBE4
+                },
+            },
+        ]**/
+
+
+</script>
+</html>
