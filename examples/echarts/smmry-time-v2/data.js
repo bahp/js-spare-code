@@ -203,6 +203,28 @@ const CONFIG_LIST = [
         range: {
             normal: [0, 80],
             absolute: [0, 250]
+        },
+        visualMap: {
+            continuous: {
+                show: false,
+                type: 'continuous',
+                dimension: 2,
+                //min: 35,
+                //max: 42,
+            },
+            discrete: {
+                show: true,
+                type: 'piecewise',
+                text: ['High', 'Low'], // remove to show labels
+                pieces: [
+                    {min: 0, max:120, color: '#A6CE39', label: 'normal'},
+                    {min: 120, max: 129, color: '#FFEC00', label: 'elevated'},
+                    {min: 129, max: 139, color: '#FFB600', label: 'hypertension S1'},
+                    {min: 139, max: 180, color: '#BA3A02', label: 'hypertension S2'},
+                    {min: 180, max: 2000, color: '#990711', label: 'hypertensive crisis'},
+                ]
+                // https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings
+            },
         }
     },
     {
@@ -224,12 +246,14 @@ const CONFIG_LIST = [
                 max: 42,
             },
             discrete: {
-                show: false,
+                show: true,
                 type: 'piecewise',
+                text: ['High', 'Low'], // remove to show labels
                 pieces: [
-                    {min: 0, max:36.1, color: '#3E51C4'},
-                    {min: 36.0, max: 39, color: 'lightgray'},
-                    {min: 39.0, max: 100, color: '#B50827'},
+                    {min: 0, max:35.9, color: '#FFEC00', label: 'low'},
+                    {min: 35.9, max: 37.1, color: '#A6CE39', label: 'normal'},
+                    {min: 37.1, max: 38.1, color: '#FFB600', label: 'high'},
+                    {min: 38.1, max: 1000, color: '#990711', label: 'fever'},
                 ]
             },
             inrange: {
@@ -493,15 +517,15 @@ function getVirtualDataManual() {
         ['2023-03-12', 'DBP', 82],
         ['2023-03-13', 'DBP', 84],
         ['2023-03-14', 'DBP', 86],
-        ['2023-03-15', 'DBP', 84],
-        ['2023-03-23', 'DBP', 82],
-        ['2023-03-24', 'DBP', 80],
-        ['2023-03-25', 'DBP', 78],
-        ['2023-03-26', 'DBP', 76],
-        ['2023-03-27', 'DBP', 74],
-        ['2023-03-28', 'DBP', 72],
-        ['2023-03-29', 'DBP', 74],
-        ['2023-03-30', 'DBP', 76],
+        ['2023-03-15', 'DBP', 110],
+        ['2023-03-23', 'DBP', 120],
+        ['2023-03-24', 'DBP', 125],
+        ['2023-03-25', 'DBP', 135],
+        ['2023-03-26', 'DBP', 145],
+        ['2023-03-27', 'DBP', 190],
+        ['2023-03-28', 'DBP', 145],
+        ['2023-03-29', 'DBP', 135],
+        ['2023-03-30', 'DBP', 125],
         ['2023-03-31', 'DBP', 78],
         ['2023-04-01', 'DBP', 80],
         ['2023-04-02', 'DBP', 82],

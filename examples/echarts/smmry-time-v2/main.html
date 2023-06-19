@@ -74,7 +74,7 @@
   <!-- Chart                        -->
   <!-- ---------------------------- -->
   <div class="row">
-    <div class="col-7">
+    <div class="col-12">
       <div id='chart-container'></div>
     </div>
 
@@ -301,8 +301,8 @@
 
     // Push grid component
     grids.push({
-      left: 100,
-      right: 0,
+      //left: 100,
+      //right: 0,
       top: 50 + offset + 'px',
       height: 13 * value.length,
       width: 13 * dates.length,
@@ -594,13 +594,28 @@
               d['seriesName'] = s.name
               d['seriesIndex'] = s.seriesIndex
               d['dimension'] = 2
+              //d['left'] = 400 + s.seriesIndex * 50
+              //d['top'] = s.seriesIndex * 20
+              //d['top'] = 200
+              //d['orient'] = 'vertical'
+              console.log(d)
               return d
             }
           }
       })
 
+      // Keep only those undefined
+      vmap = vmap.filter(d => d != undefined)
+
+      // Select locations for visual maps
+      vmap.forEach(function(e, idx) {
+        e['top'] = 200
+        e['left'] = 750 + idx * 35
+        e['orient'] = 'vertical'
+      })
+
       // Add to option
-      option.visualMap = vmap.filter(d => d != undefined)
+      option.visualMap = vmap
 
       // Update
       option && myChart.setOption(option, true);
