@@ -1,371 +1,615 @@
 <html>
 <head>
-  <!-- CSS only -->
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-        crossorigin="anonymous">
 
+  <!-- JavaScript -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.3.3/echarts.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/echarts-gl/2.0.8/echarts-gl.js'></script>
   <script src='data.js'></script>
+
+  <!-- CSS only -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
   <link rel="stylesheet" href="./main.css">
 </head>
 <body>
 
 
-  <div class="container">
+<div class="container">
 
-    <!-- ------------------- -->
-    <!-- Description         -->
-    <!-- ------------------- -->
-    <div class="row">
-      <div class="col-12">
-        <!-- Info text -->
-        <div class="alert alert-warning small mt-5 pt-1 pb-1" role="alert">
-          <p class="text-justify mt-2">
-            The following example is incomplete. Include three buttons: (i) one
-            with a text input with a default color to colour all the markers with
-            the same color, (ii) another in which it uses the colors included
-            manually in the configuration, (iii) another in which the values are
-            colored taking into account the value, where the center value of the
-            normal reference range is 'gray' and then 'red' if it goes up and
-            'blue' if it goes down, (iv) the same as before but the colours only
-            start when they are outside the normal reference range.
+  <!-- ------------------- -->
+  <!-- Description         -->
+  <!-- ------------------- -->
+  <div class="row">
+    <div class="col-12">
+      <!-- Info text -->
+      <div class="alert alert-warning small mt-5 pt-1 pb-1" role="alert">
+        <p class="text-justify mt-2">
+          The following example is incomplete. Include three buttons: (i) one
+          with a text input with a default color to colour all the markers with
+          the same color, (ii) another in which it uses the colors included
+          manually in the configuration, (iii) another in which the values are
+          colored taking into account the value, where the center value of the
+          normal reference range is 'gray' and then 'red' if it goes up and
+          'blue' if it goes down, (iv) the same as before but the colours only
+          start when they are outside the normal reference range.
 
-            In addition, include the units (e.g. mg/dL) when hovering and show
-            additional information (e.g. report, note, ...) when available on
-            the fourth dimension. Finally, maybe it would be possible to improve
-            the x-axis labels which look too crowded at the moment.
+          In addition, include the units (e.g. mg/dL) when hovering and show
+          additional information (e.g. report, note, ...) when available on
+          the fourth dimension. Finally, maybe it would be possible to improve
+          the x-axis labels which look too crowded at the moment.
 
-            Finally, when no configuration of groups and elements included, compute
-            the dictionary with group and the list of associated codes based on the
-            CONFIG variable automatically (sort alphabetically too).
-          </p>
-        </div>
+          Finally, when no configuration of groups and elements included, compute
+          the dictionary with group and the list of associated codes based on the
+          CONFIG variable automatically (sort alphabetically too).
+        </p>
       </div>
     </div>
+  </div>
 
-    <!-- ---------------------------- -->
-    <!-- Chart                        -->
-    <!-- ---------------------------- -->
-    <div class="row">
-      <div id='chart-container'></div>
+  <div class="row">
+    <div class="col-10">
+      <div class="form-floating mb-1">
+        <select id='selector' class="form-select form-select-sm custom-select">
+          <option value=default> Default </option>
+          <option value=unicolor> Single color => Select from color picker </option>
+          <option value=continuous> Continuous => Continuous colors mapping values </option>
+          <option value=discrete> Discrete => Either low, within or above normal range </option>
+          <option value=combined> Combined => Not implemented! </option>
+          <option value=inrange> In Range => Using inRange attribute </option>
+        </select>
+        <label for="selector">Choose one of the colormap options</label>
+      </div>
+    </div>
+    <div class="col-2">
+        <input type="color" id="unicolor" name="head" value="#B0E9D5">
     </div>
 
   </div>
 
+  <!-- ---------------------------- -->
+  <!-- Chart                        -->
+  <!-- ---------------------------- -->
+  <div class="row">
+    <div class="col-7">
+      <div id='chart-container'></div>
+    </div>
+
+    <!--
+    <div class="col-4">
+
+      <table class="table table-hover table-responsive table-sm">
+        <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Color</th>
+          <th scope="col">Range</th>
+          <th scope="col">Mode</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>
+            <span class="fs-sm" style="font-size:10px;">Encounters</span>
+          </td>
+          <td>
+            <input type="color" id="head" name="head" value="#e66465" class="input-sm">
+          </td>
+          <td>
+            <div class="input-group input-group-sm mb-3">
+              <input type="text" class="form-control" placeholder="min" aria-label="min">
+              <span class="input-group-text">to</span>
+              <input type="text" class="form-control" placeholder="max" aria-label="maxr">
+            </div>
+          </td>
+          <td>
+            <select class="form-select form-select-sm" aria-label="Default select example">
+              <option selected>Open this select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>Body Temp.</span>
+          </td>
+          <td>
+            <input type="color" id="unique-color-BTMP" name="BTMP" value="#e66465" class="input-sm">
+          </td>
+          <td>
+            <div class="input-group input-group-sm mb-3">
+              <input type="text" class="form-control" placeholder="min" aria-label="min">
+              <span class="input-group-text">to</span>
+              <input type="text" class="form-control" placeholder="max" aria-label="maxr">
+            </div>
+          </td>
+          <td>
+            <select id='select-visualMap-BTMP' name='BTMP' class="form-select form-select-sm"
+                    aria-label="Default select example">
+              <option selected>Open this select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>-->
+  </div>
+
+</div>
+
 </body>
 <script>
 
-    // -----------------------------------------------
-    // Helper methods
-    // -----------------------------------------------
-    function getDatesInRange(startDate, endDate) {
-        /**
-         * Create all dates between two dates.
-         *
-         * .. note: It repeats the 26th of March twice!
-         *
-         * @type {Date}
-         */
-        const date = new Date(startDate.getTime());
-        const dates = [];
-        while (date <= endDate) {
-            dates.push(new Date(date));
-            date.setDate(date.getDate() + 1);
-        }
-        return dates;
+  // -----------------------------------------------
+  // Helper methods
+  // -----------------------------------------------
+  function getDatesInRange(startDate, endDate) {
+    /**
+     * Create all dates between two dates.
+     *
+     * .. note: It repeats the 26th of March twice!
+     *
+     * @type {Date}
+     */
+    const date = new Date(startDate.getTime());
+    const dates = [];
+    while (date <= endDate) {
+      dates.push(new Date(date));
+      date.setDate(date.getDate() + 1);
+    }
+    return dates;
+  }
+
+  function getDatesBetween(startDate, endDate) {
+    /**
+     * Create all dates between two dates.
+     *
+     * .. note: It repeats the 26th of March twice!
+     *
+     * @type {Date}
+     */
+    let dates = [];
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dates;
+  };
+
+  function getDaysBetweenDates(startDate, endDate) {
+    /**
+     * Create all dates between two dates.
+     *
+     * .. note: Requires moment.js
+     */
+    startDate = moment(startDate)
+    endDate = moment(endDate)
+    var now = startDate.clone(), dates = [];
+
+    while (now.isSameOrBefore(endDate)) {
+      dates.push(now.format('YYYY-MM-DD'));
+      now.add(1, 'days');
+    }
+    return dates;
+  };
+
+  function generateEmptySeries(vx, vy, key, cont) {
+    /**
+     * @param vx: list of x axis vaues
+     * @param vy: list of y axis values
+     * @param key: id to fill series name 'empty-{key}'
+     * @param cont: value to us for xAxisIndex and yAxisindex
+     * @type {*[]}
+     */
+      // Create data
+    var empty = []
+    for (let i = 0; i <= vx.length; i++) {
+      for (let j = 0; j <= vy.length; j++) {
+        empty.push([vx[i], vy[j], -1])
+      }
     }
 
-    function getDatesBetween(startDate, endDate) {
-        /**
-         * Create all dates between two dates.
-         *
-         * .. note: It repeats the 26th of March twice!
-         *
-         * @type {Date}
-         */
-        let dates = [];
-        let currentDate = new Date(startDate);
-        while (currentDate <= endDate) {
-            dates.push(new Date(currentDate));
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
-        return dates;
-    };
+    // Return
+    return {
+      name: 'empty-' + key,
+      type: 'heatmap',
+      data: empty,
+      itemStyle: {
+        color: '#F0F0F0',
+        borderWidth: 3,
+        borderColor: 'white',
+        borderRadius: 4,
+      },
+      xAxisIndex: cont,
+      yAxisIndex: cont,
+    }
+  }
 
-    function getDaysBetweenDates(startDate, endDate) {
-        /**
-         * Create all dates between two dates.
-         *
-         * .. note: Requires moment.js
-         */
-        startDate = moment(startDate)
-        endDate = moment(endDate)
-        var now = startDate.clone(), dates = [];
 
-        while (now.isSameOrBefore(endDate)) {
-            dates.push(now.format('YYYY-MM-DD'));
-            now.add(1, 'days');
-        }
-        return dates;
-    };
+  // ------------------------------
+  // Generate data
+  // ------------------------------
+  // Generate the data
+  //var data = generateData()
+  //var data = getVirtualData(2023)
+  var data = getVirtualDataManual()
 
-    function generateEmptySeries(vx, vy, key) {
-        /**
-         *
-         * @type {*[]}
-         */
-        // Create data
-        var empty = []
-        for (let i = 0; i <= vx.length; i++) {
-            for (let j = 0; j <= vy.length; j++) {
-                empty.push([vx[i], vy[j], -1])
-            }
-        }
+  // See data
+  console.log(data)
 
-        // Return
-        return {
-            name: 'empty-' + key,
-            type: 'heatmap',
-            data: empty,
-            itemStyle: {
-                color: '#F0F0F0',
-                borderWidth: 3,
-                borderColor: 'white',
-                borderRadius: 4,
-            },
-            xAxisIndex: cont,
-            yAxisIndex: cont,
-        }
+  // Create all days within range.
+  var dates = data.map(x => x[0]);
+  var minimumDate = Math.min.apply(null, dates);
+  var maximumDate = Math.max.apply(null, dates);
+  dates = getDaysBetweenDates(minimumDate, maximumDate)
+
+
+  // Could this transform be done just once in the xAxis or series.
+  //data = data.map(x => [x[0].toISOString().split('T')[0], x[1], x[2]]);
+  //dates = dates.map(x => x.toISOString().split('T')[0]);
+  data = data.map(x => [x[0].toISOString().split('T')[0], x[1], x[2]]);
+  //dates = dates.map(x => x[0].format().split('T')[0]);
+
+
+  // Some constants
+  // https://stackoverflow.com/questions/70780091/is-there-a-way-on-echarts-to-get-the-series-colors
+
+
+  var SERIES_INDEX = {}
+
+  // Indicates how to group the different variables in
+  // categories to be displayed. The value of displayed
+  // is extracted automatically from the CONFIG_LIST
+  // whereas GROUPS_v1 has been defined manually
+  //var GROUPS = GROUPS_v1
+  var GROUPS = DISPLAY
+
+  // .. note: Careful, colors are overwritten on visualMap.
+
+  // This variable indicates whether to use an specific color
+  // (e.g. #FFDFD3) or if set to undefined the colors within
+  // the CONFIG variable will be used.
+  var UNICOLOR = undefined // '#FFDFD3' or '#B0E9D5'
+
+  // This variable indicates whether to include empty cells
+  // in a gray color in areas where there is no data available
+  // which is similar to GITHUB commit approach.
+  var GITHUB_STYLE = true
+
+  // Create options
+  const grids = []
+  const xAxes = []
+  const yAxes = []
+  const series = []
+
+  // Loop filling elements
+  var cont = -1
+  var offset = 0
+
+
+  for (const [key, value] of Object.entries(GROUPS)) {
+    cont = cont + 1
+
+    // Push grid component
+    grids.push({
+      left: 100,
+      right: 0,
+      top: 50 + offset + 'px',
+      height: 13 * value.length,
+      width: 13 * dates.length,
+    })
+
+    // Update offset for next grid component
+    offset = offset + (13 * value.length) + 40
+
+    // Include empty grid
+    if (GITHUB_STYLE) {
+      let vx = dates
+      let vy = value.map(d => d.code)
+      var empty = generateEmptySeries(vx, vy, key, cont)
+      series.push(empty)
     }
 
-
-
-    // ------------------------------
-    // Generate data
-    // ------------------------------
-    // Generate the data
-    //var data = generateData()
-    //var data = getVirtualData(2023)
-    var data = getVirtualDataManual()
-
-    // See data
-    console.log(data)
-
-    // Create all days within range.
-    var dates = data.map(x => x[0]);
-    var minimumDate = Math.min.apply(null, dates);
-    var maximumDate = Math.max.apply(null, dates);
-    dates = getDaysBetweenDates(minimumDate, maximumDate)
-
-
-    // Could this transform be done just once in the xAxis or series.
-    //data = data.map(x => [x[0].toISOString().split('T')[0], x[1], x[2]]);
-    //dates = dates.map(x => x.toISOString().split('T')[0]);
-    data = data.map(x => [x[0].toISOString().split('T')[0], x[1], x[2]]);
-    //dates = dates.map(x => x[0].format().split('T')[0]);
-
-
-
-    var groups = {
-        'Encounters': [ 'CAR' ],
-        'Diagnoses': [ 'DIAG' ],
-        'Medications': [
-            'AAMI', 'AMER', 'ACPX'
-        ],
-        'Procedures': [ 'PROC' ],
-        'Vital Signs': [
-            'BTMP', 'BP', 'HR', 'O2SAT'
-        ],
-        'Labs': [
-            'ALT', 'ALP', 'BIL', 'CRE', 'CRP',
-            'GLU', 'HAE',  'PLT', 'WBC'
-        ],
-        'Notes': [ 'NOTE' ],
-    }
-
-    // Some constants
-
-    // .. note: Careful, colors are overwritten on visualMap.
-
-    // This variable indicates whether to use an specific color
-    // (e.g. #FFDFD3) or if set to undefined the colors within
-    // the CONFIG variable will be used.
-    var UNICOLOR = undefined // '#FFDFD3' or '#B0E9D5'
-
-    // This variable indicates whether to include empty cells
-    // in a gray color in areas where there is no data available
-    // which is similar to GITHUB commit approach.
-    var GITHUB_STYLE = true
-
-    // Create options
-    const grids = []
-    const xAxes = []
-    const yAxes = []
-    const series = []
-    const visualMap = []
-
-    // Loop filling elements
-    var cont = -1
-    var offset = 0
-    for (const [key, value] of Object.entries(groups)) {
-        cont = cont + 1
-
-        // Push grid component
-        grids.push({
-            top: 50 + offset + 'px',
-            height: 13 * value.length,
-            width: 13 * dates.length,
-        })
-
-        // Update offset for next grid component
-        offset = offset + (13 * value.length) + 40
-
-        if (GITHUB_STYLE)
-          series.push(generateEmptySeries(dates, value, key))
-
-        for (i in value) {
-
-            // Compute color
-            var c = UNICOLOR
-            if (c == undefined)
-                c = CONFIG[value[i]].color || undefined
-
-            // Add series
-            series.push({
-                name: value[i],
-                type: 'heatmap',
-                data: data.filter(x => x[1] == value[i]),
-                itemStyle: {
-                    borderWidth: 3,
-                    borderRadius: 4,
-                    borderColor: 'white', // hack for cellPadding
-                    color: c
-                },
-                xAxisIndex: cont,
-                yAxisIndex: cont,
-            })
-        }
-
-        xAxes.push({
-            data: dates,
-            show: false,
-            type: 'category',
-            showGrid: true,
-            axisLine: {
-                onZero: false,
-                show: false
-            },
-            axisTick: {
-                show: true,
-                alignWithLabel: true
-            },
-            axisLabel: {
-                interval: 0,
-                rotate: 90
-            },
-            gridIndex: cont
-        })
-
-        yAxes.push({
-            type: 'category',
-            scale: false,
-            name: key,
-            data: value,
-            //nameLocation: 'top',
-            nameGap: 5,
-            nameTextStyle: { // https://echarts.apache.org/en/option.html#xAxis.nameTextStyle.align
-                color: 'darkgray',
-                fontSize: 15,
-                fontStyle: 'normal',
-                fontWeight: 'bolder',
-                fontFamily: 'normal', // monospace
-                align: 'left',
-            },
-            axisLine: {
-                lineStyle: {
-                  color: '#666'
-                },
-                show: false
-            },
-            axisTick: {
-                show: false,
-                alignWithLabel: true
-            },
-            axisLabel: {
-                interval: 0,
-                fontSize: 9,
-                formatter: function (value, index, tick) {
-                  return CONFIG[value].name || value
-              }
-            },
-            gridIndex: cont
-        })
-    }
-
-    // Show last axis.
-    xAxes[Object.keys(groups).length-1].show = true
-
-    console.log(series)
-
-    // Create chart
-    var chartDom = document.getElementById('chart-container');
-    var myChart = echarts.init(chartDom);
-    var option;
-
-    // Create the complete option.
-    option = {
-        animation: true,
-        tooltip: {
-            position: 'top',
-            trigger: 'item',
+    // Loop for each entry adding series
+    value.forEach(function (item) {
+      series.push({
+        name: item.code,
+        type: 'heatmap',
+        data: data.filter(x => x[1] == item.code),
+        itemStyle: {
+          borderWidth: 3,
+          borderRadius: 4,
+          borderColor: 'white', // hack for cellPadding
+          color: UNICOLOR || item.color
         },
-        //title: {
-        //  text: 'Summary',
-        //  subtext: 'NHS111111',
-        //  left: 'center'
-        //},
-        xAxis: xAxes,
-        yAxis: yAxes,
-        grid: grids,
-        visualMap: [
-            /**
-            {
-                show: false,
-                type: 'continuous',
-                seriesIndex: 1,
-                dimension: 2,
-                min: 0,
-                max: 5,
-            },
-             {
-                show: false,
-                type: 'continuous',
-                seriesIndex: 11,
-                dimension: 2,
-                min: 36,
-                max: 44,
-            }**/
-        ],
+        xAxisIndex: cont,
+        yAxisIndex: cont,
+        zorder: 5
+      })
+    })
 
-        /*
-        visualMap: {
-          min: 0,
-          max: 10,
-          calculable: true,
-          orient: 'horizontal',
-          left: 'center',
-          bottom: '15%'
-        },*/
-        series: series
-    };
+    xAxes.push({
+      data: dates,
+      show: false,
+      type: 'category',
+      showGrid: true,
+      axisLine: {
+        onZero: false,
+        show: false
+      },
+      axisTick: {
+        show: true,
+        alignWithLabel: true
+      },
+      axisLabel: {
+        interval: 0,
+        rotate: 90
+      },
+      gridIndex: cont
+    })
 
-    // Display
-    option && myChart.setOption(option);
+    yAxes.push({
+      type: 'category',
+      scale: false,
+      name: key,
+      data: value.map(d => d.code),
+      //nameLocation: 'top',
+      nameGap: 5,
+      nameTextStyle: {
+        color: 'darkgray',
+        fontSize: 15,
+        fontStyle: 'normal',
+        fontWeight: 'bolder',
+        fontFamily: 'normal', // monospace
+        align: 'left',
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#666'
+        },
+        show: false
+      },
+      axisTick: {
+        show: false,
+        alignWithLabel: true
+      },
+      axisLabel: {
+        interval: 0,
+        fontSize: 9,
+        formatter: function (value, index, tick) {
+          return CONFIG[value].name || value // show name
+        }
+      },
+      gridIndex: cont
+    })
+  }
+
+  // Show last axis.
+  xAxes[Object.keys(GROUPS).length - 1].show = true
+
+  // Show information
+  console.log("Show series:")
+  console.log(series)
+
+  // Create chart
+  var chartDom = document.getElementById('chart-container');
+  var myChart = echarts.init(chartDom);
+  var option;
+
+  // Create the complete option.
+  option = {
+    animation: true,
+    tooltip: {
+      confine: true,
+      position: 'top',
+      trigger: 'item',
+      /*formatter: function (args) {
+        return `${args.seriesName} <br/>
+                ${args.marker} ${args.value[0]}
+                ${args.value[2]} mg <br/>`;
+      }*/
+    },
+    //title: {
+    //  text: 'Summary',
+    //  subtext: 'NHS111111',
+    //  left: 'center'
+    //},
+    xAxis: xAxes,
+    yAxis: yAxes,
+    grid: grids,
+    series: series
+  };
+
+
+
+
+
+  // Include visual map
+  if (UNICOLOR == undefined)
+    option = {...option, visualMap: []}
+
+
+  // Display
+  option && myChart.setOption(option);
+
+
+  // This additional info help us identify which seriesIndex
+  // corresponds to each of the rows displayed in the chart.
+  // For example body temperature has index 11.
+  // Use: console.log(sInfo)
+  sInfo = myChart.getModel().getSeries().map(s => {
+    return {
+      name: s.name,
+      seriesIndex: s.seriesIndex,
+      seriesColor: myChart.getVisual({
+        seriesIndex: s.seriesIndex
+      }, 'color')
+    }
+  })
+
+  // The implementation is quite poor, try to implement
+  // it in one go without receiving undefined and then
+  // filtering by using reduce.
+  var visualMap = myChart.getModel().getSeries().map(s => {
+    if (s.name in CONFIG)
+      if ('visualMap' in CONFIG[s.name]) {
+        var d = CONFIG[s.name].visualMap.continuous
+        d['seriesName'] = s.name
+        d['seriesIndex'] = s.seriesIndex
+        d['dimension'] = 2
+        console.log(d)
+        return d
+      }
+  })
+  visualMap = visualMap.filter(d => d != undefined)
+
+  //option = {...option, visualMap: visualMap}
+
+
+  // Display
+  //option && myChart.setOption(option, true);
+
+
+  // ---------------------------------------------------------
+  //                  HANDLE HTML EVENTS
+  // ---------------------------------------------------------
+
+  //
+  //
+  //
+  $("[id^='unique-color-']").on('change', function (event) {
+    option.series.forEach(function (e, idx) {
+      if (e.name == event.target.name) {
+        e.itemStyle.color = event.target.value
+        option.visualMap = option.visualMap.filter(e => e.seriesIndex != idx)
+      }
+    })
+    option && myChart.setOption(option, true);
+    $('#select-visualMap-' + event.target.name).val(0)
+  })
+
+  //
+  //
+  //
+  $('#unicolor').on('change', function (event) {
+    option.series.forEach(function (e) {
+      if (!e.name.startsWith('empty'))
+        e.itemStyle.color = event.target.value
+    })
+    option.visualMap = []
+    option && myChart.setOption(option, true);
+  })
+
+  //
+  //
+  //
+  // Add event listener to dropdown dataset selector
+  $("[id^='select-visualMap-']").change(function (event) {
+    // Get selected dataset name
+    var value = event.target.value
+
+    if (value == 1) {
+
+      var v = {
+        show: true,
+        left: 13 * 30,
+        type: 'piecewise',
+        seriesIndex: 11, // oxygen saturation
+        dimension: 2,
+        pieces: [
+          {label: '1', min: 0, max: 35, color: 'lightgray'},
+          {label: '2', min: 35, max: 42, color: '#CA605D'},
+          {label: '2', min: 42, max: 100, color: 'black'},
+
+        ]
+      }
+
+      // Remove any map with idx 11
+      // append
+      option.visualMap.push(v)
+    }
+    console.log(name)
+    // Selected dataset
+    //data = DATASETS[name]
+    // Show data
+    //console.log(data)
+    // Create option
+    //option = getOption()
+    // Update
+    option && myChart.setOption(option, true);
+  })
+
+
+
+
+  // Add event listener to dropdown dataset selector
+  $('#selector').change(function (event) {
+  	// Get selected dataset name
+    var value = event.target.value
+
+    console.log(value)
+    if (value == 'unicolor') {
+
+      var color = $('#unicolor').val()
+      option.series.forEach(function (e) {
+        if (!e.name.startsWith('empty'))
+          e.itemStyle.color = color
+      })
+      option.visualMap = []
+      option && myChart.setOption(option, true);
+
+    } else if (value == 'default') {
+
+       option.series.forEach(function (e) {
+        if (!e.name.startsWith('empty'))
+          e.itemStyle.color = CONFIG[e.name].color
+      })
+      option.visualMap = []
+      option && myChart.setOption(option, true);
+
+    } else {
+
+      event.stopPropagation()
+
+      console.log(value)
+
+      // The implementation is quite poor, try to implement
+      // it in one go without receiving undefined and then
+      // filtering by using reduce.
+      var vmap = myChart.getModel().getSeries().map(s => {
+        if (s.name in CONFIG)
+          if ('visualMap' in CONFIG[s.name]) {
+            if (value in CONFIG[s.name].visualMap) {
+              var d = CONFIG[s.name].visualMap[value]
+              console.log(d)
+              d['seriesName'] = s.name
+              d['seriesIndex'] = s.seriesIndex
+              d['dimension'] = 2
+              return d
+            }
+          }
+      })
+
+      // Add to option
+      option.visualMap = vmap.filter(d => d != undefined)
+
+      // Update
+      option && myChart.setOption(option, true);
+    }
+  })
+
+
+  // Set window resize listener
+  window.addEventListener('resize', myChart.resize);
 
 </script>
 </html>

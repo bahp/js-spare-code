@@ -1,124 +1,383 @@
+// Useful urls...
+// https://echarts.apache.org/en/option.html#xAxis.nameTextStyle.align
 
+  /**[
+   {
+            show: true,
+            left: 10*30,
+            type: 'piecewise',
+            seriesIndex: 10, // oxygen saturation
+            dimension: 2,
+            pieces: [
+              {min: 0, max: 80, color: 'lightgray'},
+              {min: 80, max:250, color: '#CA605D'}
+            ]
+        },
+   {
+            show: true,
+            left: 6*30,
+            type: 'continuous',
+            seriesIndex: 6, // ACPX
+            dimension: 2,
+            inRange: {
+              color: ['white', '#EE6666']
+            }
+        }
+   ]**/
 
-// configuration
+function getDisplayConfigurationFromManual(d) {
+    /**
+     *
+     * @type {{}}
+     */
+    var aux = {}
+    for (const [key, value] of Object.entries(d)) {
+        aux[key] = []
+        value.forEach(function (code) {
+            aux[key].push(CONFIG[code])
+        })
+    }
+    return aux
+}
+
+function getVisualMapContinuous(d) {
+    return {
+        show: true,
+        left: 10*30,
+        type: 'piecewise',
+        seriesIndex: 11,
+        dimension: 2,
+        pieces: [
+            {min: 0,    max: 36.1, color: 'lightgray'},
+            {min: 36.1, max: 37.2, color: '#CA605D'},
+            {min: 37.2, max: 45.0, color: 'RED'}
+        ]
+    }
+}
+
+function getVisualMapOutOfRange() {
+
+}
+
+// This is just an object to be able to see all the
+// possible palettes using the color squares on the
+// left hand side when using pyCharm. For more color
+// palettes visit:
+//
 // https://venngage.com/blog/pastel-color-palettes/
-// #edf2fb // #d7e3fc // #ccdbfd // #c1d3fe // #abc4ff
-// #d1d1d1 // #e1dbd6 // #e2e2e2 // #f9f6f2 // #ffffff
-// #ff7477 // #e69597 // #ceb5b7 // #b5d6d6 // #9cf6f6
-// #cdb4db // #ffc8dd // #ffafcc // #bde0fe // #a2d2ff
 
-// Rocket metalic rainbow palette
-// 8A7F8D // 8D7F84 // 8D867F // 888D7F // 7F8D82 // 7F8C8D // 7F808D
+var CMAPS = {
+    map1: [
+        '#edf2fb',
+        '#d7e3fc',
+        '#ccdbfd',
+        '#c1d3fe',
+        '#abc4ff'
+    ],
+    map2: [
+        '#d1d1d1',
+        '#e1dbd6',
+        '#e2e2e2',
+        '#f9f6f2',
+        '#ffffff'
+    ],
+    map3: [
+        '#ff7477',
+        '#e69597',
+        '#ceb5b7',
+        '#b5d6d6',
+        '#9cf6f6'
+    ],
+    map4: [
+        '#cdb4db',
+        '#ffc8dd',
+        '#ffafcc',
+        '#bde0fe',
+        '#a2d2ff'
+    ],
+    map5: [
+        '#8A7F8D',
+        '#8D7F84',
+        '#8D867F',
+        '#888D7F',
+        '#7F8D82',
+        '#7F8C8D',
+        '#7F808D'
+    ],
+    map6: [
+        '#E0BBE4',
+        '#957DAD',
+        '#D291BC',
+        '#FEC8D8',
+        '#FFDFD3'
+    ]
+}
 
-/**
- *
-Hex: #E0BBE4
-Hex: #957DAD
-Hex: #D291BC
-Hex: #FEC8D8
-Hex: #FFDFD3
- **/
 
-// https://coolors.co/palette/ccd5ae-dbe1bc-e9edc9-f4f4d5-fefae0-fcf4d7-faedcd-e7c8a0-deb68a-d4a373
-const CONFIG = {
+const CONFIG_LIST = [
 
-    // Laboratory
-    ALP: {
-        name: 'Akaline phosp',
-        color: '#CCD5AE',
+    // Notes
+    {
+        code: 'NOTE',
+        name: 'Notes',
+        group: 'Management'
     },
-    ALT: {
-        name: 'Alanine trans',
-        color: '#DBE1BC',
+
+    // Diagnoses
+    {
+        code: 'DIAG',
+        name: 'Diagnoses',
+        group: 'Management'
     },
-    BIL: {
-        name: 'Bilirubin',
-        color: '#E9EDC9'
-    },
-    CRE: {
-        name: 'Creatinine',
-        unit: 'mg/dL',
-        color: '#F4F4D5'
-    },
-    CRP: {
-        unit: 'mg',
-        color: '#FEFAE0',
-    },
-    GLU: {
-        name: 'Glucose',
-        unit: 'mg/dL',
-        color: '#FCF4D7'
-    },
-    HAE: {
-        name: 'Haemoglobin',
-        unit: '%',
-        color: '#FAEDCD'
-    },
-    PLT: {
-        name: 'Platelets',
-        color: '#E7C8A0',
-    },
-    WBC: {
-        name: 'White cells',
-        color: '#DEB68A', //D4A373
+
+    // Procedures
+    {
+        code: 'PROC',
+        name: 'Procedure',
+        group: 'Management'
     },
 
     // Encounters
-    CAR: {
+    {
+        code: 'CAR',
         name: 'Encounters',
-        color: '#d7e3fc'
-    },
-
-    // Vital Signs
-    BP: {
-        name: 'Blood Pressure',
-        unit: 'mmHg',
-        color: '#E0BBE4'
-    },
-    BTMP: {
-        name: 'Body Temp',
-        unit: 'C',
-        color: '#957DAD'
-    },
-    HR: {
-        name: 'Heart Rate',
-        unit: 'bpm',
-        color: '#FEC8D8'
-    },
-    O2SAT: {
-        name: 'Oxygen Sat',
-        color: '#FFDFD3'
-    },
-
-    // Processes
-    PROC: {
-        name: 'Procedure'
+        color: '#d7e3fc',
+        group: 'Management'
     },
 
     // Medication
-    AAMI: {
+    {
+        code: 'AAMI',
         //color: '#fcf4dd'
+        group: 'Medication',
+        visualMap: {
+            continuous: {
+                show: true,
+                type: 'continuous',
+                dimension: 2,
+                inRange: {
+                  color: ['white', '#3BA272']
+                }
+            }
+        }
+
     },
-    AMER: {
+    {
+        code: 'AMER',
         //color: '#ddedad'
+        group: 'Medication',
+        visualMap: {
+            continuous: {
+                show: true,
+                type: 'continuous',
+                dimension: 2,
+                inRange: {
+                  color: ['white', '#5470C6']
+                }
+            }
+        }
     },
-    ACPX: {
-        //color: '#daeaf6'
+    {
+        code: 'ACPX',
+        //color: '#daeaf6',
+        group: 'Medication',
+        visualMap: {
+            continuous: {
+                show: true,
+                type: 'continuous',
+                dimension: 2,
+                inRange: {
+                  color: ['white', '#EE6666']
+                }
+            }
+        }
     },
 
-    // Notes
-    NOTE: {},
+    // Vital Signs
+    {
+        code: 'DBP',
+        name: 'Dyastolic (BP)',
+        unit: 'mmHg',
+        color: '#E0BBE4',
+        group: 'Vital Signs',
+        range: {
+            normal: [0, 80],
+            absolute: [0, 250]
+        }
+    },
+    {
+        code: 'BTMP',
+        name: 'Body Temp',
+        unit: 'C',
+        color: '#957DAD',
+        group: 'Vital Signs',
+        range: {
+            normal: [36.1, 37.2],
+            absolute: [35, 45]
+        },
+        visualMap: {
+            continuous: {
+                show: false,
+                type: 'continuous',
+                dimension: 2,
+                min: 35,
+                max: 42,
+            },
+            discrete: {
+                show: false,
+                type: 'piecewise',
+                pieces: [
+                    {min: 0, max:36.1, color: '#3E51C4'},
+                    {min: 36.0, max: 39, color: 'lightgray'},
+                    {min: 39.0, max: 100, color: '#B50827'},
+                ]
+            },
+            inrange: {
+                show: true,
+                type: 'continuous',
+                dimension: 2,
+                min: 35,
+                max: 45,
+                inRange: {
+                  color: ['#3E51C4', '#DADCDF', '#B50827']
+                }
+            }
+        }
+    },
+    {
+        code: 'HR',
+        name: 'Heart Rate',
+        unit: 'bpm',
+        color: '#FEC8D8',
+        group: 'Vital Signs',
+        visualMap: {
+            continuous: {
+                show: true,
+                type: 'continuous',
+                dimension: 2,
+                min: 50,
+                max: 200,
+            }
+        }
+    },
+    {
+        code: 'O2SAT',
+        name: 'Oxygen Sat',
+        color: '#FFDFD3',
+        group: 'Vital Signs',
+        range: {
+            normal: [95, 100],
+            range: [70, 100]
+        }
+    },
 
-    // Diagnoses
-    DIAG: {
-        name: 'Diagnoses'
+    // Laboratory
+    {
+        code: 'ALP',
+        name: 'Akaline phosp',
+        color: '#CCD5AE',
+        group: 'Laboratory'
+    },
+    {
+        code: 'ALT',
+        name: 'Alanine trans',
+        color: '#DBE1BC',
+        group: 'Laboratory'
+    },
+    {
+        code: 'BIL',
+        name: 'Bilirubin',
+        color: '#E9EDC9',
+        group: 'Laboratory'
+    },
+    {
+        code: 'CRE',
+        name: 'Creatinine',
+        unit: 'mg/dL',
+        color: '#F4F4D5',
+        group: 'Laboratory'
+    },
+    {
+        code: 'CRP',
+        unit: 'mg',
+        color: '#FEFAE0',
+        group: 'Laboratory'
+    },
+    {
+        code: 'GLU',
+        name: 'Glucose',
+        unit: 'mg/dL',
+        color: '#FCF4D7',
+        group: 'Laboratory'
+    },
+    {
+        code: 'HAE',
+        name: 'Haemoglobin',
+        unit: '%',
+        color: '#FAEDCD',
+        group: 'Laboratory'
+    },
+    {
+        code: 'PLT',
+        name: 'Platelets',
+        color: '#E7C8A0',
+        group: 'Laboratory'
+    },
+    {
+        code: 'WBC',
+        name: 'White cells',
+        color: '#DEB68A', //D4A373
+        group: 'Laboratory'
     }
+]
+
+// Convert the previous list of elements to a dictionary in which
+// the key is the code, and the value is the whole object. This is
+// helpful to access the configuration params easily.
+const CONFIG = {}
+CONFIG_LIST.reduce((groups, item) => {
+    groups[item.code] = item
+    return groups;
+}, CONFIG);
+
+// Create automatic groupings for displayed that will be used
+// if the user does not provide the information.
+const DISPLAY = {}
+CONFIG_LIST.reduce((groups, item) => {
+    let category = item.group;
+    (groups[category] || (groups[category] = [])).push(item);
+    return groups;
+}, DISPLAY);
+
+// This shows an example on how to create our own display
+// configuration by including the group and the codes of
+// the elements that should be added to that group.
+const DISPLAY_v1 = {
+    'Encounters': [ 'CAR' ],
+    'Diagnoses': [ 'DIAG' ],
+    'Medications': [
+        'AAMI', 'AMER', 'ACPX'
+    ],
+    'Procedures': [ 'PROC' ],
+    'Vital Signs': [
+        'BTMP', 'BP', 'HR', 'O2SAT'
+    ],
+    'Labs': [
+        'ALT', 'ALP', 'BIL', 'CRE', 'CRP',
+        'GLU', 'HAE',  'PLT', 'WBC'
+    ],
+    'Notes': [ 'NOTE' ],
 }
+const GROUPS_v1 = getDisplayConfigurationFromManual(DISPLAY_v1)
+
+
+// https://coolors.co/palette/ccd5ae-dbe1bc-e9edc9-f4f4d5-fefae0-fcf4d7-faedcd-e7c8a0-deb68a-d4a373
+
 
 
 
 // Generate virtual data
-
+// The data has been created manually.
 function getVirtualDataManual() {
     /**
      * Generates manual example.
@@ -132,30 +391,30 @@ function getVirtualDataManual() {
 
         // Medications
         ['2023-03-01', 'AAMI', 85],
-        ['2023-03-02', 'AAMI', 85],
-        ['2023-03-03', 'AAMI', 85],
+        ['2023-03-02', 'AAMI', 90],
+        ['2023-03-03', 'AAMI', 90],
         ['2023-03-04', 'AAMI', 85],
-        ['2023-03-05', 'AAMI', 85],
+        ['2023-03-05', 'AAMI', 150],
 
-        ['2023-03-10', 'AMER', 85],
-        ['2023-03-11', 'AMER', 85],
-        ['2023-03-12', 'AMER', 85],
-        ['2023-03-13', 'AMER', 85],
-        ['2023-03-14', 'AMER', 85],
-        ['2023-03-21', 'AMER', 85],
-        ['2023-03-22', 'AMER', 85],
-        ['2023-03-23', 'AMER', 85],
-        ['2023-03-24', 'AMER', 85],
+        ['2023-03-10', 'AMER', 130],
+        ['2023-03-11', 'AMER', 150],
+        ['2023-03-12', 'AMER', 180],
+        ['2023-03-13', 'AMER', 300],
+        ['2023-03-14', 'AMER', 300],
+        ['2023-03-21', 'AMER', 150],
+        ['2023-03-22', 'AMER', 140],
+        ['2023-03-23', 'AMER', 130],
+        ['2023-03-24', 'AMER', 220],
 
-        ['2023-03-21', 'ACPX', 85],
-        ['2023-03-22', 'ACPX', 85],
-        ['2023-03-23', 'ACPX', 85],
-        ['2023-03-24', 'ACPX', 85],
-        ['2023-03-25', 'ACPX', 85],
-        ['2023-03-26', 'ACPX', 85],
-        ['2023-03-27', 'ACPX', 85],
-        ['2023-03-28', 'ACPX', 85],
-        ['2023-03-29', 'ACPX', 85],
+        ['2023-03-21', 'ACPX', 100],
+        ['2023-03-22', 'ACPX', 130],
+        ['2023-03-23', 'ACPX', 150],
+        ['2023-03-24', 'ACPX', 180],
+        ['2023-03-25', 'ACPX', 150],
+        ['2023-03-26', 'ACPX', 180],
+        ['2023-03-27', 'ACPX', 150],
+        ['2023-03-28', 'ACPX', 140],
+        ['2023-03-29', 'ACPX', 50],
 
         // Procedures
         ['2023-03-01', 'PROC', 85, 'X-Ray'],
@@ -198,77 +457,77 @@ function getVirtualDataManual() {
         ['2023-03-31', 'BTMP', 29],
         ['2023-04-15', 'BTMP', 26],
 
-        ['2023-03-01', 'HR', 85],
-        ['2023-03-01', 'HR', 12],
-        ['2023-03-02', 'HR', 14],
-        ['2023-03-07', 'HR', 12],
-        ['2023-03-08', 'HR', 12],
-        ['2023-03-09', 'HR', 12],
-        ['2023-03-10', 'HR', 12],
-        ['2023-03-11', 'HR', 14],
-        ['2023-03-12', 'HR', 12],
-        ['2023-03-13', 'HR', 14],
-        ['2023-03-14', 'HR', 12],
-        ['2023-03-15', 'HR', 12],
-        ['2023-03-21', 'HR', 14],
-        ['2023-03-22', 'HR', 18],
-        ['2023-03-23', 'HR', 12],
-        ['2023-03-24', 'HR', 14],
-        ['2023-03-25', 'HR', 12],
-        ['2023-03-26', 'HR', 14],
-        ['2023-03-27', 'HR', 18],
-        ['2023-03-28', 'HR', 12],
-        ['2023-03-29', 'HR', 14],
-        ['2023-03-30', 'HR', 18],
-        ['2023-03-31', 'HR', 12],
-        ['2023-04-01', 'HR', 14],
-        ['2023-04-02', 'HR', 18],
-        ['2023-04-15', 'HR', 18],
+        ['2023-03-01', 'HR', 60],
+        ['2023-03-01', 'HR', 62],
+        ['2023-03-02', 'HR', 64],
+        ['2023-03-07', 'HR', 66],
+        ['2023-03-08', 'HR', 68],
+        ['2023-03-09', 'HR', 70],
+        ['2023-03-10', 'HR', 75],
+        ['2023-03-11', 'HR', 80],
+        ['2023-03-12', 'HR', 85],
+        ['2023-03-13', 'HR', 90],
+        ['2023-03-14', 'HR', 100],
+        ['2023-03-15', 'HR', 110],
+        ['2023-03-21', 'HR', 120],
+        ['2023-03-22', 'HR', 150],
+        ['2023-03-23', 'HR', 120],
+        ['2023-03-24', 'HR', 110],
+        ['2023-03-25', 'HR', 100],
+        ['2023-03-26', 'HR', 90],
+        ['2023-03-27', 'HR', 80],
+        ['2023-03-28', 'HR', 77],
+        ['2023-03-29', 'HR', 76],
+        ['2023-03-30', 'HR', 75],
+        ['2023-03-31', 'HR', 74],
+        ['2023-04-01', 'HR', 73],
+        ['2023-04-02', 'HR', 72],
+        ['2023-04-15', 'HR', 71],
 
-        ['2023-03-01', 'BP', 12],
-        ['2023-03-02', 'BP', 14],
-        ['2023-03-08', 'BP', 12],
-        ['2023-03-09', 'BP', 12],
-        ['2023-03-10', 'BP', 12],
-        ['2023-03-11', 'BP', 14],
-        ['2023-03-12', 'BP', 12],
-        ['2023-03-13', 'BP', 14],
-        ['2023-03-14', 'BP', 12],
-        ['2023-03-15', 'BP', 12],
-        ['2023-03-23', 'BP', 12],
-        ['2023-03-24', 'BP', 14],
-        ['2023-03-25', 'BP', 12],
-        ['2023-03-26', 'BP', 14],
-        ['2023-03-27', 'BP', 18],
-        ['2023-03-28', 'BP', 12],
-        ['2023-03-29', 'BP', 14],
-        ['2023-03-30', 'BP', 18],
-        ['2023-03-31', 'BP', 12],
-        ['2023-04-01', 'BP', 14],
-        ['2023-04-02', 'BP', 18],
-        ['2023-04-15', 'BP', 18],
+        ['2023-03-01', 'DBP', 70],
+        ['2023-03-02', 'DBP', 72],
+        ['2023-03-08', 'DBP', 74],
+        ['2023-03-09', 'DBP', 76],
+        ['2023-03-10', 'DBP', 78],
+        ['2023-03-11', 'DBP', 80],
+        ['2023-03-12', 'DBP', 82],
+        ['2023-03-13', 'DBP', 84],
+        ['2023-03-14', 'DBP', 86],
+        ['2023-03-15', 'DBP', 84],
+        ['2023-03-23', 'DBP', 82],
+        ['2023-03-24', 'DBP', 80],
+        ['2023-03-25', 'DBP', 78],
+        ['2023-03-26', 'DBP', 76],
+        ['2023-03-27', 'DBP', 74],
+        ['2023-03-28', 'DBP', 72],
+        ['2023-03-29', 'DBP', 74],
+        ['2023-03-30', 'DBP', 76],
+        ['2023-03-31', 'DBP', 78],
+        ['2023-04-01', 'DBP', 80],
+        ['2023-04-02', 'DBP', 82],
+        ['2023-04-15', 'DBP', 84],
 
-        ['2023-03-01', 'O2SAT', 12],
-        ['2023-03-02', 'O2SAT', 14],
-        ['2023-03-08', 'O2SAT', 12],
-        ['2023-03-09', 'O2SAT', 12],
-        ['2023-03-10', 'O2SAT', 12],
-        ['2023-03-11', 'O2SAT', 14],
-        ['2023-03-12', 'O2SAT', 12],
-        ['2023-03-13', 'O2SAT', 14],
-        ['2023-03-14', 'O2SAT', 12],
-        ['2023-03-22', 'O2SAT', 18],
-        ['2023-03-23', 'O2SAT', 12],
-        ['2023-03-24', 'O2SAT', 14],
-        ['2023-03-25', 'O2SAT', 12],
-        ['2023-03-26', 'O2SAT', 14],
-        ['2023-03-27', 'O2SAT', 18],
-        ['2023-03-28', 'O2SAT', 12],
-        ['2023-03-29', 'O2SAT', 14],
-        ['2023-03-30', 'O2SAT', 18],
-        ['2023-04-01', 'O2SAT', 14],
-        ['2023-04-02', 'O2SAT', 18],
-        ['2023-04-15', 'O2SAT', 18],
+        ['2023-03-01', 'O2SAT', 100],
+        ['2023-03-02', 'O2SAT', 99],
+        ['2023-03-08', 'O2SAT', 98],
+        ['2023-03-09', 'O2SAT', 97],
+        ['2023-03-10', 'O2SAT', 96],
+        ['2023-03-11', 'O2SAT', 95],
+        ['2023-03-12', 'O2SAT', 94],
+        ['2023-03-13', 'O2SAT', 93],
+        ['2023-03-14', 'O2SAT', 92],
+        ['2023-03-22', 'O2SAT', 91],
+        ['2023-03-23', 'O2SAT', 90],
+        ['2023-03-24', 'O2SAT', 89],
+        ['2023-03-25', 'O2SAT', 88],
+        ['2023-03-26', 'O2SAT', 87],
+        ['2023-03-27', 'O2SAT', 86],
+        ['2023-03-28', 'O2SAT', 85],
+        ['2023-03-29', 'O2SAT', 84],
+        ['2023-03-30', 'O2SAT', 83],
+        ['2023-04-01', 'O2SAT', 82],
+        ['2023-04-02', 'O2SAT', 81],
+        ['2023-04-15', 'O2SAT', 80],
 
         // Laboratory Results
         ['2023-03-01', 'HAE', 1],
