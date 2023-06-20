@@ -76,7 +76,7 @@
   <!-- ---------------------------- -->
   <div class="row">
     <div class="col-12">
-      <div id='chart-container'></div>
+      <div id='chart-container' ></div>
     </div>
 
     <!--
@@ -302,7 +302,7 @@
 
     // Push grid component
     grids.push({
-      //left: 100,
+      left: 80,
       //right: 0,
       top: 50 + offset + 'px',
       height: 13 * value.length,
@@ -408,6 +408,16 @@
 
   // Create the complete option.
   option = {
+    /*dataZoom: {
+        type: 'slider',
+        height: 70,
+        bottom: 20,
+        end: 40,
+        bottom: 20
+        //type: 'inside',
+        //start: 0,
+        //end: 10
+    },*/
     animation: true,
     tooltip: {
       confine: true,
