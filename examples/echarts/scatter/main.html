@@ -70,7 +70,7 @@
     </div>
 
     <div class="row">
-      <div id='myDiv'></div>
+      <div id='chart-container'></div>
     </div>
 
 
@@ -106,8 +106,11 @@
     // Data
     var data = data || undefined;
 
+    // Show
+    console.log(data)
+
     // Graph
-    var chartDom = document.getElementById('myDiv');
+    var chartDom = document.getElementById('chart-container');
     var myChart = echarts.init(chartDom);
     var option;
 
@@ -236,9 +239,11 @@
     window.addEventListener('resize', myChart.resize);
 
     // Document
-    $( document ).ready(function() {
+    $(document).ready(function() {
         // Draw the scatter plot
         drawGraph()
+
+        console.log('drawing graph...')
     });
 
     // Enable dropdown select column.
@@ -249,12 +254,12 @@
     })
 
     // Fake submit on file selection.
-    $("#csvFile").onchange = function() {
+    $("#csvFile").on('change', function() {
         $('#submit').click()
-    };
+    });
 
     // Load file
-    $('#myForm').addEventListener("submit", function (e) {
+    $('#myForm').on("submit", function (e) {
       e.preventDefault();
       const input = csvFile.files[0];
       const reader = new FileReader();
@@ -263,7 +268,6 @@
         // Load data
         data = $.csv.toObjects(e.target.result);
         // Logging
-        console.log("Loaded data...", data)
         // Draw the scatter plot
         drawGraph()
       };
