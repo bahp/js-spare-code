@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#chart-stacked {
+  position: relative;
+  height: 20vh;
+  overflow: scroll;
+}
+
+#chart-swarmplot {
+  position: relative;
+  height: 20vh;
+  overflow: scroll;
+}

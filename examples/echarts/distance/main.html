@@ -1,0 +1,237 @@
+<html>
+<head>
+  <meta name="viewport" content="widthdevice-width, initial-scale=1"/>
+
+  <!-- JavaScript -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.3.3/echarts.min.js'></script>
+
+  <!-- CSS only -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
+  <link rel="stylesheet" href="./main.css">
+</head>
+<body>
+
+
+<div class="container">
+
+  <!-- ------------------- -->
+  <!-- Description         -->
+  <!-- ------------------- -->
+  <div class="row">
+    <div class="col-12">
+      <!-- Info text -->
+      <div class="alert alert-warning small mt-5 pt-1 pb-1" role="alert">
+        <p class="text-justify mt-2">
+          In this chart, every marker represents a case retrieved from the
+          database. In the x-axis we have the distance to an hypothetical
+          query case. The distance value has been scaled from [0, 1]
+          to [0, 100] to improve visualisation. Therefore, the smaller the
+          distance, the more similar the case is to the hypothetical query
+          case.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------------------- -->
+  <!-- Chart                        -->
+  <!-- ---------------------------- -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <div id='chart-stacked'></div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-12">
+      <div id='chart-swarmplot'></div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+<script>
+
+    // ---------------------------------------------------------------
+    // Helper functions
+    // ---------------------------------------------------------------
+    function RandomIntegerInRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateDataManual() {
+        return [
+            {id: 1, distance: 0},
+            {id: 2, distance: 10},
+            {id: 3, distance: 12},
+            {id: 3, distance: 13},
+            {id: 4, distance: 14},
+            {id: 5, distance: 14},
+            {id: 6, distance: 25},
+            {id: 7, distance: 52}
+        ]
+    }
+
+    function generateDataRandom(N) {
+        var v = []
+        for (let i = 0; i < N; i++) {
+            v.push({id: i,
+                distance: RandomIntegerInRange(0, 100)
+            })
+        }
+        return v
+    }
+
+    // Generate data
+    //const data = generateDataManual();
+    const data = generateDataRandom(200);
+
+
+
+    // --------------------------------------------------------
+    // Draw stacked
+    // --------------------------------------------------------
+
+    // This function is not implemented yet so we have to
+    // implement it ourselves but it will be included in
+    // future versions of JavaScript (it is at stage 3).
+    /**
+    const groupByCategory = e.groupBy(product => {
+        return product.distance;
+    });**/
+
+    // Group data by distance
+    const groups = data.reduce((group, product) => {
+        const {distance} = product;
+        group[distance] = group[distance] ?? [];
+        group[distance].push(product);
+        return group;
+    }, {});
+
+    // Create series
+    var series = []
+    for (const [key, value] of Object.entries(groups)) {
+        value.forEach(function (item, idx) {
+            series.push([item.distance, idx + 1, item])
+        })
+    };
+
+    // Create echart
+    var chartDom1 = document.getElementById('chart-stacked');
+    var myChart1 = echarts.init(chartDom1);
+    var option1;
+
+    // Define options
+    option1 = {
+        tooltip: {
+            position: 'top'
+        },
+        title: {
+            left: 'center',
+            text: "Distance",
+            subtext: 'Points with same value are stacked'
+        },
+        grid: {
+            right: 10,
+            left: 10
+        },
+        visualMap: {
+            min: 0,
+            max: 100,
+            dimension: 0,
+            orient: 'horizontal',
+            right: 10,
+            top: 'top',
+            itemWidth: 10,
+            text: ['HIGH', 'LOW'],
+            calculable: true,
+            show: false, // show colormap
+            inRange: {
+                color: ['#f2c31a', '#24b7f2']
+            }
+        },
+        xAxis: [{}],
+        yAxis: [{ show: false }],
+        series: [{
+            type: 'scatter',
+            data: series,
+            symbolSize: 5
+        }]
+    };
+
+    // Display stacked graph
+    option1 && myChart1.setOption(option1);
+
+    // --------------------------------------------------------
+    // Draw stacked around a center
+    // --------------------------------------------------------
+
+    // Create series
+    var series = []
+    for (const [key, value] of Object.entries(groups)) {
+        value.forEach(function (item, idx) {
+            var c1 = Math.floor(value.length / 2)
+            var c2 = (value.length % 2) * 0.5
+            series.push([item.distance, (idx - (c1 + c2)) + 0.5, item])
+        })
+    };
+
+    // Create variables
+    var chartDom2 = document.getElementById('chart-swarmplot');
+    var myChart2 = echarts.init(chartDom2);
+    var option2;
+
+    option2 = {
+        tooltip: {
+            position: 'top'
+        },
+        title: {
+            left: 'center',
+            text: "Distance",
+            subtext: 'Points with same value are stacked around center'
+        },
+        grid: {
+            right: 10,
+            left: 10
+        },
+        visualMap: {
+            min: 0,
+            max: 100,
+            dimension: 0,
+            orient: 'horizontal',
+            right: 10,
+            top: 'top',
+            itemWidth: 10,
+            text: ['HIGH', 'LOW'],
+            calculable: true,
+            show: false, // show colormap
+            inRange: {
+                color: ['#f2c31a', '#24b7f2']
+            }
+        },
+        xAxis: [{
+            axisLine: {
+                onZero: false
+            }
+        }],
+        yAxis: [{ show: false }],
+        series: [{
+            type: 'scatter',
+            data: series,
+            symbolSize: 5
+        }]
+    };
+
+    // Display stacked graph
+    option2 && myChart2.setOption(option2);
+
+    // Add event listeners
+    window.addEventListener('resize', myChart1.resize)
+    window.addEventListener('resize', myChart2.resize)
+
+</script>
+</html>
