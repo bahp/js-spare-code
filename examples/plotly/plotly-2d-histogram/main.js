@@ -94,10 +94,10 @@ var layout = {
     zeroline: false
   },
   margin: {
-    t:0,
-    b:0,
-    l:15,
-    r:0
+    t:40,
+    b:40,
+    l:40,
+    r:40
   }
 };
 
