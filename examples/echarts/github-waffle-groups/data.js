@@ -110,6 +110,101 @@ var CMAPS = {
         '#D291BC',
         '#FEC8D8',
         '#FFDFD3'
+    ],
+    map7: [ // https://www.schemecolor.com/im-helpless.php
+        '#777891',
+        '#B0CFA5',
+        '#FDF3BE',
+        '#F3CA8D',
+        '#D4A595'
+    ],
+    map8: [ // https://www.schemecolor.com/rooted-strongly.php
+        '#948D50',
+        '#47543C',
+        '#E3CAA1',
+        '#BA6F64',
+        '#D29C67'
+    ],
+    map9: [ // https://www.schemecolor.com/green-yellow-brown-pastels.php
+        '#8ABF96',
+        '#B9E0A2',
+        '#FFF9B5',
+        '#FFDAAB',
+        '#D9A38F',
+        '#B38F8F'
+    ],
+    map10: [
+        '#F0ECD3',
+        '#B2CECF',
+        '#95A6C2',
+        '#F0E2D8'
+    ],
+
+    // ---------------------------------------------
+    // Body Temperature
+    // ---------------------------------------------
+    map_bt_1: [ // Used for body temperature
+        {min: 0, max:35.9, color: '#FFEC00', label: 'low'},
+        {min: 35.9, max: 37.1, color: '#A6CE39', label: 'normal'},
+        {min: 37.1, max: 38.1, color: '#FFB600', label: 'high'},
+        {min: 38.1, max: 1000, color: '#990711', label: 'fever'},
+    ],
+    map_bt_2: [ // Used for body temperature
+        {min: 0, max:35.9, color: '#E3CAA1', label: 'low'},
+        {min: 35.9, max: 37.1, color: '#948D50', label: 'normal'},
+        {min: 37.1, max: 38.1, color: '#D29C67', label: 'high'},
+        {min: 38.1, max: 1000, color: '#BA6F64', label: 'fever'},
+    ],
+    map_bt_3: [ // Used for body temperature
+        {min: 0, max:35.9, color: '#FFF9B5', label: 'low'},
+        {min: 35.9, max: 37.1, color: '#B9E0A2', label: 'normal'},
+        {min: 37.1, max: 38.1, color: '#D9A38F', label: 'high'},
+        {min: 38.1, max: 1000, color: '#B38F8F', label: 'fever'},
+    ],
+
+    // ---------------------------------------------
+    // Blood Pressure
+    // ---------------------------------------------
+    // Ranges from https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings
+    map_bp_1: [ // Used for blood pressure
+        {min: 0, max: 120, color: '#A6CE39', label: 'normal'},
+        {min: 120, max: 129, color: '#FFEC00', label: 'elevated'},
+        {min: 129, max: 139, color: '#FFB600', label: 'hypertension S1'},
+        {min: 139, max: 180, color: '#BA3A02', label: 'hypertension S2'},
+        {min: 180, max: 2000, color: '#990711', label: 'hypertensive crisis'},
+    ],
+    map_bp_2: [ // Used for blood pressure
+        {min: 0, max: 120, color: '#B9E0A2', label: 'normal'},
+        {min: 120, max: 129, color: '#FFF9B5', label: 'elevated'},
+        {min: 129, max: 139, color: '#FFDAAB', label: 'hypertension S1'},
+        {min: 139, max: 180, color: '#D9A38F', label: 'hypertension S2'},
+        {min: 180, max: 2000, color: '#B38F8F', label: 'hypertensive crisis'},
+    ],
+
+    // ---------------------------------------------
+    // Oxygen Saturation
+    // ---------------------------------------------
+    map_o2_1: [
+        {min: 0, max: 95, color: '#BA6F64', label: 'low'},
+        {min: 95, max: 100, color: '#948D50', label: 'normal'},
+    ],
+    map_o2_2: [
+        {min: 0, max: 95, color: '#B38F8F', label: 'low'},
+        {min: 95, max: 100, color: '#B9E0A2', label: 'normal'},
+    ],
+
+    // ---------------------------------------------
+    // Heart rate
+    // ---------------------------------------------
+    map_hr_1: [
+        {min: 0, max: 60, color: '#D29C67', label: 'Brady.'},
+        {min: 60, max: 100, color: '#948D50', label: 'Normal'},
+        {min: 100, max: 200, color: '#BA6F64', label: 'Tachy.'},
+    ],
+    map_hr_2: [
+        {min: 0, max: 60, color: '#FFDAAB', label: 'Brady.'},
+        {min: 60, max: 100, color: '#B9E0A2', label: 'Normal'},
+        {min: 100, max: 200, color: '#B38F8F', label: 'Tachy.'},
     ]
 }
 
@@ -216,14 +311,7 @@ const CONFIG_LIST = [
                 show: true,
                 type: 'piecewise',
                 text: ['High', 'Low'], // remove to show labels
-                pieces: [
-                    {min: 0, max:120, color: '#A6CE39', label: 'normal'},
-                    {min: 120, max: 129, color: '#FFEC00', label: 'elevated'},
-                    {min: 129, max: 139, color: '#FFB600', label: 'hypertension S1'},
-                    {min: 139, max: 180, color: '#BA3A02', label: 'hypertension S2'},
-                    {min: 180, max: 2000, color: '#990711', label: 'hypertensive crisis'},
-                ]
-                // https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings
+                pieces: CMAPS.map_bp_2
             },
         }
     },
@@ -249,12 +337,7 @@ const CONFIG_LIST = [
                 show: true,
                 type: 'piecewise',
                 text: ['High', 'Low'], // remove to show labels
-                pieces: [
-                    {min: 0, max:35.9, color: '#FFEC00', label: 'low'},
-                    {min: 35.9, max: 37.1, color: '#A6CE39', label: 'normal'},
-                    {min: 37.1, max: 38.1, color: '#FFB600', label: 'high'},
-                    {min: 38.1, max: 1000, color: '#990711', label: 'fever'},
-                ]
+                pieces: CMAPS.map_bt_3
             },
             inrange: {
                 show: true,
@@ -281,6 +364,12 @@ const CONFIG_LIST = [
                 dimension: 2,
                 min: 50,
                 max: 200,
+            },
+            discrete: {
+                show: true,
+                type: 'piecewise',
+                text: ['High', 'Low'], // remove to show labels
+                pieces: CMAPS.map_hr_2
             }
         }
     },
@@ -292,6 +381,15 @@ const CONFIG_LIST = [
         range: {
             normal: [95, 100],
             range: [70, 100]
+        },
+        visualMap: {
+            continuous: {},
+            discrete: {
+                show: true,
+                type: 'piecewise',
+                text: ['High', 'Low'], // remove to show labels
+                pieces: CMAPS.map_o2_2
+            },
         }
     },
 
@@ -456,30 +554,30 @@ function getVirtualDataManual() {
         ['2023-04-02', 'DIAG', 85, 'Acute kidney injury'],
 
         // Vital Signs
-        ['2023-03-01', 'BTMP', 35],
-        ['2023-03-01', 'BTMP', 36],
-        ['2023-03-02', 'BTMP', 37],
-        ['2023-03-07', 'BTMP', 38],
-        ['2023-03-08', 'BTMP', 39],
-        ['2023-03-09', 'BTMP', 40],
-        ['2023-03-10', 'BTMP', 41],
-        ['2023-03-11', 'BTMP', 42],
-        ['2023-03-12', 'BTMP', 43],
-        ['2023-03-13', 'BTMP', 42],
-        ['2023-03-14', 'BTMP', 41],
-        ['2023-03-15', 'BTMP', 40],
-        ['2023-03-21', 'BTMP', 39],
-        ['2023-03-22', 'BTMP', 38],
+        ['2023-03-01', 'BTMP', 36.5],
+        ['2023-03-01', 'BTMP', 36.6],
+        ['2023-03-02', 'BTMP', 36.7],
+        ['2023-03-07', 'BTMP', 36.8],
+        ['2023-03-08', 'BTMP', 36.9],
+        ['2023-03-09', 'BTMP', 37.0],
+        ['2023-03-10', 'BTMP', 37.0],
+        ['2023-03-11', 'BTMP', 37.0],
+        ['2023-03-12', 'BTMP', 37.0],
+        ['2023-03-13', 'BTMP', 37.0],
+        ['2023-03-14', 'BTMP', 37.0],
+        ['2023-03-15', 'BTMP', 37.0],
+        ['2023-03-21', 'BTMP', 34],
+        ['2023-03-22', 'BTMP', 36],
         ['2023-03-23', 'BTMP', 37],
-        ['2023-03-24', 'BTMP', 36],
-        ['2023-03-25', 'BTMP', 35],
-        ['2023-03-26', 'BTMP', 34],
-        ['2023-03-27', 'BTMP', 33],
-        ['2023-03-28', 'BTMP', 32],
-        ['2023-03-29', 'BTMP', 31],
-        ['2023-03-30', 'BTMP', 30],
-        ['2023-03-31', 'BTMP', 29],
-        ['2023-04-15', 'BTMP', 26],
+        ['2023-03-24', 'BTMP', 38],
+        ['2023-03-25', 'BTMP', 38],
+        ['2023-03-26', 'BTMP', 40],
+        ['2023-03-27', 'BTMP', 41],
+        ['2023-03-28', 'BTMP', 40],
+        ['2023-03-29', 'BTMP', 38],
+        ['2023-03-30', 'BTMP', 38],
+        ['2023-03-31', 'BTMP', 37],
+        ['2023-04-15', 'BTMP', 36],
 
         ['2023-03-01', 'HR', 60],
         ['2023-03-01', 'HR', 62],
@@ -492,16 +590,16 @@ function getVirtualDataManual() {
         ['2023-03-12', 'HR', 85],
         ['2023-03-13', 'HR', 90],
         ['2023-03-14', 'HR', 100],
-        ['2023-03-15', 'HR', 110],
-        ['2023-03-21', 'HR', 120],
-        ['2023-03-22', 'HR', 150],
-        ['2023-03-23', 'HR', 120],
-        ['2023-03-24', 'HR', 110],
-        ['2023-03-25', 'HR', 100],
-        ['2023-03-26', 'HR', 90],
-        ['2023-03-27', 'HR', 80],
-        ['2023-03-28', 'HR', 77],
-        ['2023-03-29', 'HR', 76],
+        ['2023-03-15', 'HR', 100],
+        ['2023-03-21', 'HR', 55],
+        ['2023-03-22', 'HR', 55],
+        ['2023-03-23', 'HR', 58],
+        ['2023-03-24', 'HR', 60],
+        ['2023-03-25', 'HR', 90],
+        ['2023-03-26', 'HR', 130],
+        ['2023-03-27', 'HR', 150],
+        ['2023-03-28', 'HR', 120],
+        ['2023-03-29', 'HR', 96],
         ['2023-03-30', 'HR', 75],
         ['2023-03-31', 'HR', 74],
         ['2023-04-01', 'HR', 73],
@@ -535,12 +633,12 @@ function getVirtualDataManual() {
         ['2023-03-02', 'O2SAT', 99],
         ['2023-03-08', 'O2SAT', 98],
         ['2023-03-09', 'O2SAT', 97],
-        ['2023-03-10', 'O2SAT', 96],
-        ['2023-03-11', 'O2SAT', 95],
-        ['2023-03-12', 'O2SAT', 94],
-        ['2023-03-13', 'O2SAT', 93],
-        ['2023-03-14', 'O2SAT', 92],
-        ['2023-03-22', 'O2SAT', 91],
+        ['2023-03-10', 'O2SAT', 99],
+        ['2023-03-11', 'O2SAT', 98],
+        ['2023-03-12', 'O2SAT', 99],
+        ['2023-03-13', 'O2SAT', 98],
+        ['2023-03-14', 'O2SAT', 99],
+        ['2023-03-22', 'O2SAT', 97],
         ['2023-03-23', 'O2SAT', 90],
         ['2023-03-24', 'O2SAT', 89],
         ['2023-03-25', 'O2SAT', 88],
@@ -548,10 +646,10 @@ function getVirtualDataManual() {
         ['2023-03-27', 'O2SAT', 86],
         ['2023-03-28', 'O2SAT', 85],
         ['2023-03-29', 'O2SAT', 84],
-        ['2023-03-30', 'O2SAT', 83],
-        ['2023-04-01', 'O2SAT', 82],
-        ['2023-04-02', 'O2SAT', 81],
-        ['2023-04-15', 'O2SAT', 80],
+        ['2023-03-30', 'O2SAT', 98],
+        ['2023-04-01', 'O2SAT', 99],
+        ['2023-04-02', 'O2SAT', 97],
+        ['2023-04-15', 'O2SAT', 98],
 
         // Laboratory Results
         ['2023-03-01', 'HAE', 1],

@@ -51,6 +51,12 @@
     </div>
   </div>
 
+  <div class="row mt-5">
+    <div class="col-12">
+      <div id='chart-bar'></div>
+    </div>
+  </div>
+
 </div>
 
 </body>
@@ -229,9 +235,66 @@
     // Display stacked graph
     option2 && myChart2.setOption(option2);
 
+    // --------------------------------------------------------
+    // Draw bar chart
+    // --------------------------------------------------------
+    // Create series
+    var series = []
+    for (const [key, value] of Object.entries(groups)) {
+        series.push([key, value.length, value])
+    };
+
+    // Create echart
+    var chartDom3 = document.getElementById('chart-bar');
+    var myChart3 = echarts.init(chartDom3);
+    var option3;
+
+    // Define options
+    option3 = {
+        tooltip: {
+            position: 'top'
+        },
+        title: {
+            left: 'center',
+            text: "Distance",
+            subtext: 'Total points number indicated by bar height'
+        },
+        grid: {
+            right: 10,
+            left: 10
+        },
+        visualMap: {
+            min: 0,
+            max: 100,
+            dimension: 0,
+            orient: 'horizontal',
+            right: 10,
+            top: 'top',
+            itemWidth: 10,
+            text: ['HIGH', 'LOW'],
+            calculable: true,
+            show: false, // show colormap
+            inRange: {
+                color: ['#f2c31a', '#24b7f2']
+            }
+        },
+        xAxis: [{}],
+        yAxis: [{ show: false }],
+        series: [{
+            type: 'bar',
+            data: series,
+        }]
+    };
+
+    // Display stacked graph
+    option3 && myChart3.setOption(option3);
+
+
+
     // Add event listeners
     window.addEventListener('resize', myChart1.resize)
     window.addEventListener('resize', myChart2.resize)
+    window.addEventListener('resize', myChart3.resize)
 
 </script>
 </html>

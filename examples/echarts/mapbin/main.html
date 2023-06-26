@@ -1,0 +1,516 @@
+<html>
+<head>
+  <meta name="viewport" content="widthdevice-width, initial-scale=1"/>
+
+  <!-- JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/echarts/5.3.3/echarts.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js'></script>
+
+  <!-- CSS only -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
+  <link rel="stylesheet" href="./main.css">
+  <script src='./data.js'></script>
+  <script src='./conrec.js'></script>
+
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ------------------- -->
+  <!-- Description         -->
+  <!-- ------------------- -->
+  <div class="row">
+    <div class="col-12">
+      <!-- Info text -->
+      <div class="alert alert-warning small mt-5 pt-1 pb-1" role="alert">
+        <p class="text-justify mt-2">
+          This example is incomplete. It would be nice to compute and display the
+          contour lines but eCharts Apache does not have that functionality. It
+          should be possible to compute the contours with conrec.js or d3.js. It is
+          easier to use d3.js library to display contour lines. The eCharts Apache
+          library has an additional 'custom' display option which could be used
+          specify how to render your item. Additionally, it is possible to use the
+          VisualMap picewise builtin feature which is an approximation. Would
+          any of these options be adequate?
+        </p>
+
+        <p class="text-center">
+          https://github.com/jasondavies/conrec.js <br>
+          https://github.com/d3/d3-contour
+        </p>
+
+        <p>
+          Enable cmap selection with a dropdown <br>
+          Enable click on scatter element <br>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------------------- -->
+  <!-- Chart                        -->
+  <!-- ---------------------------- -->
+  <div class="row">
+
+    <!-- First Column -->
+    <div class="col-4">
+      <div class="form-floating mb-1">
+        <select id='selector-data' class="form-select form-select-sm custom-select">
+          <option value=0 class="ml-3"> Gaussian </option>
+          <option value=1> Make01 </option>
+          <option value=2> Make02</option>
+          <option value=3> Make03</option>
+          <option value=4> Make04 </option>
+          <option value=5> Noise </option>
+          <option value=6 disabled> Dengue </option>
+        </select>
+         <label for="selector-data"> Choose background </label>
+      </div>
+
+      <div class="form-group form-control-sm border rounded p-2">
+        <small class="form-text text-muted">Marker size</small>
+        <div class="input-group d-flex justify-content-between">
+          <input type="range" id="size" name="volume" min=1 max=10 value=3>
+          <span class="text-muted" id="size-val">3</span>
+        </div>
+      </div>
+
+      <div class="form-group form-control-sm border rounded p-2 mt-1">
+        <small class="form-text text-muted">Opacity</small>
+        <div class="input-group d-flex justify-content-between">
+          <input type="range" id="opacity" name="volume" min=0 max=1 step=0.1 value=1>
+          <span class="text-muted" id="opacity-val">1</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!--
+    <div class="col-4">
+      <div class="form-floating mb-1 ml-0">
+        <select id='selector-cmap' class="form-select form-select-sm pl-sm-3 custom-select">
+          <option value=0> CMAP1 </option>
+          <option value=1> CMAP2 </option>
+          <option value=2> CMAP3 </option>
+          <option value=3> CMAP4 </option>
+          <option value=4> CMAP5 </option>
+        </select>
+         <label for="selector-cmap"> Choose colormap </label>
+      </div>
+    </div>
+    -->
+
+    <!-- Second Column -->
+    <div class="col-4">
+      <div class="form-group form-control-sm border rounded p-2">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="contours" disabled>
+          <label class="form-check-label" for="contours"> Contours </label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="discrete">
+          <label class="form-check-label" for="discrete"> Discrete</label>
+        </div>
+        <br>
+        <small class="form-text text-muted">Number of levels</small>
+        <div class="input-group d-flex justify-content-between">
+          <input type="range" id="splitNumber" name="splitNumber" min=1 max=20 value=10>
+          <span class="text-muted" id="splitNumber-val">10</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4"></div>
+  </div>
+
+
+  <div class="row mt-5">
+    <div class="col-12">
+      <div id='chart-container'></div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-12">
+      <!-- Info text -->
+      <div class="alert alert-info small mt-5 pt-1 pb-1" role="alert">
+        <p class="mt-2">
+          <b>Implementation note</b>
+        </p>
+        <p class="text-justify">
+          The background represents two different things depending on the feature of
+          interest. If the original feature is <b>boolean</b> (e.g. dengue diagnosis) the
+          z value is related with the number of positive values in the bin. This can
+          be done in two different ways: (i) estimating the density distribution using
+          a gaussian kernel in which only 'true' values found on the bin are considered
+          or (ii) compute the ratio of 'true' to 'positive' samples. Note in the latter
+          the 'false' values are also considered. If the original feature is <b>numeric</b>,
+          the mean of all the values within the bin is computed. Finally, if the feature
+          is <b>enumerated</b> the background might or might not be displayed but these
+          categories can be displayed using the colors in the scatter plot.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+
+<script>
+
+    // Event listener marker size.
+    $('#size').on('change', function (e) {
+        $('#size-val').html($(this).val())
+        option.series[1].symbolSize = $(this).val()
+        option && myChart.setOption(option);
+    })
+
+    // Event listener opacity
+    $('#opacity').on('change', function (e) {
+        $('#opacity-val').html($(this).val())
+        option.visualMap.inRange.opacity = $(this).val()
+        option && myChart.setOption(option);
+    })
+
+    // Event listener splitNumber
+    $('#splitNumber').on('change', function (e) {
+        $('#splitNumber-val').html($(this).val())
+        option.visualMap.splitNumber = $(this).val()
+        option && myChart.setOption(option);
+    })
+
+    // Event listener dataset selector
+    $('#selector-data').change(function (event) {
+        var name = event.target.value
+        option.series[0].data = DATA[name]
+        option.visualMap = {
+            ...option.visualMap,
+            min: Math.min(...DATA[name].map(d => d[2])),
+            max: Math.max(...DATA[name].map(d => d[2]))
+        }
+        option && myChart.setOption(option);
+    })
+
+    // Event listener discrete visual map
+    $('#discrete').change(function (event) {
+      if ($('#discrete').prop('checked')) {
+          option.visualMap.type = 'piecewise'
+          //option.visualMap.splitNumber = 7
+      } else
+          option.visualMap.type = 'continuous'
+      option && myChart.setOption(option);
+    })
+
+    // Event listener compute/add contours
+    $('#contours').change(function (event) {
+      if ($('#contours').prop('checked'))
+          //drawContours()
+      option && myChart.setOption(option);
+    })
+
+
+    // ----------------------------------------------------------
+    // Helper functions
+    // ----------------------------------------------------------
+    function renderItem(params, api) {
+        /**
+         * Not being used.
+         **/
+        console.log(api.value(0), api.value(1))
+        return {
+            type: 'rect',
+            shape: {
+                x: api.value(0),
+                y: api.value(1),
+                width: 1,
+                height: 1
+            },
+            style: api.style({
+                stroke: 'rgba(0,0,0,0.1)'
+            }),
+            styleEmphasis: api.styleEmphasis()
+        }
+    }
+
+    function drawContours() {
+        /**
+         *
+         *  .. note:: Seems that the d3.contour library is not
+         *            computing the contours properly or at least
+         *            they are not the same as how they are displayed
+         *            using the visualMap.
+         *
+         *  Includes the contours in the series.
+         *
+         *  // Format data for d3.js contours.
+         *   var n = 100, m = 100, values = new Array(n * m);
+         *   for (var j = 0, k = 0; j <= m; ++j) {
+         *       for (var i = 0; i <= n; ++i, ++k) {
+         *           values[k] = gaussian(i, j)
+         *       }
+         *   }
+         **/
+
+        // Format data for d3.js contours.
+        values = new Array(N * M);
+        option.series[0].data.forEach(function (item) {
+            values[item[0] + item[1]*M] = item[2]
+        });
+
+        // Create the contours
+        var nths = parseInt($('#splitNumber').val());
+        var contours = d3.contours()
+            .size([100, 100])
+            .thresholds('10')(values)
+            //.thresholds([0.2, 0.4, 0.6])(values)
+
+        // Show
+        console.log(contours)
+
+        // Add all contours
+        for (let i = 0; i < contours.length; i++) {
+
+            // No coordinates skip
+            if (contours[i].coordinates.length == 0)
+                continue
+
+            // Create dictionary to display contour line.
+            var d = {
+                name: 'contour-' + i + '-' + contours.value,
+                data: contours[i].coordinates[0][0],
+                type: 'line',
+                smooth: true,
+                symbol: 'none',
+                symbolSize: 5,
+                lineStyle: {
+                    width: 1,
+                    color: COLORS[i]
+                },
+                itemStyle: {
+                    borderWidth: 0.75
+                }
+            }
+
+            // .. note:: It is probably plotting several polygons
+            //           on top of each other so not an ideal
+            //           solution....
+
+            if (CONTOURS.area)
+                d.areaStyle = {
+                    color: COLORS[i],
+                    opacity: 0.2
+                }
+
+            // Add contour
+            option.series.push(d)
+        }
+    }
+
+
+   /* var COLORS = [
+        '#070093',
+        '#1c3fbf',
+        '#1482e5',
+        '#70b4eb',
+        '#b4e0f3',
+        '#ffffff'
+    ];*/
+
+    var COLORS = [
+        '#ffffff',
+        '#ffffbf',
+        '#fee090',
+        '#fdae61',
+        '#f46d43',
+        '#d73027',
+        '#a50026'
+    ]
+
+    // This variable indicate whether the contours should be
+    // computed and displayed. It is not really necessary to
+    // include them as some similar visual effect can be
+    // achieved using the visualMap.
+    var CONTOURS = {
+        show: false,
+        area: false
+    }
+
+    // Width and height
+    var N = 100, M = 100;
+    var N_MARKERS = 100;
+
+    // Create Gaussian generator
+    var gaussian = generateGaussian(amplitude=10,
+        x0=50, y0=50, sigmaX=14, sigmaY=15);
+
+    // This variable contains the different data sets and
+    // the key value. They could be created dynamically on
+    // click but we are creating them all at the beginning
+    // instead for clarity.
+    var DATA = {
+        0: generateData(N, M, gaussian),
+        1: generateData(N, M, make01),
+        2: generateData(N, M, make02),
+        3: generateData(N, M, make03),
+        4: generateData(N, M, make04),
+        5: generateData(N, M, makeNoise)
+        //5: generateDataNoisePerlin(N, M)
+    }
+
+    // Select dataset.
+    var data = DATA[0]
+
+    // Create scatter points
+    var markers = []
+    for (let i = 0; i <= N_MARKERS; i++)
+        markers.push([
+            randomIntegerInRange(10, 90),
+            randomIntegerInRange(10, 90)
+        ])
+
+    // Create trajectory
+    var trajectory = [
+        [10, 10, 'day 1'],
+        [11, 22, 'day 2'],
+        [22, 45, 'day 3'],
+        [36, 50, 'day 4'],
+        [50, 44, 'day 5'],
+        [48, 36, 'day 6'],
+        [33, 18, 'day 7'],
+    ]
+
+    // Create chart
+    var chartDom = document.getElementById('chart-container');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    // Define configuration
+    option = {
+        title: {
+            left: 'center',
+            text: "Latent space",
+            subtext: 'Risk of complication, patients state and trajectory (for one of them)',
+        },
+        tooltip: {},
+        //dataZoom: {},
+        grid: {
+            //height: 4 * M,
+            //width: 4 * N,
+        },
+        visualMap: {
+            seriesIndex: 0,
+            dimension: 2,
+            top: 'middle',
+            right: 0,
+            min: Math.min(... data.map( d => d[2] )),
+            max: Math.max(... data.map( d => d[2] )),
+            calculable: true,
+            realtime: false,
+            show: true,
+            text: ['High', 'Low'],
+            splitNumber: 10,
+            inRange: {
+                opacity: 1,
+                color: COLORS
+            }
+        },
+        xAxis: {
+            type: 'value',
+            splitLine: {
+                 show: false
+            },
+            axisLine: {
+                show: false
+            }
+        },
+        yAxis: {
+            type: 'value',
+            splitLine: {
+                 show: false
+            },
+            axisLine: {
+                show: false
+            }
+        },
+        series: [
+            {
+                name: 'Gaussian',
+                type: 'heatmap',
+                data: data,
+                emphasis: {
+                    itemStyle: {
+                        borderColor: '#333',
+                        borderWidth: 1,
+                    }
+                },
+                silent: true,
+                progressive: 0, // 1000
+                //animation: false
+            },
+            {
+                name: 'Markers',
+                type: 'scatter',
+                data: markers,
+                symbolSize: 3, // make it according to distance?
+                //symbol: 'emptyCircle',
+                itemStyle: {
+                    borderColor: 'black',
+                    //borderWidth: 0,
+                    borderWidth: 0.35,
+                    color: 'white'
+                },
+                emphasis: {
+                    scale: 5
+                }
+            },
+            {
+                data: trajectory,
+                type: 'line',
+                smooth: true,
+                symbol: 'emptyCircle',
+                symbolSize: 5,
+                lineStyle: {
+
+                },
+                itemStyle: {
+                    color: '#3D426B',
+                    borderWidth: 0.75
+                },
+                //areaStyle: {}
+            },
+
+            /**{
+                type: 'custom',
+                coordinateSystem: 'cartesian2d',
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                renderItem: renderItem,
+                animation: false,
+                emphasis: {
+                    itemStyle: {
+                        color: 'yellow'
+                    }
+                },
+                encode: {
+                    tooltip: 2
+                },
+                data: data
+            }**/
+        ]
+    }
+
+    // Show
+    option && myChart.setOption(option);
+
+    // Set window resize listener
+    window.addEventListener('resize', myChart.resize);
+
+</script>
+</html>

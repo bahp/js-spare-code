@@ -14,3 +14,9 @@
   height: 20vh;
   overflow: scroll;
 }
+
+#chart-bar {
+  position: relative;
+  height: 20vh;
+  overflow: scroll;
+}
