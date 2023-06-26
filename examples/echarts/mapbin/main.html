@@ -58,7 +58,7 @@
   <div class="row">
 
     <!-- First Column -->
-    <div class="col-4">
+    <div class="col col-lg-4 mb-1">
       <div class="form-floating mb-1">
         <select id='selector-data' class="form-select form-select-sm custom-select">
           <option value=0 class="ml-3"> Gaussian </option>
@@ -106,10 +106,10 @@
     -->
 
     <!-- Second Column -->
-    <div class="col-4">
+    <div class="col col-lg-4">
       <div class="form-group form-control-sm border rounded p-2">
         <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="contours" disabled>
+          <input class="form-check-input" type="checkbox" role="switch" id="contours">
           <label class="form-check-label" for="contours"> Contours </label>
         </div>
         <div class="form-check form-switch">
@@ -125,7 +125,6 @@
       </div>
     </div>
 
-    <div class="col-4"></div>
   </div>
 
 
@@ -211,7 +210,7 @@
     // Event listener compute/add contours
     $('#contours').change(function (event) {
       if ($('#contours').prop('checked'))
-          //drawContours()
+          drawContours()
       option && myChart.setOption(option);
     })
 
