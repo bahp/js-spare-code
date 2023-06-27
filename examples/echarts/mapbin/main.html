@@ -1,6 +1,6 @@
 <html>
 <head>
-  <meta name="viewport" content="widthdevice-width, initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
   <!-- JavaScript -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -61,15 +61,15 @@
     <div class="col col-lg-4 mb-1">
       <div class="form-floating mb-1">
         <select id='selector-data' class="form-select form-select-sm custom-select">
-          <option value=0 class="ml-3"> Gaussian </option>
-          <option value=1> Make01 </option>
+          <option value=0 class="ml-3"> Gaussian</option>
+          <option value=1> Make01</option>
           <option value=2> Make02</option>
           <option value=3> Make03</option>
-          <option value=4> Make04 </option>
-          <option value=5> Noise </option>
-          <option value=6 disabled> Dengue </option>
+          <option value=4> Make04</option>
+          <option value=5> Noise</option>
+          <option value=6 disabled> Dengue</option>
         </select>
-         <label for="selector-data"> Choose background </label>
+        <label for="selector-data"> Choose background </label>
       </div>
 
       <div class="form-group form-control-sm border rounded p-2">
@@ -199,19 +199,19 @@
 
     // Event listener discrete visual map
     $('#discrete').change(function (event) {
-      if ($('#discrete').prop('checked')) {
-          option.visualMap.type = 'piecewise'
-          //option.visualMap.splitNumber = 7
-      } else
-          option.visualMap.type = 'continuous'
-      option && myChart.setOption(option);
+        if ($('#discrete').prop('checked')) {
+            option.visualMap.type = 'piecewise'
+            //option.visualMap.splitNumber = 7
+        } else
+            option.visualMap.type = 'continuous'
+        option && myChart.setOption(option);
     })
 
     // Event listener compute/add contours
     $('#contours').change(function (event) {
-      if ($('#contours').prop('checked'))
-          drawContours()
-      option && myChart.setOption(option);
+        if ($('#contours').prop('checked'))
+            drawContours()
+        option && myChart.setOption(option);
     })
 
 
@@ -260,7 +260,7 @@
         // Format data for d3.js contours.
         values = new Array(N * M);
         option.series[0].data.forEach(function (item) {
-            values[item[0] + item[1]*M] = item[2]
+            values[item[0] + item[1] * M] = item[2]
         });
 
         // Create the contours
@@ -268,7 +268,7 @@
         var contours = d3.contours()
             .size([100, 100])
             .thresholds('10')(values)
-            //.thresholds([0.2, 0.4, 0.6])(values)
+        //.thresholds([0.2, 0.4, 0.6])(values)
 
         // Show
         console.log(contours)
@@ -313,14 +313,14 @@
     }
 
 
-   /* var COLORS = [
-        '#070093',
-        '#1c3fbf',
-        '#1482e5',
-        '#70b4eb',
-        '#b4e0f3',
-        '#ffffff'
-    ];*/
+    /* var COLORS = [
+         '#070093',
+         '#1c3fbf',
+         '#1482e5',
+         '#70b4eb',
+         '#b4e0f3',
+         '#ffffff'
+     ];*/
 
     var COLORS = [
         '#ffffff',
@@ -346,8 +346,8 @@
     var N_MARKERS = 100;
 
     // Create Gaussian generator
-    var gaussian = generateGaussian(amplitude=10,
-        x0=50, y0=50, sigmaX=14, sigmaY=15);
+    var gaussian = generateGaussian(amplitude = 10,
+        x0 = 50, y0 = 50, sigmaX = 14, sigmaY = 15);
 
     // This variable contains the different data sets and
     // the key value. They could be created dynamically on
@@ -408,8 +408,8 @@
             dimension: 2,
             top: 'middle',
             right: 0,
-            min: Math.min(... data.map( d => d[2] )),
-            max: Math.max(... data.map( d => d[2] )),
+            min: Math.min(...data.map(d => d[2])),
+            max: Math.max(...data.map(d => d[2])),
             calculable: true,
             realtime: false,
             show: true,
@@ -423,7 +423,7 @@
         xAxis: {
             type: 'value',
             splitLine: {
-                 show: false
+                show: false
             },
             axisLine: {
                 show: false
@@ -432,7 +432,7 @@
         yAxis: {
             type: 'value',
             splitLine: {
-                 show: false
+                show: false
             },
             axisLine: {
                 show: false
@@ -475,9 +475,7 @@
                 smooth: true,
                 symbol: 'emptyCircle',
                 symbolSize: 5,
-                lineStyle: {
-
-                },
+                lineStyle: {},
                 itemStyle: {
                     color: '#3D426B',
                     borderWidth: 0.75
