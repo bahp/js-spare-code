@@ -7,12 +7,18 @@
     font-size: 12px;
 }
 
+/* Add new color */
+.text-teal {
+   color: #319997;
+}
+
 /* Fix issue with padding select */
 .form-select-sm {
   padding-left: 0.85em!important;
 }
 
-.input-group-append .input-group-text {
-    border-radius: 0;
-    height: 100%;
+/* Fix issue rounded-left (hardcoded) */
+.rounded-left {
+    border-top-left-radius: 5px!important;
+    border-bottom-left-radius: 5px!important;
 }

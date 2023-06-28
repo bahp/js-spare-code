@@ -20,113 +20,172 @@
 </head>
 <body class="bg-light">
 
+  <div class="container">
 
-<div class="container">
 
-  <div id='warning' class="alert alert-warning small mt-5 pt-1 pb-1 text-center d-none" role="alert">
-    This browser doesn't support persistent data storage
-  </div>
-
-  <!-- ------------------- -->
-  <!-- Description         -->
-  <!-- ------------------- -->
-  <div class="row mt-5 mb-4">
-    <div class="d-flex justify-content-center">
-      <img src="./static/imgs/logo-2.png" width="80"/>
+    <div id='warning' class="alert alert-warning small mt-5 pt-1 pb-1 text-center d-none" role="alert">
+      This browser doesn't support persistent data storage
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-12">
-      <div class="form-floating mb-1">
-        <select id='selector-patient' class="form-select form-select-sm custom-select">
-          <option value=0 class="ml-3" disabled selected> -- </option>
-        </select>
-        <label for="selector-patient"> Select patient </label>
+    <!-- ------------------- -->
+    <!-- Logo                -->
+    <!-- ------------------- -->
+    <div class="row mt-5 mb-4">
+      <div class="d-flex justify-content-center">
+        <img src="./static/imgs/logo-2.png" width="80"/>
       </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col">
-      <input type="text" class="form-control pr-1" placeholder="First name">
-    </div>
-    <div class="col">
-      <input type="text" class="form-control pl-1" placeholder="Last name">
-    </div>
-  </div>
-
-  <div class="row mb-2">
-    <div class="d-flex justify-content-center">
-       <div class="m-2">
-          <label for="date-conception" class="fw-light">Conception</label><br>
-          <input type="date" id="date-conception" name="conception"
-            class="form-control form-control-md">
-       </div>
-      <div class="m-2">
-         <label for="date-delivery">Delivery</label><br>
-         <input type="date" id="date-delivery" name="delivery"
-            class="form-control form-control-md">
-      </div>
-    </div>
-  </div>
-
-  <div class="row  mb-2">
-    <div col="12">
-      <div class="form-group form-control-sm border rounded p-2">
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="contours">
-          <label class="form-check-label" for="contours"> First pregnancy </label>
+    <!-- ------------------- -->
+    <!-- Patient select      -->
+    <!-- ------------------- -->
+    <div class="row">
+      <div class="col-12">
+        <div class="form-floating mb-1">
+          <select id='selector-patient' class="form-select form-select-sm custom-select">
+            <option value=0 class="ml-3" disabled selected> -- </option>
+          </select>
+          <label for="selector-patient"> Select pregnant individual </label>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ---------------------------- -->
-  <!-- Chart                        -->
-  <!-- ---------------------------- -->
-  <div class="row">
-    <div class="col-12 mb-5">
-      <div class="accordion" id="steps"></div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-
-      <div id='conversion-info' class="alert alert-info small mt-5 pt-1 pb-1 text-center" role="alert">
-        Set conception date to enable converor.
+    <div class="row">
+      <!--
+      <div class="col">
+        <input type="text" class="form-control pr-1" placeholder="First name">
       </div>
+      <div class="col">
+        <input type="text" class="form-control pl-1" placeholder="Last name">
+      </div>
+      -->
+    </div>
+
+    <!-- ------------------- -->
+    <!-- Other input         -->
+    <!-- ------------------- -->
+    <div class="row mb-4">
+      <div col="12">
+        <form action="#">
+
+          <div class="input-group mt-2 mb-1">
+            <input type="hidden" name="id">
+            <input type="text" class="form-control rounded-left" name="fullName"
+                   placeholder="Name..."
+                   aria-label="Name..."
+                   aria-describedby="basic-addon2">
+                <input type="submit" id='submit' class="btn btn-outline-secondary">
+          </div>
+
+          <div class="form-group form-control-sm border rounded p-2 mb-1">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="first-pregnancy" name="firstPregnancy">
+              <label class="form-check-label" for="first-pregnancy"> First pregnancy </label>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="allergies" name="allergies">
+              <label class="form-check-label" for="allergies"> Allergies </label>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="high-risk" name="risk">
+              <label class="form-check-label" for="high-risk"> High risk </label>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="high-bmi" name="bmi">
+              <label class="form-check-label" for="high-bmi"> High BMI </label>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-center">
+            <div class="input-group">
+              <!--<label for="date-conception" class="fw-light">Conception</label><br>-->
+              <input type="date" id="date-conception" name="conception"
+                class="form-control form-control-md">
+              <div class="input-group-text">to</div>
+              <!--<label for="date-delivery">Delivery</label><br>-->
+              <input type="date" id="date-delivery" name="delivery"
+                class="form-control form-control-md">
+            </div>
+          </div>
+
+          <div id='message-text-info'
+               class="alert alert-info small text-center mt-2 pt-1 pb-1 d-none"
+               role="alert">
+          </div>
+
+        </form>
+      </div>
+    </div>
 
 
-    <div class="d-flex justify-content-cente">
-      <div class="input-group input-group-lg">
-        <input type="number" class="form-control form-control-lg"
-               id="conversion-week" name="conversion-week"
-               placeholder="Week..." disabled>
-        <div class="input-group-append">
-          <div class="input-group-text">to</div>
+    <!-- ------------------- -->
+    <!-- Date inputs         -->
+    <!-- ------------------- -->
+    <!--
+    <div class="row mb-2">
+      <div class="d-flex justify-content-center">
+         <div class="m-2">
+            <label for="date-conception" class="fw-light">Conception</label><br>
+            <input type="date" id="date-conception" name="conception"
+              class="form-control form-control-md">
+         </div>
+        <div class="m-2">
+           <label for="date-delivery">Delivery</label><br>
+           <input type="date" id="date-delivery" name="delivery"
+              class="form-control form-control-md">
         </div>
-        <input type="date" id="conversion-date" name="conversion-date"
-               class="form-control" disabled>
+      </div>
+    </div>-->
+
+    <!-- ---------------------------- -->
+    <!-- Accordion                    -->
+    <!-- ---------------------------- -->
+    <div class="row">
+      <div class="col-12">
+        <div class="text-center mb-1">
+          Today is at <span id="now" class="text-teal fw-bold">--</span>
+        </div>
+        <div class="accordion" id="steps"></div>
       </div>
     </div>
 
+    <!-- ---------------------------- -->
+    <!-- Conversor                    -->
+    <!-- ---------------------------- -->
+    <div class="row mb-3 mt-2">
+      <div class="col">
+
+        <div id='conversion-info'
+             class="alert alert-info small text-center mt-2 pt-1 pb-1 text-center mb-1"
+             role="alert">
+          Set conception date to enable conversor.
+        </div>
+
+        <div class="d-flex justify-content-center">
+          <div class="input-group input-group-lg-del">
+            <input type="number" class="form-control"
+                   id="conversion-week" name="conversion-week"
+                   placeholder="Week..." disabled>
+            <div class="input-group-text">to</div>
+            <input type="date" id="conversion-date" name="conversion-date"
+                   class="form-control" disabled>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-
-</div>
-
-<template id="entry">
-  <span></span>
-  <span></span>
-</template>
 
 </body>
 <script>
 
     // -------------------------------------------
-    // Helper function
+    // Helper functions
     // -------------------------------------------
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+    }
+
     function addDays(date, days) {
         var result = new Date(date);
         result.setDate(result.getDate() + days);
@@ -137,45 +196,40 @@
         return new Date(date).toISOString().substring(0,10);
     }
 
+    function weeksFromDate(d1, d2) {
+      var diff = datediff(d1, d2)
+      var weeks = diff // 7
+      var days = diff % 7
+      return {
+        weeks: weeks, days: days
+      }
+    }
+
     function datediff(first, second) {
         return Math.round((second - first) / (1000 * 60 * 60 * 24));
     }
 
-    // Enable selecting conception dat
-    $('#date-conception').on('change', function (e) {
-        var dc = new Date($(this).val())
-        var dd = addDays(dc, 40 * 7)
-        $('#date-delivery').val(str2iso(dd))
-        populateAppointments()
-    })
-
-    // Enable selecting delivery date
-    $('#date-delivery').on('change', function (e) {
-        var dd = new Date($(this).val())
-        var dc = addDays(dd, -40 * 7)
-        $('#date-conception').val(str2iso(dc))
-        populateAppointments()
-    })
-
-    // Enable selecting patient
-    $('#selector-patient').on('change', function (e) {
-      // Get selected dataset name
-      var key = e.target.value
-      getPatient(key).then(function(result) {
-        var dc = result.conception
-        $('#date-conception').val(str2iso(dc))
-        $('#date-conception').trigger('change')
-        populateAppointments(result)
-      })
-    })
+    function enableConversor() {
+      /** Enable week to date conversor
+       *
+       * .. note: It requires conception date to work.
+       * */
+      if ($('#date-conception').val() != '') {
+        $('#conversion-week').removeAttr('disabled')
+        $('#conversion-date').removeAttr('disabled')
+        $('#conversion-info').addClass('d-none')
+      } else {
+        $('#conversion-week').attr('disabled', 'disabled')
+        $('#conversion-date').attr('disabled', 'disabled')
+        $('#conversion-info').removeClass('d-none')
+      }
+    }
 
     $('#conversion-date').on('change', function (e) {
         var d1 = new Date($(this).val())
         var d2 = new Date($('#date-conception').val())
-        var days = datediff(d2, d1)
-        var weeks = Math.round(days / 7)
-        console.log(days, weeks)
-        $('#conversion-week').val(weeks)
+        var r = weeksFromDate(d2, d1)
+        $('#conversion-week').val(r.weeks)
     })
 
     $('#conversion-week').on('change', function (e) {
@@ -185,109 +239,159 @@
         $('#conversion-date').val(str2iso(d2))
     })
 
-    function enableConversor() {
-        if ($('#date-conception').val() != '') {
-            $('#conversion-week').removeAttr('disabled')
-            $('#conversion-date').removeAttr('disabled')
-            $('#conversion-info').addClass('d-none')
-        } else {
-            $('#conversion-week').attr('disabled', 'disabled')
-            $('#conversion-date').attr('disabled', 'disabled')
-            $('#conversion-info').removeClass('d-none')
-        }
+    $('#date-conception').on('change', function (e) {
+      /** Enable selection of date of conception **/
+      var dc = new Date($(this).val()) // date conception
+      var dd = addDays(dc, 40 * 7)     // date delivery
+      var dn = new Date()              // date now
+      var r = weeksFromDate(dc, dn)
+      $('#date-delivery').val(str2iso(dd))
+      $('#now').html(`${r.weeks} weeks ${r.days} days`)
+      populateAppointments()
+      enableConversor()
+    })
+
+    // Enable selecting delivery date
+    $('#date-delivery').on('change', function (e) {
+      /** Enable selection of date of delivery **/
+      var dd = new Date($(this).val())  // date delivery
+      var dc = addDays(dd, -40 * 7)     // date conception
+      $('#date-conception').val(str2iso(dc))
+      populateAppointments()
+    })
+
+    // Enable selecting patient
+    $('#selector-patient').on('change', function (e) {
+      /** Enable patiend dropdown selector **/
+      // Get selected dataset name
+      var key = parseInt(e.target.value)
+      console.log("Selected patient...", key)
+      getPatient(key).then(function(result) {
+        console.log("Retrieved data...", result)
+        var dc = result.conception
+        $('#date-conception').val(str2iso(dc))
+        $('#date-conception').trigger('change')
+        populateAppointments()
+        populateForm(result)
+      })
+    })
+
+    //
+    $('#submit').on('click', function (e) {
+      /** Enable saving new patient **/
+
+      // Since jQuery.serializeArray() ignores unchecked checkboxes
+      // and also it does not return a true boolean, this code is
+      // edit to handle this.
+      var p = $('form').serializeArray();
+      $("form input:checkbox").each(function () {
+	        p.push({ name: this.name, value: this.checked });
+	    });
+
+      // Create patient entry
+      var entry = {};
+      p.forEach(k => {
+         entry[k.name] = k.value
+      });
+
+      // If names mismatch it is probably a new patient
+      var selected = $('#selector-patient option:selected').text()
+      var mismatch = entry.fullName != selected
+      var isEmpty = entry.id === ''
+      if (mismatch | isEmpty)
+        delete entry.id
+      else
+        entry.id = parseInt(entry.id)
+
+      // Equivalent
+      //var aux = Object.assign({},
+      //  ...p.map((x) => ({[x.name]: x.value})))
+
+      // Ensure that date conception has been also included!
+      if ($('#date-conception').val() === '') {
+        $('#message-text-info')
+          .text('Please select a conception date!')
+          .removeClass('d-none')
+        return false
+      } else {
+        $('#message-text-info').addClass('d-none')
+      }
+
+      // Update patient
+      updatePatient(entry).then(function(result) {
+        // The value in result is the id of the patient
+        // which is passed to the patient selector so that
+        // it appears selected by default.
+        populatePatientSelectorFromDB(result)
+      });
+
+      return false // avoids refresh and/or redirect
+    })
+
+
+    function populateForm(data) {
+      /** Populate the inputs within the form
+       *
+       * .. note:: Should we use a loop?
+       * **/
+      $('[name=id]').val(data.id)
+      $('[name=fullName]').val(data.fullName)
+      $('[name=firstPregnancy]').prop('checked', data.firstPregnancy)
+      $('[name=allergies]').prop('checked', data.allergies)
+      $('[name=bmi]').prop('checked', data.bmi)
+      $('[name=risk]').prop('checked', data.risk)
     }
 
-    function populateAppointments(patient) {
-        /**
-         *
-         **/
-
-      var stepss = WEEKS.map(function (item) {
-          return {
-              week: item,
-          }
-      })
-
-      if (patient === undefined) {}
-
-      // Get container with appointments (erase)
-      var steps = document.getElementById('steps')
-      steps.innerHTML = ""
-
+    function populateAppointments() {
+      /**
+       * Populate all the appointments.
+       **/
+      //if (patient === undefined) {}
       // Create the HTML for each step.
-      const artists = stepss.map(createStepHTML);
-
-      // Include all steps in the HTML body.
+      const artists = WEEKS_INFO.map(createStepHTML);
+      // Erase the content
+      var $steps = $('#steps').empty()
+      // Include all the artists
       artists.forEach(artist => {
-          document.getElementById('steps').innerHTML += artist;
+          $steps.append(artist);
       });
     }
 
-    //
-    const WEEKS = [
-      2, 16, 24, 28, 32, 36, 38, 40, 41
-    ]
 
     const createStepHTML = function (item) {
-        /**
-         * Creates the HTML content for each of the steps.
-         *
-         * It assumes the item has the following elements
-         *
-         * item = {
-         *   week: 12
-         * }
-         *
-         **/
+      /**
+       * Creates the HTML content for each of the steps.
+       *
+       **/
 
-        /* Useful code...?
-        <ul class="tags-label">
-             ${item.steps.map(tag => `
-               <li class="tag-elm">
-              <a href="#" class="tag">${tag.week}</a>
-            </li>`
-             ).join('')}
-            </ul>
-        */
+      // Compute dates
+      var dc = new Date($('#date-conception').val())
+      var dw = addDays(dc, 7 * item.week)
 
-        // Compute dates
-        var dc = new Date($('#date-conception').val())
-        var dw = addDays(dc, 7 * item.week)
-        var ds = addDays(dw, -3)//addDays(dw, -item.range.low) || -3
-        var de = addDays(dw, 3)//addDays(dw, +item.range.low) || +3
-
-        // Return element
-        return `
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="heading-week-${item.week}">
-              <button class="accordion-button collapsed" type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapse-week-${item.week}"
-                      aria-expanded="false"
-                      aria-controls="collapse-week-${item.week}">
-                <div class="d-flex justify-content-between w-100 pr-5">
-                  <div>
-                     <span class="fw-bold text-secondary">${item.week}</span> weeks
-                  </div>
-                  <!--
-                  <div class="fw-light text-secondary fs-12">
-                    ${ds.toDateString()} — ${de.toDateString()}
-                  </div>
-                  -->
-                  <div class="fw-light text-secondary fs-12">
-                    ${dw.toDateString()}
-                  </div>
-                </div>
-              </button>
-            </h2>
-            <div id="collapse-week-${item.week}" class="accordion-collapse collapse"
-                 aria-labelledby="heading-week-${item.week}"
-                 data-bs-parent="#steps">
-              <div class="accordion-body">
-                ${item.body}
+      // Return element
+      return `
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading-week-${item.week}">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-week-${item.week}"
+                    aria-expanded="false"
+                    aria-controls="collapse-week-${item.week}">
+              <div class="d-flex justify-content-between w-100 pr-5">
+                <div>
+                <h7 class="mb-0 fw-bold text-secondary">${item.week}</h7> weeks
+                <p class="fw-light text-secondary fs-12 mb-0">${dw.toDateString()}</p>
               </div>
+            </button>
+          </h2>
+          <div id="collapse-week-${item.week}" class="accordion-collapse collapse"
+               aria-labelledby="heading-week-${item.week}"
+               data-bs-parent="#steps">
+            <div class="accordion-body">
+              ${item.info}
             </div>
-          </div>`
+          </div>
+        </div>`
     }
 
 
@@ -297,33 +401,33 @@
   // -----------------------------------------------------------
   // Database
   // -----------------------------------------------------------
+  const DEFAULT_DATA = [
+    {
+      fullName: 'Hermione Granger',
+      firstPregnancy: true,
+      allergies: false,
+      risk: false,
+      bmi: false,
+      conception: addDays(new Date(), -getRandomInt(40))
+    },
+    {
+      fullName: 'Rowena Ravenclaw',
+      firstPregnancy: true,
+      allergies: true,
+      risk: true,
+      bmi: false,
+      conception: addDays(new Date(), -getRandomInt(40))
+    }
+  ]
 
-  // This is what our customer data looks like.
-  const customerData = [
-    { ssn: "444-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
-    { ssn: "555-55-5555", name: "Donna", age: 32, email: "donna@home.org" },
-  ];
-
-    const customerData2 = [
-    { ssn: "444-44-7777", name: "Bill", age: 35, email: "bill@company.com" },
-    { ssn: "555-55-7777", name: "Donna", age: 32, email: "donna@home.org" },
-  ];
-
-    const patientData = [
-        { name: 'Veronica', surname: 'Quieti', initials: 'VQ', conception: new Date(1990, 3, 28)},
-        { name: 'Maria', surname: 'Smith', initials: 'MS', conception: new Date(1998, 9, 21)},
-    ]
-
-
+  // Variables
   const dbName = "db_pregnancy";
   const version = 1
-
   let db;
 
   function indexedDBSupport(){
     return 'indexedDB' in window;
   }
-
 
   async function createDatabase(reset=false) {
      return new Promise(function(resolve, reject) {
@@ -339,7 +443,7 @@
              indexedDB.deleteDatabase('db_pregnancy')
 
          // Open request with name and version.
-         // When the database is updated, we can increment the versio number and
+         // When the database is updated, we can increment the version number and
          // define the onupgradeneeded function to perform the necessary updates
          // to ensure it works as expected.
          // see https://javascript.info/indexeddb
@@ -365,7 +469,7 @@
              // could use "initials" as our key path only if it's guaranteed to be
              // unique.
              const objectStore = db.createObjectStore("patients",
-                 {autoIncrement: true, keyPath: 'initials'});
+                 {autoIncrement: true, keyPath: 'id'});
 
              // Create an index to search customers by initials. Since we may have
              // duplicates so we can't use a unique index.
@@ -377,16 +481,17 @@
 
              // Create artificial patients
              objectStore.transaction.oncomplete = (event) => {
-                 console.log('Adding artificial data');
 
                  // Store values in the newly created objectStore.
                  const patientObjectStore = db
                      .transaction("patients", "readwrite")
                      .objectStore("patients");
 
-                 patientData.forEach((patient) => {
+                 DEFAULT_DATA.forEach((patient) => {
                      patientObjectStore.add(patient);
                  });
+
+                 console.log('Adding artificial stored!');
              }
 
              // Transaction completed
@@ -397,63 +502,22 @@
      });
   }
 
-
-  function addCustomer(customer) {
-
-    // Get
-    /*const objectStore = db
-        .transaction("customers", "readwrite")
-        .objectStore("customers")*/
-    const transaction = db.transaction("customers", "readwrite")
-
-          transaction.oncomplete = function(event) {
-              console.log(`trans good`)
-    };
-
-    transaction.onerror = function(event) {
-        console.log(transaction)
-        console.log(event)
-      console.log(`IndexedDB error: ${transaction.errorCode}`)
-    };
-
-    // Add new student
-    const objectStore = transaction.objectStore('customers')
-
-    const request =  objectStore.add(customerData2[0]);
-
-    request.onsuccess = ()=> {
-        // request.result contains key of the added object
-        console.log(`New student added, email: ${request.result}`);
-    }
-
-    request.onerror = (err)=> {
-        console.error(`Error to add new student: ${err}`)
-    }
-  }
-
-  async function createDB(){
-    return new Promise(function(resolve, reject){
-      let request = createDatabase(reset=true)
-        console.log(request)
-        request.onsuccess = function() {
-          resolve(request.result)
-        }
-    })
-  }
-
   async function getPatient(key){
+    /** Get specific patient */
     return new Promise(function(resolve, reject){
       let request = db
         .transaction('patients')
         .objectStore('patients')
         .get(key);
       request.onsuccess = function(){
+        console.log(request.result)
         resolve(request.result);
       }
     });
   };
 
   async function getAllPatients(){
+    /** Retrieve all patients **/
     return new Promise(function(resolve, reject){
       let request = db
         .transaction('patients')
@@ -465,99 +529,76 @@
     });
   }
 
-  function populatePatientSelectorFromDB() {
+  async function updatePatient(p) {
+    /** Updates a patient and adds it if doesnt exist **/
+    return new Promise(function(resolve, reject){
+      console.log("Updating patient in db...", p)
+      let request = db
+        .transaction('patients', 'readwrite')
+        .objectStore('patients')
+        .put(p)
+      request.onsuccess = function(){
+        resolve(request.result);
+      }
+    });
+  }
+
+  function populatePatientSelectorFromDB(selected) {
     /** Retrieves patients from database and populates select **/
     getAllPatients().then(function(result){
-      const selector = document.getElementById("selector-patient");
-      result.forEach(function (item) {
-        let option = document.createElement("option");
-        let optionText = document.createTextNode(item.name);
-        option.setAttribute('value', item.initials);
-        option.appendChild(optionText);
-        selector.appendChild(option);
+      console.log("Retrieved:", result)
+
+      // Get selector dropdown
+      var $selector = $('#selector-patient')
+      // Remove all options but the default one.
+      $selector.find('option').not(':first').remove()
+      // Add all retrieved patients.
+      $.each(result, function (i, item) {
+        $selector.append($('<option/>')
+          .val(item.id)
+          .text(item.fullName))
       })
-    });
+
+      // Simulate dropdown dataset selection
+      if (selected != undefined)
+        $('#selector-patient')
+          .find("option[value=" + selected + "]")
+          .prop('selected', true)
+          .trigger('change')
+    })
   }
 
 
 
-
-
-
-
-    /*indexedDB.open(dbName, version, function (event) {
-      const transaction = db.transaction(["customers"], "readwrite");
-       transaction.oncomplete = (event) => {
-        };
-        transaction.onerror = (event) => {};
-    });*/
-
-    /*
-  indexedDB.open(dbName, version, function (event) {
-      let db = openRequest.result;
-      const transaction = db.transaction(["customers"], "readwrite");
-      const objectStore = transaction.objectStore("customers");
-      customerData.forEach((customer) => {
-          const request = objectStore.add(customer);
-          request.onsuccess = (event) => {
-              // event.target.result === customer.ssn;
-          };
-      });
-  });*/
-
-
-  /*
-  request.then(function (db) {
-    const tx = db.transaction('customers', 'readwrite');
-    const store = tx.objectStore('customers');
-    const item = {
-        ssn: "444-44-7777",
-        name: "Bill",
-        age: 35,
-        email: "bill@company.com"
-    }
-    store.add(item);
-    return tx.complete;
-  })
-  .then(function () {
-    console.log('Added item to the store!');
-  });*/
-
-
-  function updateStudent(key){
-    const objectStore = db.transaction('students')
-                          .objectStore('students');
-
-    const request = objectStore.get(key);
-
-    request.onsuccess = ()=> {
-
-        const student = request.result;
-
-        // Change the name property
-        student.name = 'Fulanito';
-
-        // Create a request to update
-        const updateRequest = objectStore.update(student);
-
-        updateRequest.onsuccess = () => {
-
-            console.log(`Estudent updated, email: ${updateRequest.result}`)
-
-        }
-    }
-}
-
+  // --------------------------------------------------
+  //  Main
+  // --------------------------------------------------
   $(document).ready(function() {
 
-      // Populate empty appointments
-      populateAppointments()
+    // Populate empty appointments
+    populateAppointments()
 
-      // Create database and populate select from it
-      createDatabase(reset=false).then(function(result){
-          populatePatientSelectorFromDB()
-      })
+    // Create database and populate selector
+    createDatabase(reset=false).then(function(result){
+      populatePatientSelectorFromDB()
+    })
   });
+
+
+
+ /*
+
+   // Pure javascript add options to select
+   result.forEach(function (item) {
+      let option = document.createElement("option");
+      let optionText = document.createTextNode(item.name);
+      option.setAttribute('value', item.id);
+      option.appendChild(optionText);
+      selector.appendChild(option);
+   });
+
+  */
+
 
 </script>
 </html>
