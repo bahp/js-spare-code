@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.fs-12 {
+    font-size: 12px;
+}
+
+/* Fix issue with padding select */
+.form-select-sm {
+  padding-left: 0.85em!important;
+}
+
+.input-group-append .input-group-text {
+    border-radius: 0;
+    height: 100%;
+}

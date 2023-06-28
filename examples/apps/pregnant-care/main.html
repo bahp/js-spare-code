@@ -1,0 +1,563 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="icon" type="image/x-icon" href="./static/imgs/logo-2.png">
+  <link rel="apple-touch-icon" sizes="128x128" href="./static/imgs/logo-apple-touchicon.png">
+
+  <!-- JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.4/dexie.min.js"></script>
+  <script src='data.js'></script>
+
+  <!-- CSS only -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
+  <link rel="stylesheet" href="./main.css">
+</head>
+<body class="bg-light">
+
+
+<div class="container">
+
+  <div id='warning' class="alert alert-warning small mt-5 pt-1 pb-1 text-center d-none" role="alert">
+    This browser doesn't support persistent data storage
+  </div>
+
+  <!-- ------------------- -->
+  <!-- Description         -->
+  <!-- ------------------- -->
+  <div class="row mt-5 mb-4">
+    <div class="d-flex justify-content-center">
+      <img src="./static/imgs/logo-2.png" width="80"/>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="form-floating mb-1">
+        <select id='selector-patient' class="form-select form-select-sm custom-select">
+          <option value=0 class="ml-3" disabled selected> -- </option>
+        </select>
+        <label for="selector-patient"> Select patient </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <input type="text" class="form-control pr-1" placeholder="First name">
+    </div>
+    <div class="col">
+      <input type="text" class="form-control pl-1" placeholder="Last name">
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="d-flex justify-content-center">
+       <div class="m-2">
+          <label for="date-conception" class="fw-light">Conception</label><br>
+          <input type="date" id="date-conception" name="conception"
+            class="form-control form-control-md">
+       </div>
+      <div class="m-2">
+         <label for="date-delivery">Delivery</label><br>
+         <input type="date" id="date-delivery" name="delivery"
+            class="form-control form-control-md">
+      </div>
+    </div>
+  </div>
+
+  <div class="row  mb-2">
+    <div col="12">
+      <div class="form-group form-control-sm border rounded p-2">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="contours">
+          <label class="form-check-label" for="contours"> First pregnancy </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------------------------- -->
+  <!-- Chart                        -->
+  <!-- ---------------------------- -->
+  <div class="row">
+    <div class="col-12 mb-5">
+      <div class="accordion" id="steps"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+
+      <div id='conversion-info' class="alert alert-info small mt-5 pt-1 pb-1 text-center" role="alert">
+        Set conception date to enable converor.
+      </div>
+
+
+    <div class="d-flex justify-content-cente">
+      <div class="input-group input-group-lg">
+        <input type="number" class="form-control form-control-lg"
+               id="conversion-week" name="conversion-week"
+               placeholder="Week..." disabled>
+        <div class="input-group-append">
+          <div class="input-group-text">to</div>
+        </div>
+        <input type="date" id="conversion-date" name="conversion-date"
+               class="form-control" disabled>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<template id="entry">
+  <span></span>
+  <span></span>
+</template>
+
+</body>
+<script>
+
+    // -------------------------------------------
+    // Helper function
+    // -------------------------------------------
+    function addDays(date, days) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
+
+    function str2iso(date) {
+        return new Date(date).toISOString().substring(0,10);
+    }
+
+    function datediff(first, second) {
+        return Math.round((second - first) / (1000 * 60 * 60 * 24));
+    }
+
+    // Enable selecting conception dat
+    $('#date-conception').on('change', function (e) {
+        var dc = new Date($(this).val())
+        var dd = addDays(dc, 40 * 7)
+        $('#date-delivery').val(str2iso(dd))
+        populateAppointments()
+    })
+
+    // Enable selecting delivery date
+    $('#date-delivery').on('change', function (e) {
+        var dd = new Date($(this).val())
+        var dc = addDays(dd, -40 * 7)
+        $('#date-conception').val(str2iso(dc))
+        populateAppointments()
+    })
+
+    // Enable selecting patient
+    $('#selector-patient').on('change', function (e) {
+      // Get selected dataset name
+      var key = e.target.value
+      getPatient(key).then(function(result) {
+        var dc = result.conception
+        $('#date-conception').val(str2iso(dc))
+        $('#date-conception').trigger('change')
+        populateAppointments(result)
+      })
+    })
+
+    $('#conversion-date').on('change', function (e) {
+        var d1 = new Date($(this).val())
+        var d2 = new Date($('#date-conception').val())
+        var days = datediff(d2, d1)
+        var weeks = Math.round(days / 7)
+        console.log(days, weeks)
+        $('#conversion-week').val(weeks)
+    })
+
+    $('#conversion-week').on('change', function (e) {
+        var weeks = $(this).val()
+        var d1 = new Date($('#date-conception').val())
+        var d2 = addDays(d1, weeks*7)
+        $('#conversion-date').val(str2iso(d2))
+    })
+
+    function enableConversor() {
+        if ($('#date-conception').val() != '') {
+            $('#conversion-week').removeAttr('disabled')
+            $('#conversion-date').removeAttr('disabled')
+            $('#conversion-info').addClass('d-none')
+        } else {
+            $('#conversion-week').attr('disabled', 'disabled')
+            $('#conversion-date').attr('disabled', 'disabled')
+            $('#conversion-info').removeClass('d-none')
+        }
+    }
+
+    function populateAppointments(patient) {
+        /**
+         *
+         **/
+
+      var stepss = WEEKS.map(function (item) {
+          return {
+              week: item,
+          }
+      })
+
+      if (patient === undefined) {}
+
+      // Get container with appointments (erase)
+      var steps = document.getElementById('steps')
+      steps.innerHTML = ""
+
+      // Create the HTML for each step.
+      const artists = stepss.map(createStepHTML);
+
+      // Include all steps in the HTML body.
+      artists.forEach(artist => {
+          document.getElementById('steps').innerHTML += artist;
+      });
+    }
+
+    //
+    const WEEKS = [
+      2, 16, 24, 28, 32, 36, 38, 40, 41
+    ]
+
+    const createStepHTML = function (item) {
+        /**
+         * Creates the HTML content for each of the steps.
+         *
+         * It assumes the item has the following elements
+         *
+         * item = {
+         *   week: 12
+         * }
+         *
+         **/
+
+        /* Useful code...?
+        <ul class="tags-label">
+             ${item.steps.map(tag => `
+               <li class="tag-elm">
+              <a href="#" class="tag">${tag.week}</a>
+            </li>`
+             ).join('')}
+            </ul>
+        */
+
+        // Compute dates
+        var dc = new Date($('#date-conception').val())
+        var dw = addDays(dc, 7 * item.week)
+        var ds = addDays(dw, -3)//addDays(dw, -item.range.low) || -3
+        var de = addDays(dw, 3)//addDays(dw, +item.range.low) || +3
+
+        // Return element
+        return `
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="heading-week-${item.week}">
+              <button class="accordion-button collapsed" type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse-week-${item.week}"
+                      aria-expanded="false"
+                      aria-controls="collapse-week-${item.week}">
+                <div class="d-flex justify-content-between w-100 pr-5">
+                  <div>
+                     <span class="fw-bold text-secondary">${item.week}</span> weeks
+                  </div>
+                  <!--
+                  <div class="fw-light text-secondary fs-12">
+                    ${ds.toDateString()} — ${de.toDateString()}
+                  </div>
+                  -->
+                  <div class="fw-light text-secondary fs-12">
+                    ${dw.toDateString()}
+                  </div>
+                </div>
+              </button>
+            </h2>
+            <div id="collapse-week-${item.week}" class="accordion-collapse collapse"
+                 aria-labelledby="heading-week-${item.week}"
+                 data-bs-parent="#steps">
+              <div class="accordion-body">
+                ${item.body}
+              </div>
+            </div>
+          </div>`
+    }
+
+
+
+
+
+  // -----------------------------------------------------------
+  // Database
+  // -----------------------------------------------------------
+
+  // This is what our customer data looks like.
+  const customerData = [
+    { ssn: "444-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
+    { ssn: "555-55-5555", name: "Donna", age: 32, email: "donna@home.org" },
+  ];
+
+    const customerData2 = [
+    { ssn: "444-44-7777", name: "Bill", age: 35, email: "bill@company.com" },
+    { ssn: "555-55-7777", name: "Donna", age: 32, email: "donna@home.org" },
+  ];
+
+    const patientData = [
+        { name: 'Veronica', surname: 'Quieti', initials: 'VQ', conception: new Date(1990, 3, 28)},
+        { name: 'Maria', surname: 'Smith', initials: 'MS', conception: new Date(1998, 9, 21)},
+    ]
+
+
+  const dbName = "db_pregnancy";
+  const version = 1
+
+  let db;
+
+  function indexedDBSupport(){
+    return 'indexedDB' in window;
+  }
+
+
+  async function createDatabase(reset=false) {
+     return new Promise(function(resolve, reject) {
+
+         // Not supported show warning
+         if (!indexedDBSupport()) {
+             $('#warning').removeClass('d-none')
+             return
+         }
+
+         // Delete (for testing)
+         if (reset)
+             indexedDB.deleteDatabase('db_pregnancy')
+
+         // Open request with name and version.
+         // When the database is updated, we can increment the versio number and
+         // define the onupgradeneeded function to perform the necessary updates
+         // to ensure it works as expected.
+         // see https://javascript.info/indexeddb
+         const request = window.indexedDB.open(dbName, version);
+
+         request.onsuccess = (event) => {
+             console.info('Successful database connection!')
+             db = request.result;
+             resolve(request.result)
+         }
+
+         request.onerror = (event) => {
+             console.error(`IndexedDB error: ${request.errorCode}`);
+         };
+
+         request.onupgradeneeded = (event) => {
+             console.info('Database created!');
+
+             // Get database
+             const db = request.result;
+
+             // Create an objectStore to hold information about our customers. We
+             // could use "initials" as our key path only if it's guaranteed to be
+             // unique.
+             const objectStore = db.createObjectStore("patients",
+                 {autoIncrement: true, keyPath: 'initials'});
+
+             // Create an index to search customers by initials. Since we may have
+             // duplicates so we can't use a unique index.
+             objectStore.createIndex("initials", "initials", {unique: false});
+
+             // Create an index to search customers by email. We want to ensure
+             // that no two customers have the same email, so use a unique index.
+             //objectStore.createIndex("email", "email", { unique: true });
+
+             // Create artificial patients
+             objectStore.transaction.oncomplete = (event) => {
+                 console.log('Adding artificial data');
+
+                 // Store values in the newly created objectStore.
+                 const patientObjectStore = db
+                     .transaction("patients", "readwrite")
+                     .objectStore("patients");
+
+                 patientData.forEach((patient) => {
+                     patientObjectStore.add(patient);
+                 });
+             }
+
+             // Transaction completed
+             objectStore.transaction.oncompleted = (e) => {
+                 console.log('Object store "patient" created');
+             }
+         };
+     });
+  }
+
+
+  function addCustomer(customer) {
+
+    // Get
+    /*const objectStore = db
+        .transaction("customers", "readwrite")
+        .objectStore("customers")*/
+    const transaction = db.transaction("customers", "readwrite")
+
+          transaction.oncomplete = function(event) {
+              console.log(`trans good`)
+    };
+
+    transaction.onerror = function(event) {
+        console.log(transaction)
+        console.log(event)
+      console.log(`IndexedDB error: ${transaction.errorCode}`)
+    };
+
+    // Add new student
+    const objectStore = transaction.objectStore('customers')
+
+    const request =  objectStore.add(customerData2[0]);
+
+    request.onsuccess = ()=> {
+        // request.result contains key of the added object
+        console.log(`New student added, email: ${request.result}`);
+    }
+
+    request.onerror = (err)=> {
+        console.error(`Error to add new student: ${err}`)
+    }
+  }
+
+  async function createDB(){
+    return new Promise(function(resolve, reject){
+      let request = createDatabase(reset=true)
+        console.log(request)
+        request.onsuccess = function() {
+          resolve(request.result)
+        }
+    })
+  }
+
+  async function getPatient(key){
+    return new Promise(function(resolve, reject){
+      let request = db
+        .transaction('patients')
+        .objectStore('patients')
+        .get(key);
+      request.onsuccess = function(){
+        resolve(request.result);
+      }
+    });
+  };
+
+  async function getAllPatients(){
+    return new Promise(function(resolve, reject){
+      let request = db
+        .transaction('patients')
+        .objectStore('patients')
+        .getAll();
+      request.onsuccess = function(){
+        resolve(request.result);
+      }
+    });
+  }
+
+  function populatePatientSelectorFromDB() {
+    /** Retrieves patients from database and populates select **/
+    getAllPatients().then(function(result){
+      const selector = document.getElementById("selector-patient");
+      result.forEach(function (item) {
+        let option = document.createElement("option");
+        let optionText = document.createTextNode(item.name);
+        option.setAttribute('value', item.initials);
+        option.appendChild(optionText);
+        selector.appendChild(option);
+      })
+    });
+  }
+
+
+
+
+
+
+
+    /*indexedDB.open(dbName, version, function (event) {
+      const transaction = db.transaction(["customers"], "readwrite");
+       transaction.oncomplete = (event) => {
+        };
+        transaction.onerror = (event) => {};
+    });*/
+
+    /*
+  indexedDB.open(dbName, version, function (event) {
+      let db = openRequest.result;
+      const transaction = db.transaction(["customers"], "readwrite");
+      const objectStore = transaction.objectStore("customers");
+      customerData.forEach((customer) => {
+          const request = objectStore.add(customer);
+          request.onsuccess = (event) => {
+              // event.target.result === customer.ssn;
+          };
+      });
+  });*/
+
+
+  /*
+  request.then(function (db) {
+    const tx = db.transaction('customers', 'readwrite');
+    const store = tx.objectStore('customers');
+    const item = {
+        ssn: "444-44-7777",
+        name: "Bill",
+        age: 35,
+        email: "bill@company.com"
+    }
+    store.add(item);
+    return tx.complete;
+  })
+  .then(function () {
+    console.log('Added item to the store!');
+  });*/
+
+
+  function updateStudent(key){
+    const objectStore = db.transaction('students')
+                          .objectStore('students');
+
+    const request = objectStore.get(key);
+
+    request.onsuccess = ()=> {
+
+        const student = request.result;
+
+        // Change the name property
+        student.name = 'Fulanito';
+
+        // Create a request to update
+        const updateRequest = objectStore.update(student);
+
+        updateRequest.onsuccess = () => {
+
+            console.log(`Estudent updated, email: ${updateRequest.result}`)
+
+        }
+    }
+}
+
+  $(document).ready(function() {
+
+      // Populate empty appointments
+      populateAppointments()
+
+      // Create database and populate select from it
+      createDatabase(reset=false).then(function(result){
+          populatePatientSelectorFromDB()
+      })
+  });
+
+</script>
+</html>
