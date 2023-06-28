@@ -139,6 +139,17 @@ var CMAPS = {
         '#95A6C2',
         '#F0E2D8'
     ],
+    map11: [ // https://www.drivendata.org/competitions/44/dengai-predicting-disease-spread/
+        '#7F9DB8',
+        '#87BDE2',
+        '#92D9EE',
+        '#C1F3F3',
+        '#FAFFAA',
+        '#FFE598',
+        '#FFC398',
+        '#FAA99A',
+        '#E68C98'
+    ],
 
     // ---------------------------------------------
     // Body Temperature
