@@ -22,3 +22,16 @@
     border-top-left-radius: 5px!important;
     border-bottom-left-radius: 5px!important;
 }
+
+.visible {
+      visibility: visible;
+      opacity: 1;
+      transition: visibility 0s linear 0s, opacity 300ms;
+}
+
+.invisible-animation {
+    visibility: hidden;
+    opacity: 0;
+    display: none;
+        transition: visibility 0s linear 300ms, opacity 300ms;
+}

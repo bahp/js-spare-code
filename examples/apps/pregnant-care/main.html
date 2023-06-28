@@ -23,7 +23,9 @@
   <div class="container">
 
 
-    <div id='warning' class="alert alert-warning small mt-5 pt-1 pb-1 text-center d-none" role="alert">
+    <div id='warning'
+         class="alert alert-warning small mt-5 pt-1 pb-1 text-center d-none"
+         role="alert">
       This browser doesn't support persistent data storage
     </div>
 
@@ -108,8 +110,14 @@
             </div>
           </div>
 
-          <div id='message-text-info'
+          <div id='message-text-success'
                class="alert alert-info small text-center mt-2 pt-1 pb-1 d-none"
+               data-mdb-toggle="animation" data-mdb-animation-reset="true" data-mdb-animation="slide-out-right"
+               role="alert">
+          </div>
+
+          <div id='message-text-info'
+               class="alert alert-warning small text-center mt-2 pt-1 pb-1 d-none"
                role="alert">
           </div>
 
@@ -173,6 +181,18 @@
         </div>
       </div>
 
+    </div>
+
+
+    <!-- ---------------------------- -->
+    <!-- Buttons                      -->
+    <!-- ---------------------------- -->
+    <div class="row mb-3 mt-2">
+      <div class="col">
+        <button type="button" id="empty-db" class="btn btn-danger alert alert-danger pt-1 pb-1">
+          Empty database
+        </button>
+       </div>
     </div>
   </div>
 
@@ -238,6 +258,12 @@
         var d2 = addDays(d1, weeks*7)
         $('#conversion-date').val(str2iso(d2))
     })
+
+    $('#empty-db').on('click', function (e) {
+      createDatabase(reset=true).then(function(result){
+        populatePatientSelectorFromDB()
+      })
+    });
 
     $('#date-conception').on('change', function (e) {
       /** Enable selection of date of conception **/
@@ -323,6 +349,19 @@
         // which is passed to the patient selector so that
         // it appears selected by default.
         populatePatientSelectorFromDB(result)
+
+        // Show message
+        $('#message-text-success')
+          .text('Patient added to the database.')
+          .toggleClass('d-none')
+        setTimeout(function (e) {
+          $('#message-text-success').toggleClass('d-none')
+          //$('#message-text-success').animate().hide('slow')
+
+          //$('#message-text-success').slideUp(1000, function () {
+          //  $(this).toggleClass('d-none')
+        //});
+        }, 3000);
       });
 
       return false // avoids refresh and/or redirect
