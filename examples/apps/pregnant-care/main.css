@@ -14,4 +14,5 @@
 
 .input-group-append .input-group-text {
     border-radius: 0;
+    height: 100%;
 }

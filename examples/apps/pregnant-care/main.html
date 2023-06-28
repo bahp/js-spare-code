@@ -92,15 +92,25 @@
   </div>
 
   <div class="row">
+    <div class="col">
+
+      <div id='conversion-info' class="alert alert-info small mt-5 pt-1 pb-1 text-center" role="alert">
+        Set conception date to enable converor.
+      </div>
+
+
     <div class="d-flex justify-content-cente">
-      <div class="input-group mb-2">
-        <input type="number" class="form-control" id="inlineFormInputGroup" placeholder="Week...">
+      <div class="input-group input-group-lg">
+        <input type="number" class="form-control form-control-lg"
+               id="conversion-week" name="conversion-week"
+               placeholder="Week..." disabled>
         <div class="input-group-append">
           <div class="input-group-text">to</div>
         </div>
-        <input type="date" id="date-conversion" name="conversion"
-            class="form-control form-control-md">
+        <input type="date" id="conversion-date" name="conversion-date"
+               class="form-control" disabled>
       </div>
+    </div>
 
   </div>
 
@@ -127,11 +137,16 @@
         return new Date(date).toISOString().substring(0,10);
     }
 
+    function datediff(first, second) {
+        return Math.round((second - first) / (1000 * 60 * 60 * 24));
+    }
+
     // Enable selecting conception dat
     $('#date-conception').on('change', function (e) {
         var dc = new Date($(this).val())
         var dd = addDays(dc, 40 * 7)
         $('#date-delivery').val(str2iso(dd))
+        populateAppointments()
     })
 
     // Enable selecting delivery date
@@ -139,6 +154,7 @@
         var dd = new Date($(this).val())
         var dc = addDays(dd, -40 * 7)
         $('#date-conception').val(str2iso(dc))
+        populateAppointments()
     })
 
     // Enable selecting patient
@@ -153,14 +169,38 @@
       })
     })
 
+    $('#conversion-date').on('change', function (e) {
+        var d1 = new Date($(this).val())
+        var d2 = new Date($('#date-conception').val())
+        var days = datediff(d2, d1)
+        var weeks = Math.round(days / 7)
+        console.log(days, weeks)
+        $('#conversion-week').val(weeks)
+    })
+
+    $('#conversion-week').on('change', function (e) {
+        var weeks = $(this).val()
+        var d1 = new Date($('#date-conception').val())
+        var d2 = addDays(d1, weeks*7)
+        $('#conversion-date').val(str2iso(d2))
+    })
+
+    function enableConversor() {
+        if ($('#date-conception').val() != '') {
+            $('#conversion-week').removeAttr('disabled')
+            $('#conversion-date').removeAttr('disabled')
+            $('#conversion-info').addClass('d-none')
+        } else {
+            $('#conversion-week').attr('disabled', 'disabled')
+            $('#conversion-date').attr('disabled', 'disabled')
+            $('#conversion-info').removeClass('d-none')
+        }
+    }
 
     function populateAppointments(patient) {
-        console.log(patient)
- // Container with appointments
-      var steps = document.getElementById('steps')
-
-      // Erase
-      steps.innerHTML = ""
+        /**
+         *
+         **/
 
       var stepss = WEEKS.map(function (item) {
           return {
@@ -168,7 +208,11 @@
           }
       })
 
-        console.log(stepss)
+      if (patient === undefined) {}
+
+      // Get container with appointments (erase)
+      var steps = document.getElementById('steps')
+      steps.innerHTML = ""
 
       // Create the HTML for each step.
       const artists = stepss.map(createStepHTML);
@@ -187,7 +231,24 @@
     const createStepHTML = function (item) {
         /**
          * Creates the HTML content for each of the steps.
+         *
+         * It assumes the item has the following elements
+         *
+         * item = {
+         *   week: 12
+         * }
+         *
          **/
+
+        /* Useful code...?
+        <ul class="tags-label">
+             ${item.steps.map(tag => `
+               <li class="tag-elm">
+              <a href="#" class="tag">${tag.week}</a>
+            </li>`
+             ).join('')}
+            </ul>
+        */
 
         // Compute dates
         var dc = new Date($('#date-conception').val())
@@ -208,8 +269,13 @@
                   <div>
                      <span class="fw-bold text-secondary">${item.week}</span> weeks
                   </div>
+                  <!--
                   <div class="fw-light text-secondary fs-12">
                     ${ds.toDateString()} — ${de.toDateString()}
+                  </div>
+                  -->
+                  <div class="fw-light text-secondary fs-12">
+                    ${dw.toDateString()}
                   </div>
                 </div>
               </button>
@@ -224,82 +290,9 @@
           </div>`
     }
 
-    const createEntryHTML = function (item) {
-        /**
-         *
-         */
-        //var dr = item.dateConception;
-        //var ds = addDays(dr, -item.range.low) || -3
-        //var de = addDays(dr, item.range.low) || 3
-
-        return `
-      <div class="artist" id="artist-${item.id}">
-        <span> ${item.name} </span>
-        <span> ${item.country} </span>
-        <span> ${item.dateConception} </span>
-        <span class="label">
-        <ul class="tags-label">
-          ${item.steps.map(tag => `
-            <li class="tag-elm">
-              <a href="#" class="tag">${tag.week}</a>
-            </li>`
-        ).join('')}
-        </ul>
-      </span>
-      </div>`;
-    }
 
 
-    const createArtistHTML = ({
-                                  name,
-                                  id,
-                                  city,
-                                  country,
-                                  tags,
-                                  tagline,
-                                  price,
-                                  portrait
-                              }) => `
-  <div class="artist" id="artist-${id}">
-    <a class="frame-link" href="#">
-      <img class="photo" src="${portrait}" alt="${name}"/>
-    </a>
-    <h2 class="name">${name}</h2>
-    <span class="description">
-      <p class="country">${country}</p>
-      <p class="city">${city}</p>
-      <p class="tagline">${tagline}</p>
-      <p class="price">${price}</p>
-    </span>
-    <span class="label">
-      <ul class="tags-label">
-        ${tags.map(tag => `
-          <li class="tag-elm">
-            <a href="#" class="tag">${tag}</a>
-          </li>`
-    ).join('')}
-      </ul>
-    </span>
-  </div>`;
 
-    /**
-    // Create the HTML for each artist.
-    const artists = data.map(createEntryHTML);
-
-    console.log(artists)
-
-    // And add it for each HTML template to the body.
-    artists.forEach(artist => {
-        document.getElementById('chart-container').innerHTML += artist;
-    });**/
-
-    // Create the HTML for each step.
-    const artists = data[0].steps.map(createStepHTML);
-
-    // Include all steps in the HTML body.
-    artists.forEach(artist => {
-        document.getElementById('steps').innerHTML += artist;
-    });
 
   // -----------------------------------------------------------
   // Database
@@ -556,8 +549,12 @@
 }
 
   $(document).ready(function() {
+
+      // Populate empty appointments
+      populateAppointments()
+
+      // Create database and populate select from it
       createDatabase(reset=false).then(function(result){
-          console.log("Populating db with artificial data")
           populatePatientSelectorFromDB()
       })
   });
