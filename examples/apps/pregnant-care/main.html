@@ -15,7 +15,7 @@
   <link rel="apple-touch-icon" sizes="128x128" href="./static/imgs/logo-apple-touchicon.png">
   <link rel="apple-touch-startup-image" href="./static/imgs/logo-apple-touchicon.png" />
   <link rel="canonical" href="https://bahp.github.io/js-spare-code/examples/apps/pregnant-care/" />
-  <link rel="manifest" href="/js-spare-code/examples/apps/pregnant-care/manifest.mf">
+  <link rel="manifest" href="/js-spare-code/examples/apps/pregnant-care/manifest.webmanifest">
 
   <!-- JavaScript -->
   <!--
@@ -48,8 +48,8 @@
   <script>
       if (navigator.serviceWorker) {
         navigator.serviceWorker.register (
-          '/github-page-pwa/sw.js',
-          {scope: '/github-page-pwa/'}
+          '/js-spare-code/examples/apps/pregnant-care/sw.js',
+          {scope: '/js-spare-code/examples/apps/pregnant-care/'}
         )
       }
   </script>
