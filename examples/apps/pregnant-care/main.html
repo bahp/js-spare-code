@@ -1,4 +1,4 @@
-<html>
+<html manifest="manifest.mf">
 <head>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRQM3KNDVC"></script>
   <script>
@@ -14,17 +14,26 @@
   <link rel="apple-touch-icon" sizes="128x128" href="./static/imgs/logo-apple-touchicon.png">
 
   <!-- JavaScript -->
+  <!--
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.4/dexie.min.js"></script>
   <script src='data.js'></script>
+  -->
+
+  <script src="./static/vendors/bootstrap/bootstrap.min.js"></script>
+  <script src="./static/vendors/jquery/jquery-3.6.0.min.js"></script>
+  <script src="data.js"></script>
 
   <!-- CSS only -->
+  <!--
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-        crossorigin="anonymous">
+        crossorigin="anonymous">-->
+
+  <link rel="stylesheet" href="./static/vendors/bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="./main.css">
 
   <title>Pregnancy Care</title>
@@ -200,8 +209,9 @@
     <!-- ---------------------------- -->
     <div class="row mb-3 mt-2">
       <div class="col">
-        <button type="button" id="empty-db" class="btn btn-danger alert alert-danger pt-1 pb-1">
-          Empty database
+        <button type="button" id="empty-db"
+                class="btn btn-danger alert alert-danger pt-1 pb-1 w-100">
+          Clear database
         </button>
        </div>
     </div>
