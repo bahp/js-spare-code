@@ -3,6 +3,7 @@ var APP_PREFIX = 'gppwa_';
 var VERSION = 'version_002';
 var URLS = [
   `${GHPATH}/`,
+  `${GHPATH}/main.html`,
   `${GHPATH}/main.css`,
   `${GHPATH}/data.js`,
   `${GHPATH}/static/vendors/bootstrap/bootstrap.min.css`,
