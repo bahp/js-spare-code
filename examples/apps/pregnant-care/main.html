@@ -46,12 +46,16 @@
 <body class="bg-light">
 
   <script>
-      if (navigator.serviceWorker) {
+    if (navigator.serviceWorker) {
+        navigator.serviceWorker.register('sw.js')
+      }
+
+      /*if (navigator.serviceWorker) {
         navigator.serviceWorker.register (
           '/js-spare-code/examples/apps/pregnant-care/sw.js',
           {scope: '/js-spare-code/examples/apps/pregnant-care/'}
         )
-      }
+      }*/
   </script>
 
   <div class="container">
