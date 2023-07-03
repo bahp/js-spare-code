@@ -2,7 +2,9 @@ var GHPATH = '/js-spare-code/examples/apps/pregnant-care/';
 var APP_PREFIX = 'gppwa_';
 var VERSION = 'version_007';
 var URLS = [
-  `/main.html`
+  `/js-spare-code/examples/apps/pregnant-care/main.html`,
+    `/js-spare-code/examples/apps/pregnant-care/main.css`,
+    `/js-spare-code/examples/apps/pregnant-care/dataa.js`
 ]
 
 var CACHE_NAME = APP_PREFIX + VERSION
@@ -25,6 +27,7 @@ self.addEventListener('install', function (e) {
   e.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
       console.log('Installing cache : ' + CACHE_NAME);
+      console.log('Adding urls...', URLS)
       return cache.addAll(URLS)
     })
   )
