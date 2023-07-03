@@ -8,8 +8,7 @@ var URLS = [
   `${GHPATH}/static/vendors/bootstrap/bootstrap.min.css`,
   `${GHPATH}/static/vendors/bootstrap/bootstrap.min.js`,
   `${GHPATH}/static/vendors/jquery/jquery-3.6.0.min.js`,
-  `${GHPATH}/static/imgs/logo-2.png`,
-  `${GHPATH}/static/vendors/jquery/jquery-3.6.0.min.js`,
+  `${GHPATH}/static/imgs/logo-2.png`
 ]
 
 var CACHE_NAME = APP_PREFIX + VERSION
