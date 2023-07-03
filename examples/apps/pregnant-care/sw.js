@@ -1,10 +1,10 @@
 var GHPATH = '/js-spare-code/examples/apps/pregnant-care/';
 var APP_PREFIX = 'gppwa_';
-var VERSION = 'version_007';
+var VERSION = 'version_008';
 var URLS = [
   `/js-spare-code/examples/apps/pregnant-care/main.html`,
     `/js-spare-code/examples/apps/pregnant-care/main.css`,
-    `/js-spare-code/examples/apps/pregnant-care/dataa.js`
+    `/js-spare-code/examples/apps/pregnant-care/data.js`
 ]
 
 var CACHE_NAME = APP_PREFIX + VERSION
