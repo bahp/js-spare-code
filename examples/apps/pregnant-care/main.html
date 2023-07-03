@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html manifest="manifest.mf">
+<html> <!-- manifest="manifest.mf"> -->
 <head>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRQM3KNDVC"></script>
   <script>
@@ -14,7 +14,8 @@
   <link rel="icon" type="image/x-icon" href="./static/imgs/logo-2.png">
   <link rel="apple-touch-icon" sizes="128x128" href="./static/imgs/logo-apple-touchicon.png">
   <link rel="apple-touch-startup-image" href="./static/imgs/logo-apple-touchicon.png" />
-
+  <link rel="canonical" href="https://bahp.github.io/js-spare-code/examples/apps/pregnant-care/" />
+  <link rel="manifest" href="/js-spare-code/examples/apps/pregnant-care/manifest.mf">
 
   <!-- JavaScript -->
   <!--
@@ -24,6 +25,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.4/dexie.min.js"></script>
   <script src='data.js'></script>
   -->
+
 
   <script src="./static/vendors/bootstrap/bootstrap.min.js"></script>
   <script src="./static/vendors/jquery/jquery-3.6.0.min.js"></script>
@@ -42,6 +44,15 @@
   <title>Pregnancy Care</title>
 </head>
 <body class="bg-light">
+
+  <script>
+      if (navigator.serviceWorker) {
+        navigator.serviceWorker.register (
+          '/github-page-pwa/sw.js',
+          {scope: '/github-page-pwa/'}
+        )
+      }
+  </script>
 
   <div class="container">
 

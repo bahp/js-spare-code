@@ -1,11 +1,17 @@
 CACHE MANIFEST
-#Version 0.1
+# v1.0
 
+CACHE:
+# pages
 main.html
+
+# styles and scripts
 main.css
 data.js
 /static/vendors/bootstrap/bootstrap.min.css
 /static/vendors/bootstrap/bootstrap.min.js
 /static/vendors/jquery/jquery-3.6.0.min.js
+
+# images
 /static/imgs/logo-2.png
 /static/imgs/logo-apple-touchicon.png
