@@ -48,6 +48,7 @@
         navigator.serviceWorker.register('sw.js')
       }*/
 
+
       if (navigator.serviceWorker) {
         navigator.serviceWorker.register (
           '/js-spare-code/examples/apps/pregnant-care/sw.js',
@@ -286,7 +287,6 @@
         var d1 = new Date($(this).val())
         var d2 = new Date($('#date-conception').val())
         var r = weeksFromDate(d2, d1)
-      console.log(r)
         $('#conversion-week').val(r.weeks)
     })
 
