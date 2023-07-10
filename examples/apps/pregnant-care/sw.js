@@ -1,5 +1,5 @@
 var GHPATH = '/js-spare-code/examples/apps/pregnant-care';
-var APP_PREFIX = 'gppwa_pc_';
+var APP_PREFIX = 'pcpwa_';
 var VERSION = 'version_010';
 var URLS = [
   `${GHPATH}/`,
