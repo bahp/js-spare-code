@@ -1,14 +1,14 @@
-var GHPATH = '/js-spare-code/examples/apps/pregnant-care/';
-var APP_PREFIX = 'gppwa_';
-var VERSION = 'version_009';
+var GHPATH = '/js-spare-code/examples/apps/pregnant-care';
+var APP_PREFIX = 'gppwa_pc_';
+var VERSION = 'version_010';
 var URLS = [
-  `/js-spare-code/examples/apps/pregnant-care/`,
-  `/js-spare-code/examples/apps/pregnant-care/main.html`,
-  `/js-spare-code/examples/apps/pregnant-care/main.css`,
-  `/js-spare-code/examples/apps/pregnant-care/data.js`,
-  `/js-spare-code/examples/apps/pregnant-care/static/vendors/bootstrap/bootstrap.min.css`,
-  `/js-spare-code/examples/apps/pregnant-care/static/vendors/bootstrap/bootstrap.min.js`,
-  `/js-spare-code/examples/apps/pregnant-care/static/vendors/jquery/jquery-3.6.0.min.js`,
+  `${GHPATH}/`,
+  `${GHPATH}/main.html`,
+  `${GHPATH}/main.css`,
+  `${GHPATH}/data.js`,
+  `${GHPATH}/static/vendors/bootstrap/bootstrap.min.css`,
+  `${GHPATH}/static/vendors/bootstrap/bootstrap.min.js`,
+  `${GHPATH}/static/vendors/jquery/jquery-3.6.0.min.js`,
 ]
 
 var CACHE_NAME = APP_PREFIX + VERSION
