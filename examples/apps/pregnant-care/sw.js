@@ -2,7 +2,7 @@ var GHPATH = '/js-spare-code/examples/apps/pregnant-care';
 var APP_PREFIX = 'pcpwa_';
 var VERSION = 'version_010';
 var URLS = [
-  `/js-spare-code/examples/apps/pregnant-care/`,
+  //`/js-spare-code/examples/apps/pregnant-care/`,
   `/js-spare-code/examples/apps/pregnant-care/main.html`,
   `/js-spare-code/examples/apps/pregnant-care/main.css`,
   `/js-spare-code/examples/apps/pregnant-care/data.js`,
