@@ -312,7 +312,7 @@ const CONFIG_LIST = [
         },
         visualMap: {
             continuous: {
-                show: false,
+                show: true,
                 type: 'continuous',
                 dimension: 2,
                 //min: 35,
@@ -323,7 +323,7 @@ const CONFIG_LIST = [
                 type: 'piecewise',
                 text: ['High', 'Low'], // remove to show labels
                 pieces: CMAPS.map_bp_2
-            },
+            }
         }
     },
     {
@@ -338,11 +338,12 @@ const CONFIG_LIST = [
         },
         visualMap: {
             continuous: {
-                show: false,
+                show: true,
                 type: 'continuous',
                 dimension: 2,
                 min: 35,
                 max: 42,
+                calculable: false
             },
             discrete: {
                 show: true,
@@ -497,7 +498,7 @@ const DISPLAY_v1 = {
     ],
     'Labs': [
         'ALT', 'ALP', 'BIL', 'CRE', 'CRP',
-        'GLU', 'HAE',  'PLT', 'WBC'
+        'GLU', 'HAE', 'PLT', 'WBC'
     ],
     'Notes': [ 'NOTE' ],
 }

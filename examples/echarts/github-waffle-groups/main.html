@@ -205,13 +205,13 @@
 
   function generateEmptySeries(vx, vy, key, cont) {
     /**
-     * @param vx: list of x axis vaues
+     * @param vx: list of x axis values
      * @param vy: list of y axis values
      * @param key: id to fill series name 'empty-{key}'
      * @param cont: value to us for xAxisIndex and yAxisindex
      * @type {*[]}
      */
-      // Create data
+    // Create data
     var empty = []
     for (let i = 0; i <= vx.length; i++) {
       for (let j = 0; j <= vy.length; j++) {
@@ -246,7 +246,7 @@
   var data = getVirtualDataManual()
 
   // See data
-  console.log(data)
+  console.log("Data:", data)
 
   // Create all days within range.
   var dates = data.map(x => x[0]);
@@ -255,17 +255,31 @@
   dates = getDaysBetweenDates(minimumDate, maximumDate)
 
 
-  // Could this transform be done just once in the xAxis or series.
+  // .. note: Investigate whether this transform instead of here
+  //          could be done just once in the xAxis or series using
+  //          the echarts apache library.
+
+  // Each entry in the original data contains an array
+  // with the date (e.g. 'Wed Mar 01 2023 00:00:00 GMT+0000'), the code
+  // which identifies the parameter (e.g. BTEMP), the value (e.g. 36)
+  // and the last element is undefined for some reason.
+
+  // The transformation below keeps the date part, the code and the value.
+  data = data.map(x => [x[0].toISOString().split('T')[0], x[1], x[2]]);
+
   //data = data.map(x => [x[0].toISOString().split('T')[0], x[1], x[2]]);
   //dates = dates.map(x => x.toISOString().split('T')[0]);
-  data = data.map(x => [x[0].toISOString().split('T')[0], x[1], x[2]]);
+  //data = data.map(x => [x[0].toISOString().split('T')[0], x[1], x[2]]);
   //dates = dates.map(x => x[0].format().split('T')[0]);
 
+  console.log("Data cleaned:", data)
 
-  // Some constants
+  // This link has some code to extract from each series the
+  // seriesColor. It can be extended to extract any other
+  // relevant information.
   // https://stackoverflow.com/questions/70780091/is-there-a-way-on-echarts-to-get-the-series-colors
 
-
+  //
   var SERIES_INDEX = {}
 
   // Indicates how to group the different variables in
@@ -296,9 +310,38 @@
   // Loop filling elements
   var cont = -1
   var offset = 0
+  var w = 13
+  var h = 13
+
+
+  /*
+  var i = 0
+  var name2px = {}
+  for (const [key, value] of Object.entries(GROUPS)) {
+    console.log(key, value);
+     value.forEach(function (item, idx) {
+       console.log(item)
+         console.log(idx)
+     })
+  }*/
+
+  var name2px = {}
+  Object.entries(GROUPS).forEach(([key, value], index) => {
+    Object.entries(value).forEach(([, item], idx) => {
+      name2px[item.code] = 45 + index*80 + (value.length - idx) * h;
+    });
+  });
+
+
+      // Update offset for next grid component
+    //offset = offset + (h * value.length) + 40
 
 
   for (const [key, value] of Object.entries(GROUPS)) {
+    // Show info
+    //console.log(key, value)
+
+    // Increment counter
     cont = cont + 1
 
     // Push grid component
@@ -306,12 +349,11 @@
       left: 80,
       //right: 0,
       top: 50 + offset + 'px',
-      height: 13 * value.length,
-      width: 13 * dates.length,
+      height: w * value.length,
+      width: h * dates.length,
     })
 
-    // Update offset for next grid component
-    offset = offset + (13 * value.length) + 40
+
 
     // Include empty grid
     if (GITHUB_STYLE) {
@@ -335,7 +377,7 @@
         },
         xAxisIndex: cont,
         yAxisIndex: cont,
-        zorder: 5
+        zorder: 5,
       })
     })
 
@@ -393,14 +435,16 @@
       },
       gridIndex: cont
     })
+
+    // Update offset for next grid component
+    offset = offset + (h * value.length) + 40
   }
 
   // Show last axis.
   xAxes[Object.keys(GROUPS).length - 1].show = true
 
   // Show information
-  console.log("Show series:")
-  console.log(series)
+  console.log("Series:", series)
 
   // Create chart
   var chartDom = document.getElementById('chart-container');
@@ -528,8 +572,11 @@
   $("[id^='select-visualMap-']").change(function (event) {
     // Get selected dataset name
     var value = event.target.value
+    console.log(value)
 
     if (value == 1) {
+
+        console.log("INSIDEEEE")
 
       var v = {
         show: true,
@@ -563,7 +610,7 @@
 
 
 
-  // Add event listener to dropdown dataset selector
+  // Add event listener to dropdown visual map selector
   $('#selector').change(function (event) {
   	// Get selected dataset name
     var value = event.target.value
@@ -602,28 +649,48 @@
           if ('visualMap' in CONFIG[s.name]) {
             if (value in CONFIG[s.name].visualMap) {
               var d = CONFIG[s.name].visualMap[value]
-              console.log(d)
-              d['seriesName'] = s.name
-              d['seriesIndex'] = s.seriesIndex
-              d['dimension'] = 2
-              //d['left'] = 400 + s.seriesIndex * 50
-              //d['top'] = s.seriesIndex * 20
-              //d['top'] = 200
-              //d['orient'] = 'vertical'
-              console.log(d)
+              d.seriesName = s.name
+              d.seriesIndex = s.seriesIndex
+              d.dimension = 2
               return d
             }
           }
       })
 
+        console.log("YEAH")
+        console.log(vmap)
+
       // Keep only those undefined
       vmap = vmap.filter(d => d != undefined)
 
       // Select locations for visual maps
+      //vmap.forEach(function(e, idx) {
+      //  e['top'] = 200
+      //  e['left'] = 750 + idx * 35
+      //  e['orient'] = 'vertical'
+      //})
+
+      // Formatting visual maps
       vmap.forEach(function(e, idx) {
-        e['top'] = 200
-        e['left'] = 750 + idx * 35
-        e['orient'] = 'vertical'
+
+        // Horizontal
+        e.orient = 'horizontal'
+        if (value == 'continuous')
+          e.itemWidth = 7
+        if (value == 'inrange')
+          e.itemWidth = 7
+        if (value == 'discrete')
+          e.itemHeight = 7
+
+        // Aligning
+        e.top = name2px[e.seriesName]
+        e.left = 680
+
+        // Since aligning the elements might be difficult,
+        // a temporal solution is to include in the visual
+        // map text the name of the variable.
+        e.text = [e.seriesName, '']
+
       })
 
       // Add to option
@@ -633,7 +700,6 @@
       option && myChart.setOption(option, true);
     }
   })
-
 
   // Set window resize listener
   window.addEventListener('resize', myChart.resize);
