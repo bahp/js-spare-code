@@ -7,3 +7,9 @@
   height: 100vh;
   overflow: scroll;
 }
+
+/* Fix issue with padding select */
+.form-select-sm {
+  padding-left: 0.85em!important;
+}
+
