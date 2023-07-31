@@ -557,7 +557,7 @@ function getVirtualDataManual() {
 
         // Notes
         ['2023-03-02', 'NOTE', 85, 'Note 1'],
-        ['2023-03-11', 'NOTE', 85, 'Note 2'],
+        ['2023-03-11', 'NOTE', 85, 'Note 2'], // cannot have more than 1
         ['2023-04-02', 'NOTE', 85, 'Note 3'],
 
         // Diagnoses
