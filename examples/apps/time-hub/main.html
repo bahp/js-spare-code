@@ -1,0 +1,912 @@
+<html>
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRQM3KNDVC"></script>
+  <script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-QRQM3KNDVC');
+	</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="icon" type="image/x-icon" href="./static/imgs/logo-2.png">
+  <link rel="apple-touch-icon" sizes="128x128" href="./static/imgs/logo-apple-touchicon.png">
+
+  <!-- JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.4/dexie.min.js"></script>
+  <script src='data.js'></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.4/Pizzicato.js"></script>
+
+  <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
+        crossorigin="anonymous">
+
+  <script stc="./static/js/jquery.countdown.js"></script>
+
+  <!-- CSS only -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
+  <link rel="stylesheet" href="./main.css">
+
+  <title> TimerHub </title>
+</head>
+<body class="bg-light">
+
+  <div class="container">
+
+
+    <div id='warning'
+         class="alert alert-warning small mt-5 pt-1 pb-1 text-center d-none"
+         role="alert">
+      This browser doesn't support persistent data storage
+    </div>
+
+    <!-- ------------------- -->
+    <!-- Logo                -->
+    <!-- ------------------- -->
+    <div class="row mt-5 mb-4">
+      <div class="d-flex justify-content-center">
+        <img src="./static/imgs/logo-2.png" width="80"/>
+      </div>
+    </div>
+
+
+    <!-- ------------------- -->
+    <!-- Other input         -->
+    <!-- ------------------- -->
+    <!--
+    <div class="row mb-4">
+      <div col="12">
+        <form action="#">
+
+          <div class="input-group mt-2 mb-1">
+            <input type="hidden" name="id">
+            <input type="text" class="form-control rounded-left" name="fullName"
+                   placeholder="Name..."
+                   aria-label="Name..."
+                   aria-describedby="basic-addon2">
+                <input type="submit" id='submit' class="btn btn-outline-secondary">
+          </div>
+
+          <div class="form-group form-control-sm border rounded p-2 mb-1">
+            Heat block
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="first-pregnancy" name="firstPregnancy">
+              <label class="form-check-label" for="first-pregnancy"><i class="mt-1 fas fa-bell"></i> </label>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+    -->
+
+    <!-- --------------------------------- -->
+    <!-- Header 1                          -->
+    <!-- --------------------------------- -->
+    <div  class="w-100">
+      <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+        <div class="p-2 bd-highlight">
+          <h3 class="mb-0 fw-bold "> Sample Prep </h3> <!-- text-white -->
+        </div>
+        <div class="p-2 bd-highlight">
+          <div class="form-check form-switch">
+            <input id="sample-prep-bell"
+                   class="form-check-input"
+                   type="checkbox"
+                   role="switch"
+                   name="bell">
+            <label class="form-check-label" for="sample-prep-bell">
+              <i class="mt-1 fas fa-bell"></i>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Countdown -->
+    <button id="countdown-0" class="alert alert-secondary w-100 rounded" role="alert">
+      <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+        <div class="p-2 bd-highlight text-start">
+          <h3 class="mb-0 fw-bold "> Mix/Dry </h3>
+          <span id="countdown-0-message"> </span>
+        </div>
+        <div class="p-2 bd-highlight">
+          <div class="countdown" id="countdown">
+            <span id="countdown-0-days" class="d-none">00</span> <span class="d-none">:</span>
+            <span id="countdown-0-hours" class="d-none">00</span> <span class="d-none">:</span>
+            <span id="countdown-0-minutes">00</span> <span>:</span>
+            <span id="countdown-0-seconds">00</span>
+          </div>
+        </div>
+      </div>
+    </button>
+
+
+    <!-- --------------------------------- -->
+    <!-- Header 2                          -->
+    <!-- --------------------------------- -->
+    <div  class="w-100">
+      <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+        <div class="p-2 bd-highlight">
+          <h3 class="mb-0 fw-bold "> Heat Block </h3> <!-- text-white -->
+        </div>
+        <div class="p-2 bd-highlight">
+          <div class="form-check form-switch">
+            <input id="heat-block-bell"
+                   class="form-check-input"
+                   type="checkbox"
+                   role="switch"
+                   name="bell">
+            <label class="form-check-label" for="heat-block-bell">
+              <i class="mt-1 fas fa-bell"></i>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--bell
+    bell-fill
+    bell-slash
+    bell-slash-fill
+
+    <i class="bi bi-bell"></i>
+    -->
+
+    <!-- Countdown -->
+    <button id="countdown-1" class="alert alert-secondary w-100 rounded" role="alert">
+      <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+        <div class="p-2 bd-highlight">
+          <h3 class="mb-0 fw-bold"> 1 </h3> <!-- Include text (eg. ID) text-white -->
+        </div>
+        <div class="p-2 bd-highlight">
+          <h3 id='countdown-1-message' mclass="mb-0 fw-bold"> </h3>
+        </div>
+        <div class="p-2 flex-grow-1 bd-highlight">
+          <div class="countdown text-end">
+            <span id="countdown-1-days" class="d-none">00</span> <span class="d-none">:</span>
+            <span id="countdown-1-hours" class="d-none">00</span> <span class="d-none">:</span>
+            <span id="countdown-1-minutes">00</span> <span>:</span>
+            <span id="countdown-1-seconds">00</span>
+          </div>
+        </div>
+      </div>
+    </button>
+
+   <!-- Countdown -->
+    <button id="countdown-2" class="alert alert-secondary w-100 rounded" role="alert">
+      <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+        <div class="p-2 bd-highlight">
+          <h3 class="mb-0 fw-bold"> 2 </h3> <!-- Include text (eg. ID) text-white -->
+        </div>
+        <div class="p-2 bd-highlight">
+          <h3 id='countdown-2-message' mclass="mb-0 fw-bold"> </h3>
+        </div>
+        <div class="p-2 flex-grow-1 bd-highlight">
+          <div class="countdown text-end">
+            <span id="countdown-2-days" class="d-none">00</span> <span class="d-none">:</span>
+            <span id="countdown-2-hours" class="d-none">00</span> <span class="d-none">:</span>
+            <span id="countdown-2-minutes">00</span> <span>:</span>
+            <span id="countdown-2-seconds">00</span>
+          </div>
+        </div>
+      </div>
+    </button>
+
+    <!-- Countdown -->
+    <button id="countdown-3" class="alert alert-secondary w-100 rounded" role="alert">
+      <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+        <div class="p-2 bd-highlight">
+          <h3 class="mb-0 fw-bold"> 3 </h3> <!-- Include text (eg. ID) text-white -->
+        </div>
+        <div class="p-2 bd-highlight">
+          <h3 id='countdown-3-message' mclass="mb-0 fw-bold"> </h3>
+        </div>
+        <div class="p-2 flex-grow-1 bd-highlight">
+          <div class="countdown text-end">
+            <span id="countdown-3-days" class="d-none">00</span> <span class="d-none">:</span>
+            <span id="countdown-3-hours" class="d-none">00</span> <span class="d-none">:</span>
+            <span id="countdown-3-minutes">00</span> <span>:</span>
+            <span id="countdown-3-seconds">00</span>
+          </div>
+        </div>
+      </div>
+    </button>
+
+    <!-- Countdown -->
+    <button id="countdown-4" class="alert alert-secondary w-100 rounded" role="alert">
+      <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+        <div class="p-2 bd-highlight">
+          <h3 class="mb-0 fw-bold"> 4 </h3> <!-- Include text (eg. ID) text-white -->
+        </div>
+        <div class="p-2 bd-highlight">
+          <h3 id='countdown-4-message' mclass="mb-0 fw-bold"> </h3>
+        </div>
+        <div class="p-2 flex-grow-1 bd-highlight">
+          <div class="countdown text-end">
+            <span id="countdown-4-days" class="d-none">00</span> <span class="d-none">:</span>
+            <span id="countdown-4-hours" class="d-none">00</span> <span class="d-none">:</span>
+            <span id="countdown-4-minutes">00</span> <span>:</span>
+            <span id="countdown-4-seconds">00</span>
+          </div>
+        </div>
+      </div>
+    </button>
+
+  </div>
+
+</body>
+<script>
+
+    // -------------------------------------------
+    // Helper functions
+    // -------------------------------------------
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+    }
+
+    function addDays(date, days) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
+
+    function str2iso(date) {
+        return new Date(date).toISOString().substring(0,10);
+    }
+
+    function weeksFromDate(d1, d2) {
+      var diff = datediff(d1, d2)
+      var weeks = Math.floor(diff / 7)
+      var days = diff % 7
+      return {
+        weeks: weeks, days: days
+      }
+    }
+
+    function datediff(first, second) {
+        return Math.round((second - first) / (1000 * 60 * 60 * 24));
+    }
+
+    function enableConversor() {
+      /** Enable week to date conversor
+       *
+       * .. note: It requires conception date to work.
+       * */
+      if ($('#date-conception').val() != '') {
+        $('#conversion-week').removeAttr('disabled')
+        $('#conversion-date').removeAttr('disabled')
+        $('#conversion-info').addClass('d-none')
+      } else {
+        $('#conversion-week').attr('disabled', 'disabled')
+        $('#conversion-date').attr('disabled', 'disabled')
+        $('#conversion-info').removeClass('d-none')
+      }
+    }
+
+    $('#conversion-date').on('change', function (e) {
+        var d1 = new Date($(this).val())
+        var d2 = new Date($('#date-conception').val())
+        var r = weeksFromDate(d2, d1)
+      console.log(r)
+        $('#conversion-week').val(r.weeks)
+    })
+
+    $('#conversion-week').on('change', function (e) {
+        var weeks = $(this).val()
+        var d1 = new Date($('#date-conception').val())
+        var d2 = addDays(d1, weeks*7)
+        $('#conversion-date').val(str2iso(d2))
+    })
+
+    $('#empty-db').on('click', function (e) {
+      createDatabase(reset=true).then(function(result){
+        populatePatientSelectorFromDB()
+      })
+    });
+
+    $('#date-conception').on('change', function (e) {
+      /** Enable selection of date of conception **/
+      var dc = new Date($(this).val()) // date conception
+      var dd = addDays(dc, 40 * 7)     // date delivery
+      var dn = new Date()              // date now
+      var r = weeksFromDate(dc, dn)
+      $('#date-delivery').val(str2iso(dd))
+      $('#now').html(`${r.weeks} weeks ${r.days} days`)
+      populateAppointments()
+      enableConversor()
+    })
+
+    // Enable selecting delivery date
+    $('#date-delivery').on('change', function (e) {
+      /** Enable selection of date of delivery **/
+      var dd = new Date($(this).val())  // date delivery
+      var dc = addDays(dd, -40 * 7)     // date conception
+      $('#date-conception').val(str2iso(dc))
+      populateAppointments()
+    })
+
+    // Enable selecting patient
+    $('#selector-patient').on('change', function (e) {
+      /** Enable patiend dropdown selector **/
+      // Get selected dataset name
+      var key = parseInt(e.target.value)
+      console.log("Selected patient...", key)
+      getPatient(key).then(function(result) {
+        console.log("Retrieved data...", result)
+        var dc = result.conception
+        $('#date-conception').val(str2iso(dc))
+        $('#date-conception').trigger('change')
+        populateAppointments()
+        populateForm(result)
+      })
+    })
+
+    //
+    $('#submit').on('click', function (e) {
+      /** Enable saving new patient **/
+
+      // Since jQuery.serializeArray() ignores unchecked checkboxes
+      // and also it does not return a true boolean, this code is
+      // edit to handle this.
+      var p = $('form').serializeArray();
+      $("form input:checkbox").each(function () {
+	        p.push({ name: this.name, value: this.checked });
+	    });
+
+      // Create patient entry
+      var entry = {};
+      p.forEach(k => {
+         entry[k.name] = k.value
+      });
+
+      // If names mismatch it is probably a new patient
+      var selected = $('#selector-patient option:selected').text()
+      var mismatch = entry.fullName != selected
+      var isEmpty = entry.id === ''
+      if (mismatch | isEmpty)
+        delete entry.id
+      else
+        entry.id = parseInt(entry.id)
+
+      // Equivalent
+      //var aux = Object.assign({},
+      //  ...p.map((x) => ({[x.name]: x.value})))
+
+      // Ensure that date conception has been also included!
+      if ($('#date-conception').val() === '') {
+        $('#message-text-info')
+          .text('Please select a conception date!')
+          .removeClass('d-none')
+        return false
+      } else {
+        $('#message-text-info').addClass('d-none')
+      }
+
+      // Update patient
+      updatePatient(entry).then(function(result) {
+        // The value in result is the id of the patient
+        // which is passed to the patient selector so that
+        // it appears selected by default.
+        populatePatientSelectorFromDB(result)
+
+        // Show message
+        $('#message-text-success')
+          .text('Patient added to the database.')
+          .toggleClass('d-none')
+        setTimeout(function (e) {
+          $('#message-text-success').toggleClass('d-none')
+          //$('#message-text-success').animate().hide('slow')
+
+          //$('#message-text-success').slideUp(1000, function () {
+          //  $(this).toggleClass('d-none')
+        //});
+        }, 3000);
+      });
+
+      return false // avoids refresh and/or redirect
+    })
+
+
+    function populateForm(data) {
+      /** Populate the inputs within the form
+       *
+       * .. note:: Should we use a loop?
+       * **/
+      $('[name=id]').val(data.id)
+      $('[name=fullName]').val(data.fullName)
+      $('[name=firstPregnancy]').prop('checked', data.firstPregnancy)
+      $('[name=allergies]').prop('checked', data.allergies)
+      $('[name=bmi]').prop('checked', data.bmi)
+      $('[name=risk]').prop('checked', data.risk)
+    }
+
+    function populateAppointments() {
+      /**
+       * Populate all the appointments.
+       **/
+      //if (patient === undefined) {}
+      // Create the HTML for each step.
+      const artists = WEEKS_INFO.map(createStepHTML);
+      // Erase the content
+      var $steps = $('#steps').empty()
+      // Include all the artists
+      artists.forEach(artist => {
+          $steps.append(artist);
+      });
+    }
+
+
+    const createStepHTML = function (item) {
+      /**
+       * Creates the HTML content for each of the steps.
+       *
+       **/
+
+      // Compute dates
+      var dc = new Date($('#date-conception').val())
+      var dw = addDays(dc, 7 * item.week)
+
+
+
+      return `
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading-week-${item.week}">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-week-${item.week}"
+                    aria-expanded="false"
+                    aria-controls="collapse-week-${item.week}">
+              <div class="d-flex justify-content-between w-100 pr-5">
+                <div>
+                <h7 class="mb-0 fw-bold text-secondary">${item.week}</h7> weeks
+                <p id='countdown-4-message'
+                   class="fw-light text-secondary fs-12 mb-0"></p>
+              </div>
+            </button>
+          </h2>
+          <div id="collapse-week-${item.week}" class="accordion-collapse collapse"
+               aria-labelledby="heading-week-${item.week}"
+               data-bs-parent="#steps">
+            <div class="accordion-body">
+              <button> Back </button>
+              <button> Removed </button>
+            </div>
+          </div>
+        </div>`
+
+
+
+
+
+
+      // Return element
+      return `
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading-week-${item.week}">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-week-${item.week}"
+                    aria-expanded="false"
+                    aria-controls="collapse-week-${item.week}">
+              <div class="d-flex justify-content-between w-100 pr-5">
+                <div>
+                <h7 class="mb-0 fw-bold text-secondary">${item.week}</h7> weeks
+                <p class="fw-light text-secondary fs-12 mb-0">${dw.toDateString()}</p>
+              </div>
+            </button>
+          </h2>
+          <div id="collapse-week-${item.week}" class="accordion-collapse collapse"
+               aria-labelledby="heading-week-${item.week}"
+               data-bs-parent="#steps">
+            <div class="accordion-body">
+              ${item.info}
+            </div>
+          </div>
+        </div>`
+    }
+
+
+
+
+
+  // -----------------------------------------------------------
+  // Database
+  // -----------------------------------------------------------
+  const DEFAULT_DATA = [
+    {
+      fullName: 'Hermione Granger',
+      firstPregnancy: true,
+      allergies: false,
+      risk: false,
+      bmi: false,
+      conception: addDays(new Date(), -getRandomInt(40))
+    },
+    {
+      fullName: 'Rowena Ravenclaw',
+      firstPregnancy: true,
+      allergies: true,
+      risk: true,
+      bmi: false,
+      conception: addDays(new Date(), -getRandomInt(40))
+    }
+  ]
+
+    /*
+  // Variables
+  const dbName = "db_pregnancy";
+  const version = 1
+  let db;
+
+  function indexedDBSupport(){
+    return 'indexedDB' in window;
+  }
+
+  async function createDatabase(reset=false) {
+     return new Promise(function(resolve, reject) {
+
+         // Not supported show warning
+         if (!indexedDBSupport()) {
+             $('#warning').removeClass('d-none')
+             return
+         }
+
+         // Delete (for testing)
+         if (reset)
+             indexedDB.deleteDatabase('db_pregnancy')
+
+         // Open request with name and version.
+         // When the database is updated, we can increment the version number and
+         // define the onupgradeneeded function to perform the necessary updates
+         // to ensure it works as expected.
+         // see https://javascript.info/indexeddb
+         const request = window.indexedDB.open(dbName, version);
+
+         request.onsuccess = (event) => {
+             console.info('Successful database connection!')
+             db = request.result;
+             resolve(request.result)
+         }
+
+         request.onerror = (event) => {
+             console.error(`IndexedDB error: ${request.errorCode}`);
+         };
+
+         request.onupgradeneeded = (event) => {
+             console.info('Database created!');
+
+             // Get database
+             const db = request.result;
+
+             // Create an objectStore to hold information about our customers. We
+             // could use "initials" as our key path only if it's guaranteed to be
+             // unique.
+             const objectStore = db.createObjectStore("patients",
+                 {autoIncrement: true, keyPath: 'id'});
+
+             // Create an index to search customers by initials. Since we may have
+             // duplicates so we can't use a unique index.
+             objectStore.createIndex("initials", "initials", {unique: false});
+
+             // Create an index to search customers by email. We want to ensure
+             // that no two customers have the same email, so use a unique index.
+             //objectStore.createIndex("email", "email", { unique: true });
+
+             // Create artificial patients
+             objectStore.transaction.oncomplete = (event) => {
+
+                 // Store values in the newly created objectStore.
+                 const patientObjectStore = db
+                     .transaction("patients", "readwrite")
+                     .objectStore("patients");
+
+                 DEFAULT_DATA.forEach((patient) => {
+                     patientObjectStore.add(patient);
+                 });
+
+                 console.log('Adding artificial stored!');
+             }
+
+             // Transaction completed
+             objectStore.transaction.oncompleted = (e) => {
+                 console.log('Object store "patient" created');
+             }
+         };
+     });
+  }*/
+
+
+
+  // --------------------------------------------------
+  //  Main
+  // --------------------------------------------------
+  $(document).ready(function() {
+
+  });
+    
+
+
+    function time(){
+      var d = new Date();
+      var hours = 24 - d.getHours();
+      var min = 60 - d.getMinutes();
+      if((min + '').length == 1){
+        min = '0' + min;
+      }
+      var sec = 60 - d.getSeconds();
+      if((sec + '').length == 1){
+            sec = '0' + sec;
+      }
+      jQuery('#countdown #hour').html(hours);
+      jQuery('#countdown #min').html(min);
+      jQuery('#countdown #sec').html(sec);
+    }
+
+
+
+  document.addEventListener('DOMContentLoaded', () =>
+    requestAnimationFrame(updateTime)
+  )
+
+  function updateTime() {
+    document.documentElement.style.setProperty('--timer-day', "'" + moment().format("dd") + "'");
+    document.documentElement.style.setProperty('--timer-hours', "'" + moment().format("k") + "'");
+    document.documentElement.style.setProperty('--timer-minutes', "'" + moment().format("mm") + "'");
+    document.documentElement.style.setProperty('--timer-seconds', "'" + moment().format("ss") + "'");
+    requestAnimationFrame(updateTime);
+  }
+
+
+
+  $(function () {
+
+
+    /* =========================================
+        COUNTDOWN 1
+     ========================================= */
+    $('#clock').countdown('2020/1/10').on('update.countdown', function(event) {
+      var $this = $(this).html(event.strftime(''
+        + '<span class="h1 font-weight-bold">%D</span> Day%!d'
+        + '<span class="h1 font-weight-bold">%H</span> Hr'
+        + '<span class="h1 font-weight-bold">%M</span> Min'
+        + '<span class="h1 font-weight-bold">%S</span> Sec'));
+    });
+
+    /* =========================================
+        COUNTDOWN 2
+     ========================================= */
+    $('#clock-a').countdown('2020/1/10').on('update.countdown', function(event) {
+      var $this = $(this).html(event.strftime(''
+        + '<span class="h1 font-weight-bold">%w</span> week%!w'
+        + '<span class="h1 font-weight-bold">%D</span> Days'));
+    });
+
+    /* =========================================
+        COUNTDOWN 3
+     ========================================= */
+    $('#clock-b').countdown('2019/10/1').on('update.countdown', function(event) {
+      var $this = $(this).html(event.strftime(''
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%D</span> Day%!d</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%H</span> Hr</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%M</span> Min</div>'
+        + '<div class="holder m-2"><span class="h1 font-weight-bold">%S</span> Sec</div>'));
+    });
+
+
+    /* =========================================
+        COUNTDOWN 4
+     ========================================= */
+    function get15dayFromNow() {
+        return new Date(new Date().valueOf() + 15 * 24 * 60 * 60 * 1000);
+    }
+
+    $('#clock-c').countdown(get15dayFromNow(), function(event) {
+      var $this = $(this).html(event.strftime(''
+        + '<span class="h1 font-weight-bold">%D</span> Day%!d'
+        + '<span class="h1 font-weight-bold">%H</span> Hr'
+        + '<span class="h1 font-weight-bold">%M</span> Min'
+        + '<span class="h1 font-weight-bold">%S</span> Sec'));
+    });
+
+    /* =========================================
+        CALL TO ACTIONS FOR COUNTDOWN 4
+     ========================================= */
+    $('#btn-reset').click(function() {
+        $('#clock-c').countdown(get15dayFromNow());
+    });
+    $('#btn-pause').click(function() {
+        $('#clock-c').countdown('pause');
+    });
+    $('#btn-resume').click(function() {
+        $('#clock-c').countdown('resume');
+    });
+
+});
+
+    function addMinutes(date, minutes) {
+      return new Date(date.getTime() + minutes*60000);
+  }
+
+
+    /*function htmlCountdown(id) {
+      return `<button id="countdown-${id}" class="alert alert-danger" role="alert">
+        <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+          <div class="p-2 bd-highlight">
+            <h3 class="mb-0 fw-bold ">1</h3> <!-- text-white -->
+          </div>
+          <div class="p-2 bd-highlight">
+            <div class="countdown" id="countdown">
+              <span id="countdown-${id}-days">00</span> <span class="sep">:</span>
+              <span id="countdown-${id}-hours">00</span> <span>:</span>
+              <span id="countdown-${id}-minutes">00</span> <span>:</span>
+              <span id="countdown-${id}-seconds">00</span>
+            </div>
+          </div>
+        </div>
+      </button>\`
+    }*/
+
+    let countdownDate;
+
+    function startCountdown() {
+      // Get the date and time set by the user
+      countdownDate = addMinutes(new Date(), 1).getTime();
+
+      // Show the countdown clock
+      document.getElementById("countdown-1").style.display = "flex";
+
+      // Update the countdown every 1 second
+      let x = setInterval(function() {
+        // Get the current date and time
+        let now = new Date().getTime()
+
+        // Calculate the distance between now and the countdown date
+        let distance = countdownDate - now;
+
+        // Calculate days, hours, minutes and seconds
+        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+        // Display the result
+        document.getElementById("countdown-1-days").innerHTML = days.toString().padStart(2, '0');
+        document.getElementById("countdown-1-hours").innerHTML = hours.toString().padStart(2, '0');
+        document.getElementById("countdown-1-minutes").innerHTML = minutes.toString().padStart(2, '0');
+        document.getElementById("countdown-1-seconds").innerHTML = seconds.toString().padStart(2, '0');
+
+        // If the countdown is over, display a message
+        if (distance < 0) {
+          //clearInterval(x);
+          document.getElementById("countdown").innerHTML = "EXPIRED";
+        }
+      }, 1000);
+    }
+
+
+    var sineWave = new Pizzicato.Sound({
+        source: 'wave',
+        options: {
+            frequency: 440
+        }
+    });
+
+
+    // Sounds
+    var sound1 = new Audio('./static/sounds/mixkit-clear-announce-tones-2861.wav')
+    var sound2 = new Audio('./static/sounds/mixkit-happy-bells-notification-937.wav')
+    var sound3 = new Audio('./static/sounds/mixkit-urgent-simple-tone-loop-2976.wav')
+
+
+    countdownDate = {}
+
+    function startCountdownB(id) {
+
+      // Get element
+      let elm = $('#countdown-' + id)
+
+      // Change color to green
+      elm.addClass('alert-success')
+
+      // Show the countdown clock
+      //elm.style.display = "flex";
+      //elm
+
+      // Get the date and time set by the user
+      countdownDate[id] = addMinutes(new Date(), 1).getTime();
+
+
+      // Update the countdown every 1 second
+      let x = setInterval(function() {
+        // Get the current date and time
+        let now = new Date().getTime()
+
+        // Calculate the distance between now and the countdown date
+        let distance = countdownDate[id] - now;
+
+        // .. note:: We have added a dirty offset of one second because the
+        //           second number 59 was being always missed. This is probably
+        //           caused because it takes around a second to run the setInterval.
+
+        // Calculate days, hours, minutes and seconds
+        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000); // + 1; // dirty offset because it
+
+        // Display the result
+        document.getElementById("countdown-"+id+"-days").innerHTML = days.toString().padStart(2, '0');
+        document.getElementById("countdown-"+id+"-hours").innerHTML = hours.toString().padStart(2, '0');
+        document.getElementById("countdown-"+id+"-minutes").innerHTML = minutes.toString().padStart(2, '0');
+        document.getElementById("countdown-"+id+"-seconds").innerHTML = seconds.toString().padStart(2, '0');
+        
+        if (seconds <= 50) {
+          if (elm.hasClass('alert-success')) {
+            elm.removeClass('alert-success')
+            elm.addClass('alert-warning')
+            sound1.play()
+          }
+        }
+
+        if (seconds <= 30) {
+          if (elm.hasClass('alert-warning')) {
+            $('#countdown-' + id).removeClass('alert-warning')
+            $('#countdown-' + id).addClass('alert-danger')
+            sound2.play()
+          }
+        }
+
+        if (distance < 0) {
+          if (!elm.hasClass('expired')) {
+            $('#countdown-' + id).addClass('expired')
+            $('#countdown-' + id + '-message').text('Remove')
+            sound3.play()
+          }
+        }
+
+        /*
+        // If the countdown is over, display a message
+        if (distance < 50*1000) {
+          console.log("Change!")
+          if ($('#countdown-'+id).hasClass('alert-red')) {
+            $('#countdown-' + id).removeClass('alert-red')
+            $('#countdown-' + id).addClass('alert-green')
+          }
+          //clearInterval(x);
+          document.getElementById("countdown").innerHTML = "EXPIRED";
+        }*/
+      }, 100);
+    }
+
+    // Enable countdowns
+    $('#countdown-0').on('click', function (e) { startCountdownB(0)} )
+    $('#countdown-1').on('click', function (e) { startCountdownB(1)} )
+    $('#countdown-2').on('click', function (e) { startCountdownB(2)} )
+    $('#countdown-3').on('click', function (e) { startCountdownB(3)} )
+    $('#countdown-4').on('click', function (e) { startCountdownB(4)} )
+
+    $(document).ready(function() {
+
+      /* In order to work, need to change countdown-1-days for the object itself */
+      /*$('[id^="countdown-"]').on('click', function (e) {
+        console.log("EHHH")
+        console.log(e)
+        console.log($(this))
+        startCountdownB(4)
+      })*/
+
+    })
+
+</script>
+</html>
