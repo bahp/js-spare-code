@@ -1,35 +1,61 @@
-<html>
+<!DOCTYPE HTML>
+<html> <!-- manifest="manifest.mf"> -->
 <head>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRQM3KNDVC"></script>
   <script>
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
-
 		gtag('config', 'G-QRQM3KNDVC');
 	</script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link rel="icon" type="image/x-icon" href="./static/imgs/logo-2.png">
   <link rel="apple-touch-icon" sizes="128x128" href="./static/imgs/logo-apple-touchicon.png">
+  <link rel="apple-touch-startup-image" href="./static/imgs/logo-apple-touchicon.png" />
+  <link rel="canonical" href="https://bahp.github.io/js-spare-code/examples/apps/pregnant-care/" />
 
   <!-- JavaScript -->
+  <!--
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.4/dexie.min.js"></script>
   <script src='data.js'></script>
+  -->
+
+
+  <script src="./static/vendors/bootstrap/bootstrap.min.js"></script>
+  <script src="./static/vendors/jquery/jquery-3.6.0.min.js"></script>
+  <script src="data.js"></script>
 
   <!-- CSS only -->
+  <!--
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-        crossorigin="anonymous">
+        crossorigin="anonymous">-->
+
+  <link rel="stylesheet" href="./static/vendors/bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="./main.css">
 
   <title>Pregnancy Care</title>
 </head>
 <body class="bg-light">
+
+  <script>
+    /*if (navigator.serviceWorker) {
+        navigator.serviceWorker.register('sw.js')
+      }*/
+
+
+      if (navigator.serviceWorker) {
+        navigator.serviceWorker.register (
+          '/js-spare-code/examples/apps/pregnant-care/sw.js',
+          {scope: '/js-spare-code/examples/apps/pregnant-care/'}
+        )
+      }
+  </script>
 
   <div class="container">
 
@@ -200,8 +226,9 @@
     <!-- ---------------------------- -->
     <div class="row mb-3 mt-2">
       <div class="col">
-        <button type="button" id="empty-db" class="btn btn-danger alert alert-danger pt-1 pb-1">
-          Empty database
+        <button type="button" id="empty-db"
+                class="btn btn-danger alert alert-danger pt-1 pb-1 w-100">
+          Clear database
         </button>
        </div>
     </div>
@@ -260,7 +287,6 @@
         var d1 = new Date($(this).val())
         var d2 = new Date($('#date-conception').val())
         var r = weeksFromDate(d2, d1)
-      console.log(r)
         $('#conversion-week').val(r.weeks)
     })
 
@@ -542,7 +568,7 @@
                      patientObjectStore.add(patient);
                  });
 
-                 console.log('Adding artificial stored!');
+                 console.log('Added artificial patients to db!');
              }
 
              // Transaction completed

@@ -29,15 +29,19 @@
       <!-- Info text -->
       <div class="alert alert-warning small mt-5 pt-1 pb-1" role="alert">
         <p class="text-justify mt-2">
-          This example is incomplete. It would be nice to compute and display the
-          contour lines but eCharts Apache does not have that functionality. It
-          should be possible to compute the contours with conrec.js or d3.js. It is
-          easier to use d3.js library to display contour lines. The eCharts Apache
-          library has an additional 'custom' display option which could be used
-          specify how to render your item. Additionally, it is possible to use the
-          VisualMap picewise builtin feature which is an approximation. Would
-          any of these options be adequate?
+          <b>This example is incomplete!</b>
         </p>
+        <ps>
+          It would be nice to compute and display <b>contour lines</b> but the eCharts
+          Apache library does not have that functionality... Thus, it should be possible
+          to compute the contours with <b>conrec.js</b> or <b>d3.js</b>. From the little
+          exploration done so far, it seems to be easier to use <b>d3.js</b> library to
+          display contour lines. As another option, the eCharts Apache library has an
+          additional 'custom' display option which could be used to specify how to render
+          an item. Finally, it is possible to use the VisualMap piecewise builtin feature
+          (see discrete switch) which is an approximation and seems to be working fine.
+          Would any of these options be adequate?
+        </ps>
 
         <p class="text-center">
           https://github.com/jasondavies/conrec.js <br>
@@ -45,8 +49,14 @@
         </p>
 
         <p>
-          Enable cmap selection with a dropdown <br>
-          Enable click on scatter element <br>
+          Additional functionality... <br>
+          <ul>
+            <li>Enable cmap selection with a dropdown</li>
+            <li>Enable click/hover on scatter element</li>
+            <li>Enable selection of elements (radius)</li>
+            <li>Enable selection of elements (lasso)</li>
+            <li>Enable remove contour lines and LinearSegmentedColor</li>
+          </ul>
         </p>
       </div>
     </div>
@@ -211,7 +221,10 @@
     $('#contours').change(function (event) {
         if ($('#contours').prop('checked'))
             drawContours()
-        option && myChart.setOption(option);
+        else
+            deleteContours()
+        // Not merge is true to ensure contours removed.
+        option && myChart.setOption(option, true);
     })
 
 
@@ -238,13 +251,20 @@
         }
     }
 
+    function deleteContours() {
+       option.series = option.series.filter(function (item) {
+           return !item.name.startsWith('contour')
+       })
+    }
+
     function drawContours() {
         /**
          *
          *  .. note:: Seems that the d3.contour library is not
          *            computing the contours properly or at least
          *            they are not the same as how they are displayed
-         *            using the visualMap.
+         *            using the visualMap. This is visible if we select
+         *            the 'Noise' background.
          *
          *  Includes the contours in the series.
          *
@@ -271,7 +291,16 @@
         //.thresholds([0.2, 0.4, 0.6])(values)
 
         // Show
-        console.log(contours)
+        console.log("Contours:", contours)
+
+        // Compute colors (use echarts apache instead?)
+        var function_color = d3.scaleLinear()
+          .domain([1, nths])
+          .range(['white', 'red'])
+
+        //var function_color = d3.scaleSequential()
+        //    .domain([1, nths])
+        //    .interpolator(d3.interpolateViridis);
 
         // Add all contours
         for (let i = 0; i < contours.length; i++) {
@@ -282,7 +311,7 @@
 
             // Create dictionary to display contour line.
             var d = {
-                name: 'contour-' + i + '-' + contours.value,
+                name: 'contour-' + i + '-' + contours[i].value,
                 data: contours[i].coordinates[0][0],
                 type: 'line',
                 smooth: true,
@@ -290,7 +319,8 @@
                 symbolSize: 5,
                 lineStyle: {
                     width: 1,
-                    color: COLORS[i]
+                    color: function_color(i)
+                    //color: COLORS[i]
                 },
                 itemStyle: {
                     borderWidth: 0.75
@@ -470,8 +500,9 @@
                 }
             },
             {
-                data: trajectory,
+                name: 'Trajectory',
                 type: 'line',
+                data: trajectory,
                 smooth: true,
                 symbol: 'emptyCircle',
                 symbolSize: 5,
