@@ -155,6 +155,10 @@
       </div>
     </div>
 
+
+    <!-- Timers -->
+    <div id="heat-block"></div>
+
     <!--bell
     bell-fill
     bell-slash
@@ -163,11 +167,11 @@
     <i class="bi bi-bell"></i>
     -->
 
-    <!-- Countdown -->
+    <!-- Countdown
     <button id="countdown-1" class="alert alert-secondary w-100 rounded" role="alert">
-      <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+      <div class="d-flex justify-content-between w-100 pr-5">
         <div class="p-2 bd-highlight">
-          <h3 class="mb-0 fw-bold"> 1 </h3> <!-- Include text (eg. ID) text-white -->
+          <h3 class="mb-0 fw-bold"> 1 </h3>
         </div>
         <div class="p-2 bd-highlight">
           <h3 id='countdown-1-message' mclass="mb-0 fw-bold"> </h3>
@@ -183,11 +187,10 @@
       </div>
     </button>
 
-   <!-- Countdown -->
     <button id="countdown-2" class="alert alert-secondary w-100 rounded" role="alert">
-      <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+      <div class="d-flex justify-content-between w-100 pr-5">
         <div class="p-2 bd-highlight">
-          <h3 class="mb-0 fw-bold"> 2 </h3> <!-- Include text (eg. ID) text-white -->
+          <h3 class="mb-0 fw-bold"> 2 </h3>
         </div>
         <div class="p-2 bd-highlight">
           <h3 id='countdown-2-message' mclass="mb-0 fw-bold"> </h3>
@@ -203,11 +206,10 @@
       </div>
     </button>
 
-    <!-- Countdown -->
     <button id="countdown-3" class="alert alert-secondary w-100 rounded" role="alert">
-      <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+      <div class="d-flex justify-content-between w-100 pr-5">
         <div class="p-2 bd-highlight">
-          <h3 class="mb-0 fw-bold"> 3 </h3> <!-- Include text (eg. ID) text-white -->
+          <h3 class="mb-0 fw-bold"> 3 </h3>
         </div>
         <div class="p-2 bd-highlight">
           <h3 id='countdown-3-message' mclass="mb-0 fw-bold"> </h3>
@@ -223,11 +225,11 @@
       </div>
     </button>
 
-    <!-- Countdown -->
+
     <button id="countdown-4" class="alert alert-secondary w-100 rounded" role="alert">
-      <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+      <div class="d-flex justify-content-between w-100 pr-5">
         <div class="p-2 bd-highlight">
-          <h3 class="mb-0 fw-bold"> 4 </h3> <!-- Include text (eg. ID) text-white -->
+          <h3 class="mb-0 fw-bold"> 4 </h3>
         </div>
         <div class="p-2 bd-highlight">
           <h3 id='countdown-4-message' mclass="mb-0 fw-bold"> </h3>
@@ -242,8 +244,21 @@
         </div>
       </div>
     </button>
+    -->
 
   </div>
+
+    <!-- ---------------------------- -->
+    <!-- Buttons                      -->
+    <!-- ---------------------------- -->
+    <div class="row mb-3 mt-2">
+      <div class="col">
+        <button type="button" id="empty-db"
+                class="btn btn-danger alert alert-danger pt-1 pb-1 w-100">
+          Clear database
+        </button>
+       </div>
+    </div>
 
 </body>
 <script>
@@ -447,107 +462,62 @@
     }
 
 
-    const createStepHTML = function (item) {
-      /**
-       * Creates the HTML content for each of the steps.
-       *
-       **/
 
-      // Compute dates
-      var dc = new Date($('#date-conception').val())
-      var dw = addDays(dc, 7 * item.week)
+    function getColor() {
 
-
-
-      return `
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="heading-week-${item.week}">
-            <button class="accordion-button collapsed" type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapse-week-${item.week}"
-                    aria-expanded="false"
-                    aria-controls="collapse-week-${item.week}">
-              <div class="d-flex justify-content-between w-100 pr-5">
-                <div>
-                <h7 class="mb-0 fw-bold text-secondary">${item.week}</h7> weeks
-                <p id='countdown-4-message'
-                   class="fw-light text-secondary fs-12 mb-0"></p>
-              </div>
-            </button>
-          </h2>
-          <div id="collapse-week-${item.week}" class="accordion-collapse collapse"
-               aria-labelledby="heading-week-${item.week}"
-               data-bs-parent="#steps">
-            <div class="accordion-body">
-              <button> Back </button>
-              <button> Removed </button>
-            </div>
-          </div>
-        </div>`
-
-
-
-
-
-
-      // Return element
-      return `
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="heading-week-${item.week}">
-            <button class="accordion-button collapsed" type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapse-week-${item.week}"
-                    aria-expanded="false"
-                    aria-controls="collapse-week-${item.week}">
-              <div class="d-flex justify-content-between w-100 pr-5">
-                <div>
-                <h7 class="mb-0 fw-bold text-secondary">${item.week}</h7> weeks
-                <p class="fw-light text-secondary fs-12 mb-0">${dw.toDateString()}</p>
-              </div>
-            </button>
-          </h2>
-          <div id="collapse-week-${item.week}" class="accordion-collapse collapse"
-               aria-labelledby="heading-week-${item.week}"
-               data-bs-parent="#steps">
-            <div class="accordion-body">
-              ${item.info}
-            </div>
-          </div>
-        </div>`
     }
 
+    const createTimerHTML = function (item) {
+      var color = 'alert-secondary'
 
+      return `
+        <button id="countdown-${item.id}"
+                class="alert alert-secondary w-100 rounded" role="alert">
+          <div class="d-flex justify-content-between w-100 pr-5"> <!-- rounded -->
+            <div class="p-2 bd-highlight">
+              <h3 class="mb-0 fw-bold"> ${item.id} </h3>
+            </div>
+            <div class="p-2 bd-highlight">
+              <h3 id='countdown-${item.id}-message' mclass="mb-0 fw-bold"> </h3>
+            </div>
+            <div class="p-2 flex-grow-1 bd-highlight">
+              <div class="countdown text-end">
+                <span id="countdown-${item.id}-days" class="d-none">00</span> <span class="d-none">:</span>
+                <span id="countdown-${item.id}-hours" class="d-none">00</span> <span class="d-none">:</span>
+                <span id="countdown-${item.id}-minutes">00</span> <span>:</span>
+                <span id="countdown-${item.id}-seconds">00</span>
+              </div>
+            </div>
+          </div>
+        </button>`
 
-
+    }
 
   // -----------------------------------------------------------
   // Database
   // -----------------------------------------------------------
   const DEFAULT_DATA = [
-    {
-      fullName: 'Hermione Granger',
-      firstPregnancy: true,
-      allergies: false,
-      risk: false,
-      bmi: false,
-      conception: addDays(new Date(), -getRandomInt(40))
+    { id: 1,
+      name: 'default',
+      config: {},
+      timers: [
+        {id: 1, duration: 1, date: null},
+        {id: 2, duration: 1, date: null},
+        {id: 3, duration: 1, date: null},
+        {id: 4, duration: 1, date: null}
+      ]
     },
-    {
-      fullName: 'Rowena Ravenclaw',
-      firstPregnancy: true,
-      allergies: true,
-      risk: true,
-      bmi: false,
-      conception: addDays(new Date(), -getRandomInt(40))
-    }
   ]
 
-    /*
   // Variables
-  const dbName = "db_pregnancy";
+  const dbName = "db_timehub";
   const version = 1
   let db;
 
+
+  // --------------------------------------------------
+  //  Helper methods
+  // --------------------------------------------------
   function indexedDBSupport(){
     return 'indexedDB' in window;
   }
@@ -562,8 +532,20 @@
          }
 
          // Delete (for testing)
-         if (reset)
-             indexedDB.deleteDatabase('db_pregnancy')
+         if (reset) {
+           var rq = indexedDB.deleteDatabase(dbName)
+           rq.onsuccess = function (e) {
+             console.log("success");
+             e.target.result.close()
+           };
+           rq.onblocked = function (e) {
+             console.log("blocked: " + e);
+             // Close connections here
+           };
+           rq.onerror = function (e) {
+             console.log("error: " + e);
+           };
+         }
 
          // Open request with name and version.
          // When the database is updated, we can increment the version number and
@@ -591,12 +573,12 @@
              // Create an objectStore to hold information about our customers. We
              // could use "initials" as our key path only if it's guaranteed to be
              // unique.
-             const objectStore = db.createObjectStore("patients",
+             const objectStore = db.createObjectStore("profiles",
                  {autoIncrement: true, keyPath: 'id'});
 
              // Create an index to search customers by initials. Since we may have
              // duplicates so we can't use a unique index.
-             objectStore.createIndex("initials", "initials", {unique: false});
+             objectStore.createIndex("profile", "profile", {unique: false});
 
              // Create an index to search customers by email. We want to ensure
              // that no two customers have the same email, so use a unique index.
@@ -606,57 +588,148 @@
              objectStore.transaction.oncomplete = (event) => {
 
                  // Store values in the newly created objectStore.
-                 const patientObjectStore = db
-                     .transaction("patients", "readwrite")
-                     .objectStore("patients");
+                 const profileObjectStore = db
+                     .transaction("profiles", "readwrite")
+                     .objectStore("profiles");
 
-                 DEFAULT_DATA.forEach((patient) => {
-                     patientObjectStore.add(patient);
+                 DEFAULT_DATA.forEach((profile) => {
+                     profileObjectStore.add(profile);
                  });
 
-                 console.log('Adding artificial stored!');
+                 console.log('Adding default profile!');
              }
 
              // Transaction completed
              objectStore.transaction.oncompleted = (e) => {
-                 console.log('Object store "patient" created');
+                 console.log('Object store "profile" created');
              }
          };
      });
-  }*/
+  }
 
+  async function getProfile(key){
+    /** Get specific profile */
+    return new Promise(function(resolve, reject){
+      let request = db
+        .transaction('profiles')
+        .objectStore('profiles')
+        .get(key);
+      request.onsuccess = function(){
+        console.log(request.result)
+        resolve(request.result);
+      }
+    });
+  };
+
+  async function getAllProfiles(){
+    /** Retrieve all profiles **/
+    return new Promise(function(resolve, reject){
+      let request = db
+        .transaction('profiles')
+        .objectStore('profiles')
+        .getAll();
+      request.onsuccess = function(){
+        resolve(request.result);
+      }
+    });
+  }
+
+  async function updateProfile(p) {
+    /** Updates a profile and adds it if doesnt exist **/
+    return new Promise(function(resolve, reject){
+      console.log("Updating profile in db...", p)
+      let request = db
+        .transaction('profiles', 'readwrite')
+        .objectStore('profiles')
+        .put(p)
+      request.onsuccess = function(){
+        resolve(request.result);
+      }
+    });
+  }
 
 
   // --------------------------------------------------
   //  Main
   // --------------------------------------------------
+  // Local profile variable
+  var PROFILE = null
+
   $(document).ready(function() {
 
+    // Create database if it does not exist
+    createDatabase(reset=false).then(function(result) {
+      getProfile(1).then( function (result) {
+        // Load profile from DB
+        PROFILE = result;
+        // Populate timers
+        populateTimers();
+      })
+    })
+
   });
-    
 
 
-    function time(){
-      var d = new Date();
-      var hours = 24 - d.getHours();
-      var min = 60 - d.getMinutes();
-      if((min + '').length == 1){
-        min = '0' + min;
+  function test() {
+    getProfile('default').then(function(result) {
+      console.log("Retrieved:", result)
+    })
+    getProfile(0).then(function(result) {
+      console.log("Retrieved:", result)
+    })
+    getProfile(1).then(function(result) {
+      console.log("Retrieved:", result)
+    })
+    getAllProfiles().then(function(result) {
+      console.log("Retrieved:", result)
+    })
+  }
+
+
+
+
+  function populateTimers() {
+    /**
+     *
+     **/
+
+    PROFILE.timers.forEach((obj) => {
+      // Append HTML to DOM.
+      $('#heat-block').append(createTimerHTML(obj))
+      // Enable already started countdown.
+      if (obj.date != null)
+        startCountdownB(obj.id, obj)
+      else
+        $('#countdown-'+obj.id).on('click', function (e) {
+          console.log(obj.id, obj)
+          startCountdownB(obj.id, obj)
+        })
+    })
+
+  }
+
+  function populateTimersFromDB() {
+
+    /** Retrieves profile from database and populates **/
+    getProfile(1).then( function (result) {
+
+      for (let i = 0; i < result.timers.length; i++) {
+
+        // Append HTML to DOM.
+        $('#heat-block').append(createTimerHTML(result.timers[i]))
+        // Enable the countdown.
+        if (result.timers[i].date != null)
+          startCountdownB(result.timers[i].id, result.timers[i])
+
+        // Enable functionality.
+        $('#countdown-'+result.timers[i].id).on('click', function (e) {
+          startCountdownB(result.timers[i].id)}
+        )
       }
-      var sec = 60 - d.getSeconds();
-      if((sec + '').length == 1){
-            sec = '0' + sec;
-      }
-      jQuery('#countdown #hour').html(hours);
-      jQuery('#countdown #min').html(min);
-      jQuery('#countdown #sec').html(sec);
-    }
+    })
 
+  }
 
-
-  document.addEventListener('DOMContentLoaded', () =>
-    requestAnimationFrame(updateTime)
-  )
 
   function updateTime() {
     document.documentElement.style.setProperty('--timer-day', "'" + moment().format("dd") + "'");
@@ -757,10 +830,12 @@
     }*/
 
     let countdownDate;
+    let profile = DEFAULT_DATA[0]
 
     function startCountdown() {
       // Get the date and time set by the user
       countdownDate = addMinutes(new Date(), 1).getTime();
+
 
       // Show the countdown clock
       document.getElementById("countdown-1").style.display = "flex";
@@ -811,10 +886,17 @@
 
     countdownDate = {}
 
-    function startCountdownB(id) {
+    function startCountdownB(id, obj) {
+
+
+      console.log("Startcountdown...", obj)
+
+      if (obj.date == null)
+        obj.date = addMinutes(new Date(), 1).getTime();
 
       // Get element
-      let elm = $('#countdown-' + id)
+      let elm = $('#countdown-' + obj.id)
+
 
       // Change color to green
       elm.addClass('alert-success')
@@ -824,16 +906,34 @@
       //elm
 
       // Get the date and time set by the user
-      countdownDate[id] = addMinutes(new Date(), 1).getTime();
+      //countdownDate[id] = addMinutes(new Date(), 1).getTime();
+
+      //countdownDate[obj.id]
+
+      console.log(obj)
+      console.log(PROFILE)
+
+      //console.log("Starting countdown...", id)
+      //console.log(profile)
+      //console.log(profile.timers)
+      //console.log(profile.timers[parseInt(id)])
+      //profile.timers[parseInt(id)-1].date = countdownDate[id]
+      updateProfile(PROFILE)
 
 
       // Update the countdown every 1 second
-      let x = setInterval(function() {
+      var interval = setInterval(function() {
+
+        if (obj.date == null) {
+          clearInterval(interval)
+          return
+        }
+
         // Get the current date and time
         let now = new Date().getTime()
 
-        // Calculate the distance between now and the countdown date
-        let distance = countdownDate[id] - now;
+        // Calculate distance
+        let distance = obj.date - now;
 
         // .. note:: We have added a dirty offset of one second because the
         //           second number 59 was being always missed. This is probably
@@ -843,14 +943,14 @@
         let days = Math.floor(distance / (1000 * 60 * 60 * 24));
         let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((distance % (1000 * 60)) / 1000); // + 1; // dirty offset because it
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Display the result
         document.getElementById("countdown-"+id+"-days").innerHTML = days.toString().padStart(2, '0');
         document.getElementById("countdown-"+id+"-hours").innerHTML = hours.toString().padStart(2, '0');
         document.getElementById("countdown-"+id+"-minutes").innerHTML = minutes.toString().padStart(2, '0');
         document.getElementById("countdown-"+id+"-seconds").innerHTML = seconds.toString().padStart(2, '0');
-        
+
         if (seconds <= 50) {
           if (elm.hasClass('alert-success')) {
             elm.removeClass('alert-success')
@@ -890,23 +990,43 @@
     }
 
     // Enable countdowns
+    /*
     $('#countdown-0').on('click', function (e) { startCountdownB(0)} )
     $('#countdown-1').on('click', function (e) { startCountdownB(1)} )
     $('#countdown-2').on('click', function (e) { startCountdownB(2)} )
     $('#countdown-3').on('click', function (e) { startCountdownB(3)} )
     $('#countdown-4').on('click', function (e) { startCountdownB(4)} )
+    */
 
+    /*
     $(document).ready(function() {
-
-      /* In order to work, need to change countdown-1-days for the object itself */
-      /*$('[id^="countdown-"]').on('click', function (e) {
+      $('[id^="countdown-"]').on('click', function (e) {
         console.log("EHHH")
         console.log(e)
         console.log($(this))
         startCountdownB(4)
-      })*/
+      })
+    })*/
 
+  function updateTimer() {
+
+  }
+
+  $('#empty-db').on('click', function (e) {
+    console.log("EMPTYING!")
+    // Create database if it does not exist
+    $('heat-block').html('')
+    createDatabase(reset=true).then(function(result) {
+      console.log('reseting')
+      getProfile(1).then( function (result) {
+        // Load profile from DB
+        PROFILE = result;
+        // Populate timers
+        populateTimers();
+      })
     })
+  });
+
 
 </script>
 </html>
