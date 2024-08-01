@@ -252,12 +252,29 @@
             </button>
           </div>
         </nav>
+
+      <!-- ------------- -->
+      <!-- Detailed view -->
+      <!-- ------------- -->
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active"
              id="nav-home"
              role="tabpanel"
              aria-labelledby="nav-home-tab">
-          <button class="btn btn-outline-info mt-2" onclick="populateDatatable()"> Display/Refresh </button>
+
+           <!-- Button -->
+           <div class="d-flex justify-content-end">
+             <button class="btn btn-outline-info mt-2" onclick="populateDatatable()">
+               Display/Refresh
+             </button>
+           </div>
+
+           <!-- Text -->
+           <div>
+             Use this to fill the search box (  ✓ , ✗  )
+             </div>
+
+           <!-- Table -->
            <div class="row mb-3 mt-3 w-100">
               <div id="summary" class="w-100 mt-3">
                 <table id="example" class="display compact" style="width:100%">
@@ -269,17 +286,28 @@
               </div>
             </div>
         </div>
+
+        <!-- ------------- -->
+        <!-- URL encoding  -->
+        <!-- ------------- -->
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 
-          <div class="text-wrap">
-            <br>
+           <!-- Button -->
+           <div class="d-flex justify-content-end">
+             <button class="btn btn-outline-warning mt-2" onclick="createShareLink()">
+              <i class="fas fa-share-alt"></i> Create sharable link
+            </button>
+
+           </div>
+
+          <div class="text-wrap mt-2">
             <label for="share" class="form-label">The url looks like... "url?data=encoding". </label>
             <textarea class="form-control" id="share" rows="10"></textarea>
             <div id="copyToClipboard-a" class="clipboard icon"></div>
           </div>
 
         </div>
-        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">.</div>
       </div>
 
 
@@ -289,7 +317,7 @@
 
 
 
-    <script src="data2.js"></script>
+    <script src="data.js"></script>
     <!--<script src="main.js"></script>-->
 
 </body>
@@ -309,7 +337,7 @@
         !entry.hasOwnProperty('votes') ||            // Checks if votes key is not present
         entry.votes === undefined ||                 // Checks if votes is explicitly undefined
         (Object.keys(entry.votes).length === 0) ||   // Checks if votes is an empty object
-        names.some(key => entry.votes[key] === true) // Contains any key with true value
+        names.some(name => !(name in entry.votes) || entry.votes[name] === true) // Contains any key with true value
     );
    }
 
@@ -340,6 +368,40 @@
       });
 
       return votesCount;
+   }
+
+
+   function retrieveTagsSummary(data) {
+     /**
+      *
+      **/
+      // Create variable
+      const tagCount = {};
+
+      // Iterate over each record
+      data.forEach(record => {
+          // Check if the record has a 'tags' attribute
+          if (record.tags && Array.isArray(record.tags)) {
+              // Iterate over each tag in the 'tags' array
+              record.tags.forEach(tag => {
+                  // Normalize the tag to lowercase
+                  const normalizedTag = tag.toLowerCase();
+                  // Initialize the tag count if it doesn't exist
+                  if (!tagCount[normalizedTag]) {
+                      tagCount[normalizedTag] = 0;
+                  }
+                  // Increment the tag count
+                  tagCount[normalizedTag]++;
+              });
+          }
+      });
+
+      // Convert the dictionary to an array of [key, value] pairs
+      const entries = Object.entries(tagCount);
+      // Sort the array by the value in descending order
+      entries.sort((a, b) => b[1] - a[1]);
+      // Convert the sorted array back into an object
+      return Object.fromEntries(entries);
    }
 
    // ******************************************************************
@@ -467,13 +529,19 @@
 
    function populateTags(data) {
       /**
-      * Populate the tags from data.
-      */
+       * Populate the tags from data.
+       *
+       * .. note:: Needs cleaning
+       */
       // Get all tags from data
       var allTags = data
          .map(item => item.tags)
          .filter(tags => tags !== undefined)
          .flat();
+
+      console.log(allTags)
+
+     let tags = retrieveTagsSummary(data)
 
       // Create a set to keep only unique tags
       var uniqueTags = [...new Set(allTags)];
@@ -481,15 +549,34 @@
       // Get the select dropdown element
       const selectElement = document.getElementById('tagsDropdown');
 
-      // Populate the select dropdown with unique tags
+
+      Object.keys(tags).forEach(key => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = key;
+        option.setAttribute('data-subtext', tags[key.toLowerCase()]);
+        selectElement.appendChild(option);
+      });
+
+     /*
       uniqueTags.forEach(tag => {
         const option = document.createElement('option');
         option.value = tag;
         option.textContent = tag;
-        option.setAttribute('data-subtext', '1/2/200');
+        option.setAttribute('data-subtext', tags[tag.toLowerCase()]);
+        selectElement.appendChild(option);
+      });*/
+
+      // Populate the select dropdown with unique tags
+     /*
+      uniqueTags.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
+        option.setAttribute('data-subtext', tags[tag.toLowerCase()]);
         selectElement.appendChild(option);
       });
-
+      */
       // Refresh the selectpicker to apply the changes
       $('.selectpicker').selectpicker('refresh')
       $('.selectpicker').selectpicker('selectAll');
@@ -622,7 +709,7 @@
 
         // Extract unique vote keys
         const voteKeys = new Set();
-        babyNames.forEach(person => {
+        data.forEach(person => {
             if (person.votes) {
                 Object.keys(person.votes).forEach(key => voteKeys.add(key));
             }
@@ -630,7 +717,7 @@
         const columns = Array.from(voteKeys);
 
         // Transform data for DataTable
-        const tableData = babyNames.map(person => {
+        const tableData = data.map(person => {
             const row = { name: person.name };
             columns.forEach(key => {
                 if (person.votes && key in person.votes) {
@@ -655,7 +742,12 @@
         document.getElementById('body').innerHTML = bodyHtml;
 
         // Initialize DataTable
-        var table = $('#example').DataTable();
+        var table = $('#example').DataTable(
+          {
+        "pageLength": 10, // Default number of rows per page
+        "lengthMenu": [10, 25, 50, 100] // Options for the number of rows per page
+    }
+        );
 
     }
 
@@ -666,11 +758,16 @@
             if (customOptionText) {
                 // Check if the custom option already exists
                 if ($('#playersDropdown option[value="' + customOptionText + '"]').length === 0) {
+                  var option = '<option value="' + customOptionText + '" selected>' + customOptionText + '</option>'
+
                     // Add new option to the select
-                    $('#playersDropdown').append('<option value="' + customOptionText + '" selected>' + customOptionText + '</option>');
+                    $('#playersDropdown').append(option);
 
                     // Refresh the selectpicker to update the UI
                     $('#playersDropdown').selectpicker('refresh');
+
+                    // Automatically select the new option
+                    $('#playersDropdown').selectpicker('val', customOptionText);
 
                     // Clear the input field
                     $('#customOptionInput').val('');
@@ -686,10 +783,6 @@
 
     $( document ).ready(function() {
 
-        // Populate menus
-        populateTags(data)
-        populatePlayers(data)
-
         // Get the URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const urlEncodedStr = urlParams.get('data');
@@ -699,8 +792,11 @@
             console.log(data)
         }
 
-        // Add the html hidden with opacity=0
-        //loadCards()
+        // Remove repeated and assign ids automatically
+
+        // Populate menus
+        populateTags(data)
+        populatePlayers(data)
 
         // Enable functionality
         enableAddCustomPlayer();
