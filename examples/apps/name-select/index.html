@@ -95,44 +95,43 @@
 
     <div class="container">
 
+
       <!-- ----------------------------------------- -->
       <!-- Select players                            -->
       <!-- ----------------------------------------- -->
       <div class="row mt-3">
-        <div class="col-12">
-          <div class="form-group">
-            <div class="input-group mb-2">
-                <input id='customOptionInput' type="text" class="form-control"
-                       placeholder="New player name..." aria-label="Username">
-                <button id='addCustomOption' class="btn btn btn-secondary"
-                        type="button" onclick="">
-                        Add
-                </button>
-            </div>
+        <div class="col-6">
 
+          <div class="form-group form-control-sm border rounded p-2">
+            Players
             <select id='playersDropdown'
-                    class="selectpicker form-control" multiple
+                    class="selectpicker form-control mt-1" multiple
                     data-width="100%" data-live-search="true"
                     data-actions-box="true"
                     title="Choose one or more players...">
-              <!--
-              <option data-subtext="1/4/200">Mustard</option>
-              <option data-subtext="1/4/200">Ketchup</option>
-              <option data-subtext="1/4/200">Relish</option>
-              -->
             </select>
+
+            <div class="form-group mt-1">
+              <div class="input-group">
+                  <input id='customOptionInput' type="text" class="form-control"
+                         placeholder="New player name..." aria-label="Username">
+                  <button id='addCustomOption' class="btn btn btn-secondary"
+                          type="button" onclick="">
+                          Add
+                  </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- ----------------------------------------- -->
-      <!-- Select tags                               -->
-      <!-- ----------------------------------------- -->
-      <div class="row">
-        <div class="col-12">
-          <div class="form-group">
+        <!-- ----------------------------------------- -->
+        <!-- Select tags                               -->
+        <!-- ----------------------------------------- -->
+        <div class="col-6">
+          <div class="form-group form-control-sm border rounded p-2">
+            Tags
             <select id="tagsDropdown"
-                    class="selectpicker form-control" multiple
+                    class="selectpicker form-control mt-1" multiple
                     data-width="100%" data-live-search="true"
                     data-actions-box="true"
                     data-selected-text-format="count > 3"
@@ -143,20 +142,24 @@
               <option data-subtext="5/200">Male</option>
               -->
             </select>
+
           </div>
         </div>
+
       </div>
 
+
       <div class="row">
-        <div class="col-12">
-            <div class="btn-container justify-content-center">
-                <button id='btnPlay' class="btn btn-primary ps-5 pe-5" onclick="startRound()" disabled>Play</button>
-                <button id='btnReset' class="btn btn-secondary ps-5 pe-5" onclick="resetGame()" disabled>Reset</button>
-                <button id='btnStats' class="btn btn-success" disabled>Intersection/Union</button>
-                <button id='btnShare' class="btn btn-primary ps-5 pe-5" onclick="createShareLink()">
-                  <i class="fas fa-share-alt"></i> Share
-                </button>
-            </div>
+
+        <div class="col-12 w-100">
+          <div class="btn-container">
+            <button id='btnPlay' class="btn btn-primary ps-5 pe-5" onclick="startRound()" disabled>Play</button>
+            <button id='btnReset' class="btn btn-secondary ps-5 pe-5" onclick="resetGame()" disabled>Reset</button>
+            <!--<button id='btnStats' class="btn btn-info" disabled>Intersection/Union</button>-->
+            <button id='btnShare' class="btn btn-warning ps-5 pe-5" onclick="createShareLink()">
+              <i class="fas fa-share-alt"></i> Share
+            </button>
+          </div>
         </div>
       </div>
 
@@ -207,6 +210,10 @@
                 </div>
                 -->
                 <div id="card-container" class="w-100 mt-3">
+                  <div class="card2" data-id="7"> <!-- style="opacity: 0;">-->
+                    <h2>Please select a player...</h2>
+                    <p>and remember to press play!</p>
+                  </div>
                 </div>
                 <!-- Buttons -->
                 <div class="d-flex mt-1">
@@ -225,27 +232,58 @@
         </div>
 
 
-        <!-- Third row-->
-        <div class="row mb-3 mt-3">
-            <div class="col">
-                <div class="text-wrap">
-                    <label for="share" class="form-label">Encoding (url?data=encoding) </label>
-                    <textarea class="form-control" id="share" rows="10"></textarea>
-                    <div id="copyToClipboard-a" class="clipboard icon"></div>
-                </div>
+
+        <nav class="w-100 mt-5">
+          <div class="nav nav-tabs w-100" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-home-tab"
+                    data-bs-toggle="tab" data-bs-target="#nav-home" type="button"
+                    role="tab" aria-controls="nav-home" aria-selected="true">
+                Detailed view
+            </button>
+            <button class="nav-link" id="nav-profile-tab"
+                    data-bs-toggle="tab" data-bs-target="#nav-profile" type="button"
+                    role="tab" aria-controls="nav-profile" aria-selected="false">
+                Encoding URL
+            </button>
+            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
+                    data-bs-target="#nav-contact" type="button" role="tab"
+                    aria-controls="nav-contact" aria-selected="false">
+                Contact
+            </button>
+          </div>
+        </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active"
+             id="nav-home"
+             role="tabpanel"
+             aria-labelledby="nav-home-tab">
+          <button class="btn btn-outline-info mt-2" onclick="populateDatatable()"> Display/Refresh </button>
+           <div class="row mb-3 mt-3 w-100">
+              <div id="summary" class="w-100 mt-3">
+                <table id="example" class="display compact" style="width:100%">
+                  <thead>
+                      <tr id="header"></tr>
+                  </thead>
+                  <tbody id="body"></tbody>
+              </table>
+              </div>
             </div>
         </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 
-        <div class="row mb-3 mt-3">
-          <div id="summary" class="w-100 mt-3">
-            <table id="example" class="display" style="width:100%">
-              <thead>
-                  <tr id="header"></tr>
-              </thead>
-              <tbody id="body"></tbody>
-          </table>
+          <div class="text-wrap">
+            <br>
+            <label for="share" class="form-label">The url looks like... "url?data=encoding". </label>
+            <textarea class="form-control" id="share" rows="10"></textarea>
+            <div id="copyToClipboard-a" class="clipboard icon"></div>
           </div>
+
         </div>
+        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+      </div>
+
+
+
 
     </div>
 
@@ -309,8 +347,16 @@
    // ******************************************************************
    // Handle reset button.
    function resetGame() {
-
+      // Get current patient
+      let player = $('#playersDropdown').val();
+      // Populate the select dropdown with unique tags
+      data.forEach(item => {
+        if (item.votes && item.votes.hasOwnProperty(player)) {
+            delete item.votes[player];
+        }
+      });
    }
+
    // Handle play button.
    function startRound() {
       /**
@@ -513,8 +559,10 @@
         function (e, clickedIndex, isSelected, previousValue) {
            if ($(this).val().length === 1) {
               $('#btnPlay').prop('disabled', false);
+              $('#btnReset').prop('disabled', false);
            } else {
               $('#btnPlay').prop('disabled', true);
+              $('#btnReset').prop('disabled', true);
            }
      });
 
@@ -532,6 +580,7 @@
     var data = babyNames;
     var currentCard = null;
     var game = {}
+    var table = null;
 
 
 
@@ -566,6 +615,11 @@
         /**
          *
          **/
+
+        // Clear the table
+        if (table != null)
+          table.clear().draw();
+
         // Extract unique vote keys
         const voteKeys = new Set();
         babyNames.forEach(person => {
@@ -580,7 +634,7 @@
             const row = { name: person.name };
             columns.forEach(key => {
                 if (person.votes && key in person.votes) {
-                    row[key] = person.votes[key];
+                    row[key] = person.votes[key] ? '✓' : '✗';
                 } else {
                     row[key] = ''; // Empty string for missing votes
                 }
@@ -594,15 +648,14 @@
 
         // Create table body
         const bodyHtml = tableData.map(row => {
-            const rowHtml = ['name', ...columns].map(col => `<td>${row[col] !== undefined ? row[col] : ''}</td>`).join('');
+            const rowHtml = ['name', ...columns].map(col =>
+              `<td>${row[col] !== undefined ? row[col] : ''}</td>`).join('');
             return `<tr>${rowHtml}</tr>`;
         }).join('');
         document.getElementById('body').innerHTML = bodyHtml;
 
         // Initialize DataTable
-        $(document).ready(function() {
-            $('#example').DataTable();
-        });
+        var table = $('#example').DataTable();
 
     }
 
