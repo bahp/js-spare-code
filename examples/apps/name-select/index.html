@@ -20,7 +20,19 @@
       crossorigin="anonymous"></script>
     <link rel="stylesheet" href="main.css">
 
+<link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.1.0/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-OaSt6YlNk8f06OeGRPsV4UfP2F3Si8sd9Rqxt7iOdIsBKk+zbBLgwCyBwoBqLjDE" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.1.0/dist/js/coreui.bundle.min.js" integrity="sha384-fb63TspjFf2/L20tRe69tGsAXArSQe9u0yJ/9+5w1jbov1NYHiDv/+4Rdh2FSnEd" crossorigin="anonymous"></script>
 
+
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
 
 </head>
 <body>
@@ -81,11 +93,73 @@
   </div>
 
 
-
-
-
-
     <div class="container">
+
+      <!-- ----------------------------------------- -->
+      <!-- Select players                            -->
+      <!-- ----------------------------------------- -->
+      <div class="row mt-3">
+        <div class="col-12">
+          <div class="form-group">
+            <div class="input-group mb-2">
+                <input id='customOptionInput' type="text" class="form-control"
+                       placeholder="New player name..." aria-label="Username">
+                <button id='addCustomOption' class="btn btn btn-secondary"
+                        type="button" onclick="">
+                        Add
+                </button>
+            </div>
+
+            <select id='playersDropdown'
+                    class="selectpicker form-control" multiple
+                    data-width="100%" data-live-search="true"
+                    data-actions-box="true"
+                    title="Choose one or more players...">
+              <!--
+              <option data-subtext="1/4/200">Mustard</option>
+              <option data-subtext="1/4/200">Ketchup</option>
+              <option data-subtext="1/4/200">Relish</option>
+              -->
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ----------------------------------------- -->
+      <!-- Select tags                               -->
+      <!-- ----------------------------------------- -->
+      <div class="row">
+        <div class="col-12">
+          <div class="form-group">
+            <select id="tagsDropdown"
+                    class="selectpicker form-control" multiple
+                    data-width="100%" data-live-search="true"
+                    data-actions-box="true"
+                    data-selected-text-format="count > 3"
+                    title="Choose one or more tags...">
+              <!--
+              <option data-subtext="4/200">Irish</option>
+              <option data-subtext="3/200">Renaissence</option>
+              <option data-subtext="5/200">Male</option>
+              -->
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+            <div class="btn-container justify-content-center">
+                <button id='btnPlay' class="btn btn-primary ps-5 pe-5" onclick="startRound()" disabled>Play</button>
+                <button id='btnReset' class="btn btn-secondary ps-5 pe-5" onclick="resetGame()" disabled>Reset</button>
+                <button id='btnStats' class="btn btn-success" disabled>Intersection/Union</button>
+                <button id='btnShare' class="btn btn-primary ps-5 pe-5" onclick="createShareLink()">
+                  <i class="fas fa-share-alt"></i> Share
+                </button>
+            </div>
+        </div>
+      </div>
+
 
         <!-- Alert -->
         <!--
@@ -95,11 +169,11 @@
         -->
 
         <!-- First row (parameters) -->
+        <!--
         <div class="row mt-3">
             <div class="d-flex">
                 <div class="flex-grow-1 flex-fill">
                     <div class="input-group mb-3">
-                        <!--<span class="input-group-text">Player</span>-->
                         <input id='player' type="text" class="form-control"
                                placeholder="Player name..." aria-label="Username">
                         <button id='start' class="btn btn btn-secondary"
@@ -112,19 +186,12 @@
                     <button type="button" class="btn btn-primary"
                             onclick="createShareLink()">
                         <i class="fas fa-share-alt"></i> Share
-                        <!--<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up" viewBox="0 0 16 16">
-                          <path fill-rule="evenodd" d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1z"/>
-                          <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 1.707V10.5a.5.5 0 0 1-1 0V1.707L5.354 3.854a.5.5 0 1 1-.708-.708z"/>
-                        </svg>-->
                     </button>
                 </div>
             </div>
         </div>
+        -->
 
-        <div class="row">
-            <div class="col">
-            </div>
-        </div>
 
         <!-- Second row (cards) -->
         <div class="row justify-content-center">
@@ -139,17 +206,17 @@
                   </div>
                 </div>
                 -->
-                <div id="card-container">
+                <div id="card-container" class="w-100 mt-3">
                 </div>
                 <!-- Buttons -->
                 <div class="d-flex mt-1">
                     <div class="flex-fill">
-                        <button id="del-bttn me-1" class="btn btn-outline-danger w-100" onclick="buttonRemove()">
+                        <button id="del-bttn me-1" class="btn btn-danger w-100" onclick="buttonRemove()">
                             <span style='font-size:35px;'>&#10005;</span>
                         </button>
                     </div>
                     <div class="flex-fill ms-1">
-                        <button id="ret-bttn" class="btn btn-outline-success w-100" onclick="buttonRetain()">
+                        <button id="ret-bttn" class="btn btn-success w-100" onclick="buttonRetain()">
                             <span style='font-size:35px;'>&#10003;</span>
                         </button>
                     </div>
@@ -169,7 +236,20 @@
             </div>
         </div>
 
+        <div class="row mb-3 mt-3">
+          <div id="summary" class="w-100 mt-3">
+            <table id="example" class="display" style="width:100%">
+              <thead>
+                  <tr id="header"></tr>
+              </thead>
+              <tbody id="body"></tbody>
+          </table>
+          </div>
+        </div>
+
     </div>
+
+
 
     <script src="data2.js"></script>
     <!--<script src="main.js"></script>-->
@@ -183,6 +263,191 @@
     http://localhost:3000/name-select/?data=W3siaWQiOjEsIm5hbWUiOiJTb2ZpYSIsImRlc2NyaXB0aW9uIjoiV2lzZG9tIiwidm90ZXMiOnsiYmFocCI6dHJ1ZSwidnEiOnRydWV9fSx7ImlkIjoyLCJuYW1lIjoiTHVjYSIsImRlc2NyaXB0aW9uIjoiTGlnaHQiLCJ2b3RlcyI6eyJiYWhwIjpmYWxzZSwidnEiOmZhbHNlfX0seyJpZCI6MywibmFtZSI6Ik1hdGVvIiwiZGVzY3JpcHRpb24iOiJHaWZ0IG9mIEdvZCIsInZvdGVzIjp7ImJhaHAiOmZhbHNlLCJ2cSI6dHJ1ZX19LHsiaWQiOjQsIm5hbWUiOiJFbW1hIiwiZGVzY3JpcHRpb24iOiJVbml2ZXJzYWwiLCJ2b3RlcyI6eyJiYWhwIjp0cnVlLCJ2cSI6ZmFsc2V9fSx7ImlkIjo1LCJuYW1lIjoiR2FicmllbCIsImRlc2NyaXB0aW9uIjoiR29kIGlzIG15IHN0cmVuZ3RoIiwidm90ZXMiOnsiYmFocCI6ZmFsc2UsInZxIjp0cnVlfX0seyJpZCI6NiwibmFtZSI6Ik1hcnRpbmEiLCJkZXNjcmlwdGlvbiI6Ildhcmxpa2UiLCJ2b3RlcyI6eyJiYWhwIjpmYWxzZSwidnEiOmZhbHNlfX0seyJpZCI6NywibmFtZSI6IkxlbyIsImRlc2NyaXB0aW9uIjoiTGlvbiIsInZvdGVzIjp7ImJhaHAiOnRydWUsInZxIjp0cnVlfX0seyJpZCI6OCwibmFtZSI6IkdpdWxpYSIsImRlc2NyaXB0aW9uIjoiWW91dGhmdWwiLCJ2b3RlcyI6eyJiYWhwIjpmYWxzZSwidnEiOmZhbHNlfX0seyJpZCI6OSwibmFtZSI6IkRhbmllbCIsImRlc2NyaXB0aW9uIjoiR29kIGlzIG15IGp1ZGdlIiwidm90ZXMiOnsiYmFocCI6ZmFsc2UsInZxIjp0cnVlfX0seyJpZCI6MTAsIm5hbWUiOiJJc2FiZWxsYSIsImRlc2NyaXB0aW9uIjoiRGV2b3RlZCB0byBHb2QiLCJ2b3RlcyI6eyJiYWhwIjp0cnVlLCJ2cSI6ZmFsc2V9fV0%3D
    */
 
+   // ******************************************************************
+   // Helper methods
+   // ******************************************************************
+   function retrieveEntriesForPlayers(data, names) {
+      return data.filter(entry =>
+        !entry.hasOwnProperty('votes') ||            // Checks if votes key is not present
+        entry.votes === undefined ||                 // Checks if votes is explicitly undefined
+        (Object.keys(entry.votes).length === 0) ||   // Checks if votes is an empty object
+        names.some(key => entry.votes[key] === true) // Contains any key with true value
+    );
+   }
+
+   function retrieveVotesSummary(data) {
+      // Initialize the dictionary
+      var votesCount = {};
+
+      // Iterate through the data array
+      data.forEach(item => {
+          if (item.votes) {
+              // Iterate through the keys in the votes object
+              for (var key in item.votes) {
+                  if (item.votes.hasOwnProperty(key)) {
+                      // Initialize key in dictionary if not present
+                      if (!votesCount[key]) {
+                          votesCount[key] = [0, 0]; // [countTrue, countFalse]
+                      }
+
+                      // Increment count based on the value
+                      if (item.votes[key] === true) {
+                          votesCount[key][0]++; // Increment count of true
+                      } else if (item.votes[key] === false) {
+                          votesCount[key][1]++; // Increment count of false
+                      }
+                  }
+              }
+          }
+      });
+
+      return votesCount;
+   }
+
+   // ******************************************************************
+   // Functionality
+   // ******************************************************************
+   // Handle reset button.
+   function resetGame() {
+
+   }
+   // Handle play button.
+   function startRound() {
+      /**
+       * Start the round.
+       *
+       * .. note: If more than player selected round should not be played.
+       *          For this reason, the play button is only enable when only
+       *          one player is selected.
+       **/
+
+      // During the round
+        // Disable players dropdown
+        // Disable tags dropdown
+        // Disable all buttons but share
+
+      // Get selected players
+      var selectedPlayers = $('#playersDropdown').val()
+      // Get corresponding cards
+      var cards = retrieveEntriesForPlayers(data, selectedPlayers)
+      // Include cards into the HTML
+      displayCards(cards)
+      // Display first card
+      currentCard = $('[data-id=0]')
+      currentCard.css('opacity', 1);
+   }
+
+
+
+   // Handle share button.
+   function createShareLink() {
+      /**
+       * Create sharable link and copy to clipboard.
+       **/
+      // Create url
+      var param = encodeData(data)
+      var origin = window.location.origin
+      var path = window.location.pathname
+      var url = `${origin}${path}?data=${param}`;
+      var encode = encodeURIComponent(url);
+
+      // Show console
+      console.log(url)
+      // Show text area.
+      $('#share').val(url)
+      // Open new url (to share).
+      //window.open(url)
+      // Copy to clipboard.
+      navigator.clipboard.writeText(url);
+      // Alert the copied text
+      alert("Copied url to clipboard!");
+   }
+
+    String.prototype.format = function () {
+      var i = 0, args = arguments;
+      return this.replace(/{}/g, function () {
+        return typeof args[i] != 'undefined' ? args[i++] : '';
+      });
+    };
+
+   // ******************************************************************
+   // Methods to populate HTML or enable its functionality
+   // ******************************************************************
+   function populatePlayers(data) {
+      /**
+       * Populate the participants/players from data.
+       **/
+
+      // Get all players from data
+      var allPlayers = data
+        .filter(votes => votes !== undefined)
+        .flatMap(item => item.votes ? Object.keys(item.votes) : []);
+
+      // Create a Set to keep only unique vote names
+      const uniquePlayers = [...new Set(allPlayers)];
+
+      // Get votes summary
+      const votesCount = retrieveVotesSummary(data)
+
+      // Get the select dropdown element
+      const selectElement = document.getElementById('playersDropdown');
+
+      // Populate the select dropdown with unique tags
+      uniquePlayers.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
+
+        console.log('{}/{}/{}'.format(
+          votesCount[tag][0],
+          votesCount[tag][0] + votesCount[tag][1],
+          data.length
+        ))
+
+        const fmt1 = "{} &#10003 | {} &#10005 | {} Total"
+        const fmt2 = "{} selected | {} rejected | {} Total"
+        option.setAttribute('data-subtext',
+          fmt2.format(
+            votesCount[tag][0],
+            votesCount[tag][1],
+            data.length
+        ));
+        selectElement.appendChild(option);
+      });
+
+      // Refresh the selectpicker to apply the changes
+      $('.selectpicker').selectpicker('refresh')
+   }
+
+   function populateTags(data) {
+      /**
+      * Populate the tags from data.
+      */
+      // Get all tags from data
+      var allTags = data
+         .map(item => item.tags)
+         .filter(tags => tags !== undefined)
+         .flat();
+
+      // Create a set to keep only unique tags
+      var uniqueTags = [...new Set(allTags)];
+
+      // Get the select dropdown element
+      const selectElement = document.getElementById('tagsDropdown');
+
+      // Populate the select dropdown with unique tags
+      uniqueTags.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
+        option.setAttribute('data-subtext', '1/2/200');
+        selectElement.appendChild(option);
+      });
+
+      // Refresh the selectpicker to apply the changes
+      $('.selectpicker').selectpicker('refresh')
+      $('.selectpicker').selectpicker('selectAll');
+   }
 
     // Function to filter the list based on the 'isActive' attribute
     const filterPlayer = (list) => list.filter(function (item) {
@@ -240,19 +505,27 @@
 
     /**
      * Enable Play button
+     * It is enabled when the user has selected a player
+     * name in the drop down menu to be able to identify
+     * who is playing.
      **/
+     $('#playersDropdown').on('changed.bs.select',
+        function (e, clickedIndex, isSelected, previousValue) {
+           if ($(this).val().length === 1) {
+              $('#btnPlay').prop('disabled', false);
+           } else {
+              $('#btnPlay').prop('disabled', true);
+           }
+     });
 
-    /**
-     * Enable copy text area
-     **/
 
+   /**
+    * Enable copy text area
+    **/
     $('#copyToClipboard-a').on('click', function() {
-      $('#share').select()
-      document.execCommand('copy');
-
+       $('#share').select()
+       document.execCommand('copy');
     })
-
-
 
 
     // Global variables.
@@ -260,28 +533,7 @@
     var currentCard = null;
     var game = {}
 
-    function createShareLink() {
-        /**
-         *
-         **/
-        // Create url
-        var param = encodeData(data)
-        var origin = window.location.origin
-        var path = window.location.pathname
-        var url = `${origin}${path}?data=${param}`;
-        var encode = encodeURIComponent(url);
 
-        // Show console
-        console.log(url)
-        // Show text area.
-        $('#share').val(url)
-        // Open new url (to share).
-        //window.open(url)
-        // Copy to clipboard.
-        navigator.clipboard.writeText(url);
-        // Alert the copied text
-        alert("Copied url to clipboard!");
-    }
 
     function areAllTrue(obj, keys=[]) {
         /**
@@ -310,8 +562,80 @@
     }
 
 
+    function populateDatatable() {
+        /**
+         *
+         **/
+        // Extract unique vote keys
+        const voteKeys = new Set();
+        babyNames.forEach(person => {
+            if (person.votes) {
+                Object.keys(person.votes).forEach(key => voteKeys.add(key));
+            }
+        });
+        const columns = Array.from(voteKeys);
+
+        // Transform data for DataTable
+        const tableData = babyNames.map(person => {
+            const row = { name: person.name };
+            columns.forEach(key => {
+                if (person.votes && key in person.votes) {
+                    row[key] = person.votes[key];
+                } else {
+                    row[key] = ''; // Empty string for missing votes
+                }
+            });
+            return row;
+        });
+
+        // Create table header
+        const headerHtml = ['name', ...columns].map(col => `<th>${col}</th>`).join('');
+        document.getElementById('header').innerHTML = headerHtml;
+
+        // Create table body
+        const bodyHtml = tableData.map(row => {
+            const rowHtml = ['name', ...columns].map(col => `<td>${row[col] !== undefined ? row[col] : ''}</td>`).join('');
+            return `<tr>${rowHtml}</tr>`;
+        }).join('');
+        document.getElementById('body').innerHTML = bodyHtml;
+
+        // Initialize DataTable
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+
+    }
+
+    function enableAddCustomPlayer() {
+       $('#addCustomOption').click(function() {
+            var customOptionText = $('#customOptionInput').val().trim();
+
+            if (customOptionText) {
+                // Check if the custom option already exists
+                if ($('#playersDropdown option[value="' + customOptionText + '"]').length === 0) {
+                    // Add new option to the select
+                    $('#playersDropdown').append('<option value="' + customOptionText + '" selected>' + customOptionText + '</option>');
+
+                    // Refresh the selectpicker to update the UI
+                    $('#playersDropdown').selectpicker('refresh');
+
+                    // Clear the input field
+                    $('#customOptionInput').val('');
+                } else {
+                    alert('Option already exists!');
+                }
+            } else {
+                alert('Please enter some text!');
+            }
+        });
+    }
+
 
     $( document ).ready(function() {
+
+        // Populate menus
+        populateTags(data)
+        populatePlayers(data)
 
         // Get the URL parameters
         const urlParams = new URLSearchParams(window.location.search);
@@ -323,7 +647,10 @@
         }
 
         // Add the html hidden with opacity=0
-        loadCards()
+        //loadCards()
+
+        // Enable functionality
+        enableAddCustomPlayer();
     });
 
 
@@ -344,12 +671,14 @@
     }
 
     function buttonRemove() {
+        // Get current player
+        var player = $('#playersDropdown').val()
         // Hide current card
         if (currentCard) {
             currentCard.css('transform', 'translateX(-100%)');
             currentCard.css('opacity', 0);
             let id = parseInt(currentCard.attr('data-id'))
-            data[id]['votes'][$('#player').val()] = false
+            data[id]['votes'][player] = false
             if (id <= data.length) {
                 currentCard = currentCard.next()
                 currentCard.css('opacity', 1)
@@ -360,11 +689,14 @@
     }
 
     function buttonRetain() {
+         // Get current player
+         var player = $('#playersDropdown').val()
+         // Hide current card
          if (currentCard) {
             currentCard.css('transform', 'translateX(100%)');
             currentCard.css('opacity', 0);
             let id = parseInt(currentCard.attr('data-id'))
-            data[id]['votes'][$('#player').val()] = true
+            data[id]['votes'][player] = true
             if (id <= data.length) {
                 currentCard = currentCard.next()
                 currentCard.css('opacity', 1)
@@ -372,21 +704,6 @@
                 roundCompleted()
             }
         }
-    }
-
-    function startRound() {
-        /**
-         *
-         **/
-        // See which round it is
-        //let player = $('#player').val()
-        //if (!game.hasOwnProperty(player))
-        //    game[player] = createMatrix(1, babyNames.length)
-
-        //document.getElementById('user-selection').style.display = 'none';
-        loadCards()
-        currentCard = $('[data-id=0]')
-        currentCard.css('opacity', 1);
     }
 
 
@@ -408,6 +725,32 @@
         card.appendChild(desc);
 
         return card
+    }
+
+
+    function displayCards(cards) {
+       // Select card container
+       const cardContainer = document.getElementById('card-container');
+       // Empty its content
+       cardContainer.innerHTML = '';
+       // Populate cards
+       cards.forEach((item, idx) => {
+
+            // Add dictionary for votes
+            if (!item.hasOwnProperty('votes'))
+                item.votes = {}
+
+            // Check if username has already answered?
+            //if (isEmptyObject(item.votes) || areAllTrue(item.votes)) {
+            //    cardContainer.appendChild(createCard(item, idx));
+            cardContainer.appendChild(createCard(item, idx));
+
+                // Add swipe functionality
+                //card.addEventListener('touchstart', handleTouchStart, false);
+                //card.addEventListener('touchmove', handleTouchMove, false);
+                //card.addEventListener('touchend', handleTouchEnd, false);
+            //}
+        });
     }
 
     function loadCards() {

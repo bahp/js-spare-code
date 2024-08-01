@@ -1,39 +1,774 @@
-<html></html>
-<div id="phone">
-  <div id="app">
-    <div class="header">
-      <div class="top">
-        <span class="left">
-          <span class="fontawesome-circle"></span>
-          <span class="fontawesome-circle"></span>
-          <span class="fontawesome-circle-blank"></span>
-          <a href="http://rena.to" target="_blank">rena.to</a>
-          <span class="fontawesome-signal"></span>
-        </span>
-        <span class="center clock"></span>
-        <span class="right">
-          <span>75%</span>
-          <div id="battery"></div>
-          <span class="fontawesome-bolt"></span>
-        </span>
-      </div>
-    </div>
-    <div id="people"></div>
-    <div id="control">
-      <div class="button no">
-        <a href="#" class="trigger"></a>
-      </div>
-      <div class="button info">
-        <a href="#" class="trigger"></a>
-      </div>
-      <div class="button yes">
-        <a href="#" class="trigger"></a>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Baby Names Selector</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- CoreUI CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.1.0/dist/css/coreui.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="./images/logo-pdx.svg" alt="Logo" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
-  </div>
- </div>
-</div>
 
-<div id="copy">
-  created by <a href="http://rena.to" target="_blank">rena.to</a>
-</div>
+    <!-- Offcanvas -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel">Settings</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="mb-3">
+                <label for="playersSelect" class="form-label">Select players whose selections should be combined:</label>
+                <select id="playersSelect" class="form-select" multiple aria-label="Multiple select example">
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Player Selection -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <input id="customOptionInput" type="text" class="form-control" placeholder="New player name...">
+                    <button id="addCustomOption" class="btn btn-secondary" type="button">Add</button>
+                </div>
+                <select id="playersDropdown" class="selectpicker form-control" multiple data-width="100%" data-live-search="true" data-actions-box="true" title="Choose one or more players...">
+                    <!-- Options will be dynamically populated -->
+                </select>
+            </div>
+        </div>
+
+        <!-- Tag Selection -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <select id="tagsDropdown" class="selectpicker form-control" multiple data-width="100%" data-live-search="true" data-actions-box="true" data-selected-text-format="count > 3" title="Choose one or more tags...">
+                    <!-- Options will be dynamically populated -->
+                </select>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row mb-4">
+            <div class="col text-center">
+                <button id="btnPlay" class="btn btn-primary me-2" onclick="startRound()" disabled>Play</button>
+                <button id="btnReset" class="btn btn-secondary me-2" onclick="resetGame()" disabled>Reset</button>
+                <button id="btnStats" class="btn btn-success me-2" disabled>Intersection/Union</button>
+                <button id="btnShare" class="btn btn-primary" onclick="createShareLink()">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+            </div>
+        </div>
+
+        <!-- Card Container -->
+        <div class="row mb-4">
+            <div class="col text-center">
+                <div id="card-container" class="d-flex flex-wrap justify-content-center">
+                    <!-- Cards will be dynamically loaded here -->
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <button id="del-bttn" class="btn btn-outline-danger me-2" onclick="buttonRemove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button id="ret-bttn" class="btn btn-outline-success" onclick="buttonRetain()">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Share Link -->
+        <div class="row mb-4">
+            <div class="col">
+                <label for="share" class="form-label">Encoding (url?data=encoding)</label>
+                <textarea class="form-control" id="share" rows="3" readonly></textarea>
+                <button id="copyToClipboard-a" class="btn btn-outline-secondary mt-2" onclick="copyToClipboard()">Copy to Clipboard</button>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="row">
+            <div class="col">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead id="header">
+                        <!-- Table headers will be dynamically populated -->
+                    </thead>
+                    <tbody id="body">
+                        <!-- Table body will be dynamically populated -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.1/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap5.min.js"></script>
+    <script src="data2.js"></script>
+    <script src="main.js"></script>
+    <script>
+        // Your JavaScript code here
+        function copyToClipboard() {
+            var copyText = document.getElementById("share");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Copied the text: " + copyText.value);
+        }
+
+
+        /*
+    Encoding for testing:
+    http://localhost:3000/name-select/?data=W3siaWQiOjEsIm5hbWUiOiJTb2ZpYSIsImRlc2NyaXB0aW9uIjoiV2lzZG9tIiwidm90ZXMiOnsiYmFocCI6dHJ1ZSwidnEiOnRydWV9fSx7ImlkIjoyLCJuYW1lIjoiTHVjYSIsImRlc2NyaXB0aW9uIjoiTGlnaHQiLCJ2b3RlcyI6eyJiYWhwIjpmYWxzZSwidnEiOmZhbHNlfX0seyJpZCI6MywibmFtZSI6Ik1hdGVvIiwiZGVzY3JpcHRpb24iOiJHaWZ0IG9mIEdvZCIsInZvdGVzIjp7ImJhaHAiOmZhbHNlLCJ2cSI6dHJ1ZX19LHsiaWQiOjQsIm5hbWUiOiJFbW1hIiwiZGVzY3JpcHRpb24iOiJVbml2ZXJzYWwiLCJ2b3RlcyI6eyJiYWhwIjp0cnVlLCJ2cSI6ZmFsc2V9fSx7ImlkIjo1LCJuYW1lIjoiR2FicmllbCIsImRlc2NyaXB0aW9uIjoiR29kIGlzIG15IHN0cmVuZ3RoIiwidm90ZXMiOnsiYmFocCI6ZmFsc2UsInZxIjp0cnVlfX0seyJpZCI6NiwibmFtZSI6Ik1hcnRpbmEiLCJkZXNjcmlwdGlvbiI6Ildhcmxpa2UiLCJ2b3RlcyI6eyJiYWhwIjpmYWxzZSwidnEiOmZhbHNlfX0seyJpZCI6NywibmFtZSI6IkxlbyIsImRlc2NyaXB0aW9uIjoiTGlvbiIsInZvdGVzIjp7ImJhaHAiOnRydWUsInZxIjp0cnVlfX0seyJpZCI6OCwibmFtZSI6IkdpdWxpYSIsImRlc2NyaXB0aW9uIjoiWW91dGhmdWwiLCJ2b3RlcyI6eyJiYWhwIjpmYWxzZSwidnEiOmZhbHNlfX0seyJpZCI6OSwibmFtZSI6IkRhbmllbCIsImRlc2NyaXB0aW9uIjoiR29kIGlzIG15IGp1ZGdlIiwidm90ZXMiOnsiYmFocCI6ZmFsc2UsInZxIjp0cnVlfX0seyJpZCI6MTAsIm5hbWUiOiJJc2FiZWxsYSIsImRlc2NyaXB0aW9uIjoiRGV2b3RlZCB0byBHb2QiLCJ2b3RlcyI6eyJiYWhwIjp0cnVlLCJ2cSI6ZmFsc2V9fV0%3D
+   */
+
+   // ******************************************************************
+   // Helper methods
+   // ******************************************************************
+   function retrieveEntriesForPlayers(data, names) {
+      return data.filter(entry =>
+        !entry.hasOwnProperty('votes') ||            // Checks if votes key is not present
+        entry.votes === undefined ||                 // Checks if votes is explicitly undefined
+        (Object.keys(entry.votes).length === 0) ||   // Checks if votes is an empty object
+        names.some(key => entry.votes[key] === true) // Contains any key with true value
+    );
+   }
+
+   function retrieveVotesSummary(data) {
+      // Initialize the dictionary
+      var votesCount = {};
+
+      // Iterate through the data array
+      data.forEach(item => {
+          if (item.votes) {
+              // Iterate through the keys in the votes object
+              for (var key in item.votes) {
+                  if (item.votes.hasOwnProperty(key)) {
+                      // Initialize key in dictionary if not present
+                      if (!votesCount[key]) {
+                          votesCount[key] = [0, 0]; // [countTrue, countFalse]
+                      }
+
+                      // Increment count based on the value
+                      if (item.votes[key] === true) {
+                          votesCount[key][0]++; // Increment count of true
+                      } else if (item.votes[key] === false) {
+                          votesCount[key][1]++; // Increment count of false
+                      }
+                  }
+              }
+          }
+      });
+
+      return votesCount;
+   }
+
+   // ******************************************************************
+   // Functionality
+   // ******************************************************************
+   // Handle reset button.
+   function resetGame() {
+
+   }
+   // Handle play button.
+   function startRound() {
+      /**
+       * Start the round.
+       *
+       * .. note: If more than player selected round should not be played.
+       *          For this reason, the play button is only enable when only
+       *          one player is selected.
+       **/
+
+      // During the round
+        // Disable players dropdown
+        // Disable tags dropdown
+        // Disable all buttons but share
+
+      // Get selected players
+      var selectedPlayers = $('#playersDropdown').val()
+      // Get corresponding cards
+      var cards = retrieveEntriesForPlayers(data, selectedPlayers)
+      // Include cards into the HTML
+      displayCards(cards)
+      // Display first card
+      currentCard = $('[data-id=0]')
+      currentCard.css('opacity', 1);
+   }
+
+
+
+   // Handle share button.
+   function createShareLink() {
+      /**
+       * Create sharable link and copy to clipboard.
+       **/
+      // Create url
+      var param = encodeData(data)
+      var origin = window.location.origin
+      var path = window.location.pathname
+      var url = `${origin}${path}?data=${param}`;
+      var encode = encodeURIComponent(url);
+
+      // Show console
+      console.log(url)
+      // Show text area.
+      $('#share').val(url)
+      // Open new url (to share).
+      //window.open(url)
+      // Copy to clipboard.
+      navigator.clipboard.writeText(url);
+      // Alert the copied text
+      alert("Copied url to clipboard!");
+   }
+
+    String.prototype.format = function () {
+      var i = 0, args = arguments;
+      return this.replace(/{}/g, function () {
+        return typeof args[i] != 'undefined' ? args[i++] : '';
+      });
+    };
+
+   // ******************************************************************
+   // Methods to populate HTML or enable its functionality
+   // ******************************************************************
+   function populatePlayers(data) {
+      /**
+       * Populate the participants/players from data.
+       **/
+
+      // Get all players from data
+      var allPlayers = data
+        .filter(votes => votes !== undefined)
+        .flatMap(item => item.votes ? Object.keys(item.votes) : []);
+
+      // Create a Set to keep only unique vote names
+      const uniquePlayers = [...new Set(allPlayers)];
+
+      // Get votes summary
+      const votesCount = retrieveVotesSummary(data)
+
+      // Get the select dropdown element
+      const selectElement = document.getElementById('playersDropdown');
+
+      // Populate the select dropdown with unique tags
+      uniquePlayers.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
+
+        console.log('{}/{}/{}'.format(
+          votesCount[tag][0],
+          votesCount[tag][0] + votesCount[tag][1],
+          data.length
+        ))
+
+        const fmt1 = "{} &#10003 | {} &#10005 | {} Total"
+        const fmt2 = "{} selected | {} rejected | {} Total"
+        option.setAttribute('data-subtext',
+          fmt2.format(
+            votesCount[tag][0],
+            votesCount[tag][1],
+            data.length
+        ));
+        selectElement.appendChild(option);
+      });
+
+      // Refresh the selectpicker to apply the changes
+      $('.selectpicker').selectpicker('refresh')
+   }
+
+   function populateTags(data) {
+      /**
+      * Populate the tags from data.
+      */
+      // Get all tags from data
+      var allTags = data
+         .map(item => item.tags)
+         .filter(tags => tags !== undefined)
+         .flat();
+
+      // Create a set to keep only unique tags
+      var uniqueTags = [...new Set(allTags)];
+
+      // Get the select dropdown element
+      const selectElement = document.getElementById('tagsDropdown');
+
+      // Populate the select dropdown with unique tags
+      uniqueTags.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
+        option.setAttribute('data-subtext', '1/2/200');
+        selectElement.appendChild(option);
+      });
+
+      // Refresh the selectpicker to apply the changes
+      $('.selectpicker').selectpicker('refresh')
+      $('.selectpicker').selectpicker('selectAll');
+   }
+
+    // Function to filter the list based on the 'isActive' attribute
+    const filterPlayer = (list) => list.filter(function (item) {
+        if (item.votes.hasOwnProperty('bahp'))
+            return item.votes.bahp
+        return false
+    });
+
+    const filterPlayer2 = (list, properties) => list.filter(function(item) {
+        return properties.some(prop => item.votes && item.votes[prop]);
+    });
+
+
+    function createMatrix(rows, cols) {
+        return Array.from({ length: rows }, () =>
+                Array.from({ length: cols }, () => null)
+        );
+    }
+
+
+    /**
+     * {
+     *      name: 'bernard',
+     *      description: 'any',
+     *      votes: {
+     *        bahp: [true, false, false, false]
+     *        vq: false,
+     *      }
+     **/
+
+    /**
+     * Enable the button to play when the user has
+     * introduced a player name to be able to identify
+     * who is playing.
+     **/
+    $("#player").on('input',function(e){
+        if ($(this).val()=='') {
+            $('#start').attr('disabled')
+        } else {
+            $('#start').removeAttr('disabled')
+        }
+    });
+
+    /**
+     * Enable No button
+     **/
+
+    /**
+     * Enable Yes button
+     **/
+
+    /**
+     * Enable Share button
+     **/
+
+    /**
+     * Enable Play button
+     * It is enabled when the user has selected a player
+     * name in the drop down menu to be able to identify
+     * who is playing.
+     **/
+     $('#playersDropdown').on('changed.bs.select',
+        function (e, clickedIndex, isSelected, previousValue) {
+           if ($(this).val().length === 1) {
+              $('#btnPlay').prop('disabled', false);
+           } else {
+              $('#btnPlay').prop('disabled', true);
+           }
+     });
+
+
+   /**
+    * Enable copy text area
+    **/
+    $('#copyToClipboard-a').on('click', function() {
+       $('#share').select()
+       document.execCommand('copy');
+    })
+
+
+    // Global variables.
+    var data = babyNames;
+    var currentCard = null;
+    var game = {}
+
+
+
+    function areAllTrue(obj, keys=[]) {
+        /**
+         * Parameters
+         * ----------
+         * obj : list
+         *    list of dictionaries with key<str> and value<bool>
+         * keys: list
+         *    list of keys to consider. Ignore the rest
+         **/
+        for (let key in obj) {
+            //if (keys.length != 0)
+            //    if (!keys.includes(key))
+            //        continue
+            if (obj.hasOwnProperty(key)) {
+                if (!obj[key]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    function isEmptyObject(obj) {
+        return Object.keys(obj).length === 0;
+    }
+
+
+    function enableAddCustomPlayer() {
+       $('#addCustomOption').click(function() {
+            var customOptionText = $('#customOptionInput').val().trim();
+
+            if (customOptionText) {
+                // Check if the custom option already exists
+                if ($('#playersDropdown option[value="' + customOptionText + '"]').length === 0) {
+                    // Add new option to the select
+                    $('#playersDropdown').append('<option value="' + customOptionText + '" selected>' + customOptionText + '</option>');
+
+                    // Refresh the selectpicker to update the UI
+                    $('#playersDropdown').selectpicker('refresh');
+
+                    // Clear the input field
+                    $('#customOptionInput').val('');
+                } else {
+                    alert('Option already exists!');
+                }
+            } else {
+                alert('Please enter some text!');
+            }
+        });
+    }
+
+
+    $( document ).ready(function() {
+
+        // Populate menus
+        populateTags(data)
+        populatePlayers(data)
+
+        // Get the URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlEncodedStr = urlParams.get('data');
+        if (urlEncodedStr) {
+            data = decodeData(urlEncodedStr)
+            console.log("Loaded from url?data=")
+            console.log(data)
+        }
+
+        // Add the html hidden with opacity=0
+        //loadCards()
+
+        // Enable functionality
+        enableAddCustomPlayer();
+
+
+
+        // Extract unique vote keys
+        const voteKeys = new Set();
+        babyNames.forEach(person => {
+            if (person.votes) {
+                Object.keys(person.votes).forEach(key => voteKeys.add(key));
+            }
+        });
+        const columns = Array.from(voteKeys);
+
+        // Transform data for DataTable
+        const tableData = babyNames.map(person => {
+            const row = { name: person.name };
+            columns.forEach(key => {
+                if (person.votes && key in person.votes) {
+                    row[key] = person.votes[key];
+                } else {
+                    row[key] = ''; // Empty string for missing votes
+                }
+            });
+            return row;
+        });
+
+// Create table header
+const headerHtml = ['name', ...columns].map(col => `<th>${col}</th>`).join('');
+document.getElementById('header').innerHTML = headerHtml;
+
+// Create table body
+const bodyHtml = tableData.map(row => {
+    const rowHtml = ['name', ...columns].map(col => `<td>${row[col] !== undefined ? row[col] : ''}</td>`).join('');
+    return `<tr>${rowHtml}</tr>`;
+}).join('');
+document.getElementById('body').innerHTML = bodyHtml;
+
+// Initialize DataTable
+$(document).ready(function() {
+    $('#example').DataTable();
+});
+
+
+    });
+
+
+    var username = 'bahp'
+
+
+    function setYes(idx, player) {
+
+    }
+
+    function setNo(idx, player) {
+
+    }
+
+    function roundCompleted() {
+        $('#del-bttn').attr('disabled')
+        $('#ret-bttn').attr('disabled')
+    }
+
+    function buttonRemove() {
+        // Get current player
+        var player = $('#playersDropdown').val()
+        // Hide current card
+        if (currentCard) {
+            currentCard.css('transform', 'translateX(-100%)');
+            currentCard.css('opacity', 0);
+            let id = parseInt(currentCard.attr('data-id'))
+            data[id]['votes'][player] = false
+            if (id <= data.length) {
+                currentCard = currentCard.next()
+                currentCard.css('opacity', 1)
+            } else {
+                roundCompleted()
+            }
+        }
+    }
+
+    function buttonRetain() {
+         // Get current player
+         var player = $('#playersDropdown').val()
+         // Hide current card
+         if (currentCard) {
+            currentCard.css('transform', 'translateX(100%)');
+            currentCard.css('opacity', 0);
+            let id = parseInt(currentCard.attr('data-id'))
+            data[id]['votes'][player] = true
+            if (id <= data.length) {
+                currentCard = currentCard.next()
+                currentCard.css('opacity', 1)
+            } else {
+                roundCompleted()
+            }
+        }
+    }
+
+
+    function createCard(item, idx) {
+        /**
+         * Create card
+         **/
+        const card = document.createElement('div');
+        card.className = 'card2';
+        card.dataset.id = idx;
+        card.style.opacity = 0;
+
+        const title = document.createElement('h2');
+        title.innerText = item.name;
+        card.appendChild(title);
+
+        const desc = document.createElement('p');
+        desc.innerText = item.description;
+        card.appendChild(desc);
+
+        return card
+    }
+
+
+    function displayCards(cards) {
+       // Select card container
+       const cardContainer = document.getElementById('card-container');
+       // Empty its content
+       cardContainer.innerHTML = '';
+       // Populate cards
+       cards.forEach((item, idx) => {
+
+            // Add dictionary for votes
+            if (!item.hasOwnProperty('votes'))
+                item.votes = {}
+
+            // Check if username has already answered?
+            //if (isEmptyObject(item.votes) || areAllTrue(item.votes)) {
+            //    cardContainer.appendChild(createCard(item, idx));
+            cardContainer.appendChild(createCard(item, idx));
+
+                // Add swipe functionality
+                //card.addEventListener('touchstart', handleTouchStart, false);
+                //card.addEventListener('touchmove', handleTouchMove, false);
+                //card.addEventListener('touchend', handleTouchEnd, false);
+            //}
+        });
+    }
+
+    function loadCards() {
+        /**
+         * Load cards
+         **/
+        const cardContainer = document.getElementById('card-container');
+        cardContainer.innerHTML = '';
+        data.forEach((item, idx) => {
+
+            // Add dictionary for votes
+            if (!item.hasOwnProperty('votes'))
+                item.votes = {}
+
+            // Check if username has already answered?
+            //if (isEmptyObject(item.votes) || areAllTrue(item.votes)) {
+            //    cardContainer.appendChild(createCard(item, idx));
+            cardContainer.appendChild(createCard(item, idx));
+
+                // Add swipe functionality
+                //card.addEventListener('touchstart', handleTouchStart, false);
+                //card.addEventListener('touchmove', handleTouchMove, false);
+                //card.addEventListener('touchend', handleTouchEnd, false);
+            //}
+        });
+    }
+
+
+
+function handleTouchStart(evt) {
+    startX = evt.touches[0].clientX;
+}
+
+function handleTouchMove(evt) {
+    const card = evt.target;
+    const touch = evt.touches[0];
+    const change = touch.clientX - startX;
+
+    card.style.transform = `translateX(${change}px)`;
+    card.style.opacity = 1 - Math.abs(change) / cardContainer.offsetWidth;
+}
+
+function handleTouchEnd(evt) {
+    const card = evt.target;
+    const change = evt.changedTouches[0].clientX - startX;
+
+    if (change < -100) {
+        // Swipe left: remove
+        card.style.transform = 'translateX(-100%)';
+        card.style.opacity = 0;
+        removeCard(card.dataset.id);
+    } else if (change > 100) {
+        // Swipe right: retain
+        card.style.transform = 'translateX(100%)';
+        card.style.opacity = 0;
+        retainCard(card.dataset.id);
+    } else {
+        // Reset
+        card.style.transform = 'translateX(0)';
+        card.style.opacity = 1;
+    }
+}
+
+
+
+
+
+
+
+
+    function decodeData(urlEncodedStr) {
+        /*
+        eyJrZXkxIjoidmFsdWUxIiwia2V5MiI6InZhbHVlMiJ9
+        file:///Users/cbit/Desktop/repositories/github/js-spare-code/examples/apps/name-select/index.html?data=eyJrZXkxIjoidmFsdWUxIiwia2V5MiI6InZhbHVlMiJ9
+         */
+        // URL-decode the base64 string
+        let base64Str = decodeURIComponent(urlEncodedStr);
+        // Decode base64 to JSON string
+        let jsonString = atob(base64Str);
+        // Convert JSON string back to dictionary
+        return JSON.parse(jsonString);
+    }
+
+    function encodeData(data) {
+        // Convert dictionary to JSON string
+        let jsonString = JSON.stringify(data);
+        // Encode JSON string to base64
+        let base64String = btoa(jsonString);
+        // URL-encode the base64 string
+        return encodeURIComponent(base64String);
+
+        // Redirect to decode page with encoded data
+        //const url = `decode.html?data=${urlEncodedStr}`;
+        //window.location.href = url;
+        }
+
+    /*
+    window.onload = function() {
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlEncodedStr = urlParams.get('data');
+        if (urlEncodedStr) {
+            var data = decodeData(urlEncodedStr)
+            console.log(data)
+        }
+
+    }*/
+
+
+         /*
+         window.onload = function() {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlEncodedStr = urlParams.get('data');
+
+            if (urlEncodedStr) {
+                // URL-decode the base64 string
+                const base64Str = decodeURIComponent(urlEncodedStr);
+
+                // Decode base64 to JSON string
+                const jsonString = atob(base64Str);
+
+                // Convert JSON string back to dictionary
+                const data = JSON.parse(jsonString);
+
+                // Display the data
+                document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+            }
+        };*/
+
+    </script>
+</body>
+</html>
